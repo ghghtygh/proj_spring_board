@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.vinea.mapper.postMapper">
+     
+     <resultMap id="postMap" type="postVO">
+
+        <result property="postNum" column="POST_NO_PK" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="writer" column="WRT_NO" />
+		<result property="date" column="WRT_DT" />
+		<result property="time" column="WRT_TM" />
+		<result property="fileDir" column="FILE_DIR" />
+		<result property="viewCnt" column="VIEW_CNT" />
+		<result property="wrtId" column="USER_ID"/>
+		
+     </resultMap>
+    
+    
+    <select id="countPost" parameterType="hashmap" resultType="java.lang.Integer">
+    	
+   		SELECT
+   			COUNT(POST_NO_PK)
+   		FROM 
+   		 POST_TB
+   		 
+ 		JOIN
+         user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+         
+   		<include refid="search"></include>
+    		 
+    </select>
+    
+    
+    <select id="selectPost" resultMap="postMap">
+        SELECT POST_NO_PK, TITLE, CONTENT, WRT_NO, WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT,USER_ID
+        
+         FROM
+          POST_TB
+        
+         JOIN
+          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+         
+         ORDER BY POST_NO_PK DESC
+           
+    </select>
+    
+    <select id="listPost" parameterType="hashmap" resultMap="postMap">
+        	
+        SELECT POST_NO_PK, TITLE, CONTENT, WRT_NO, WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT,USER_ID
+        
+         FROM
+          POST_TB
+        
+         JOIN
+          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+         
+         <include refid="search"></include>
+         
+         ORDER BY POST_NO_PK DESC
+         
+         LIMIT
+          #{start}, #{end}
+         
+    </select>
+    
+	 <sql id ="search">
+    	<choose>
+    		<when test="searchOption=='all'">
+    		
+    			WHERE USER_ID like CONCAT('%',#{keyword},'%')
+    			OR CONTENT like CONCAT('%',#{keyword},'%')
+    			OR TITLE like CONCAT('%',#{keyword},'%')
+    			
+    		</when>
+    		
+    		<when test="searchOption=='userId'">
+    		
+    			WHERE USER_ID like CONCAT('%',#{keyword},'%')
+    			
+    		</when>
+    		<when test="searchOption=='content'">
+    		
+    			WHERE CONTENT like CONCAT('%',#{keyword},'%')
+    			
+    		</when>
+    		<when test="searchOption=='title'">
+    		
+    			WHERE TITLE like CONCAT('%',#{keyword},'%')
+    			
+    		</when>
+    		
+    		<otherwise>
+    			
+    			WHERE TITLE like CONCAT('%','404','%')
+    		
+    		</otherwise>
+    	</choose>
+	</sql>
+    
+	<update id="viewCntPost">
+		
+		UPDATE
+		 POST_TB
+		SET
+		 VIEW_CNT = VIEW_CNT+1
+		WHERE
+		 POST_NO_PK = #{postNum}
+	
+	</update>
+    
+    
+    <update id="modifyPost">
+    	UPDATE
+    	 POST_TB
+    	SET
+    	 TITLE=#{title},
+    	 CONTENT=#{content},
+    	 FILE_DIR=#{fileDir}
+    	WHERE
+    	 POST_NO_PK = #{postNum}
+    </update>
+    
+    <delete id ="deletePost">
+    	DELETE FROM 
+    	 POST_TB
+    	WHERE
+    	 POST_NO_PK = #{postNum}    
+    </delete>
+    
+    
+    <select id="read" resultType="postVO" resultMap="postMap">
+    	SELECT
+    	 POST_NO_PK, TITLE, CONTENT, USER_ID,WRT_NO,WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT
+    	FROM
+    	 POST_TB
+    	JOIN
+          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+    	WHERE
+    	 POST_NO_PK = #{num}
+    </select>
+    
+    <insert id="create">
+    
+	    INSERT INTO POST_TB(title,content,wrt_no,wrt_dt,wrt_tm)
+	     VALUES(#{title},#{content},#{writer},#{date},#{time})
+	     
+    </insert>
+    
+    
+    
+</mapper>
+
