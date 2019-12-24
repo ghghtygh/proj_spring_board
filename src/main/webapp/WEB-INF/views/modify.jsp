@@ -39,14 +39,36 @@ $(document).ready(function() {
 	        focus: true, 
 	        lang : 'ko-KR'
 	  });
+	  $("#sbmt").click(function(){
+			
+			if($("#summernote").val().length > 4000) {
+				
+	        	alert("글자수 제한됩니다.");
+	            $("#summernote").val($("#summernote").val().substring(0, 4000));
+
+	        }
+			
+			
+			var result=confirm("게시글을 수정하시겠습니까 ?");
+			
+			if (result){
+				
+				var formObj = $("#frm");
+				formObj.attr("action","/modify");
+				formObj.attr("method","post");
+				formObj.submit();
+			}
+			
+		});
 	  
 	});
+
 </script>
 
 
 </head>
 <body>
-<form>
+<form name="frm" id="frm">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div style="margin-left:10px;">
 			<a class="navbar-brand" href="/">home</a>
@@ -68,8 +90,8 @@ $(document).ready(function() {
 			<div>
 				
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label">제목</label>
-					<input type="text" class="form-control-plaintext" name="title" value="${postVO.title}">
+					<label class="col-sm-3 col-form-label" maxlength =50>제목</label>
+					<input type="text" class="form-control" name="title" value="${postVO.title}">
 				</div>
 				<div class="input-group mb-3">
 					<label class="col-sm-5 col-form-label">
@@ -95,7 +117,7 @@ $(document).ready(function() {
 			
 			<div align = "right">
 				<input type="hidden" name="postNum" value="${postVO.postNum}">
-				<button type="submit" class="btn btn-primary" formaction="/modify" formmethod="post">수정</button>
+				<input type="button" class="btn btn-primary" id="sbmt" value="수정">
 				<button type="button" class="btn btn-secondary" onClick="location.href='/read?num=${postVO.postNum}&page=${page}'">취소</button>
 			</div>
 		</div>

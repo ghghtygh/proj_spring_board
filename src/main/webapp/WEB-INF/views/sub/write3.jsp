@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-<title>Write</title>
+<title>Write2</title>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
@@ -34,88 +34,21 @@
 
 <script>
 $(document).ready(function() {
-	$('#summernote').summernote({
-	  	placeholder: 'content',
-		minHeight: 370,
-		maxHeight: null,
-		focus: true, 
-		lang : 'ko-KR'
-	});
-	
-	
-	$("#sbmt").click(function(){
-		
-		if($("#summernote").val().length > 4000) {
-			
-        	alert("글자수 제한됩니다.");
-            $("#summernote").val($("#summernote").val().substring(0, 4000));
-
-        }
-		
-		
-		var result=confirm("게시글을 작성하시겠습니까 ?");
-		
-		if (result){
-			
-			var formObj = $("#frm");
-			formObj.attr("action","/write");
-			formObj.attr("method","post");
-			formObj.submit();
-		}
-		
-	});
-	
-	 $('#summernote').on('keyup', function() {
-
-	        
-
+	  $('#summernote').summernote({
+ 	    	placeholder: 'content',
+	        minHeight: 370,
+	        maxHeight: null,
+	        focus: true, 
+	        lang : 'ko-KR'
 	  });
-
-});
-
-/*
-$(document).ready(function() {
-	$('#summernote').summernote({
-	  	placeholder: 'content',
-		minHeight: 370,
-		maxHeight: null,
-		focus: true, 
-		lang : 'ko-KR',
-		callbacks: {
-		    onImageUpload: function(files, editor, welEditable) {
-		      for (var i = files.length - 1; i >= 0; i--) {
-		        sendFile(files[i], this);
-		      }
-		    }
-		}
 	});
-});
-
-function sendFile(file, el) {
-  var form_data = new FormData();
-  form_data.append('file', file);
-	$.ajax({
-		data: form_data,
-		type: "POST",
-		url: '/image',
-		cache: false,
-		contentType: false,
-		enctype: 'multipart/form-data',
-		processData: false,
-		success: function(url) {
-		  $(el).summernote('editor.insertImage', url);
-		  $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
-		}
-	});
-}
-*/
 </script>
 
 
 </head>
 <body>
 
-<form name="frm" id="frm">
+<form>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div style="margin-left:10px;">
 			<a class="navbar-brand" href="/">home</a>
@@ -138,7 +71,7 @@ function sendFile(file, el) {
 				
 				<div class="input-group mb-3">
 					<label class="col-sm-3 col-form-label">제목</label>
-					<input type="text" class="form-control" maxlength =50 name="title" aria-describedby="emailHelp" placeholder="제목 없음">
+					<input type="text" class="form-control-plaintext" name="title" aria-describedby="emailHelp" placeholder="제목 없음">
 				</div>
 				
 				<hr>
@@ -160,8 +93,8 @@ function sendFile(file, el) {
 			<div align = "right">
 			
 				<input type="hidden" name="writer" value="${user.userNum}">
-				 
-				<input type="button" class="btn btn-primary" id="sbmt" value="등록">
+				
+				<button type="submit" class="btn btn-primary" formmethod="post">등록</button>
 				<button type="button" class="btn btn-secondary" onClick="location.href='/'">취소</button>
 				
 			</div>
