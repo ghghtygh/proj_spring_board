@@ -27,11 +27,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public void create(PostVO vo) throws Exception{
     	
-    	String inDate   = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
-		String inTime   = new java.text.SimpleDateFormat("HHmm").format(new java.util.Date());
-		
 		String title = vo.getTitle();
-		String content = vo.getContent();
+		//String content = vo.getContent();
 		
 		title = title.replace("<", "&lt;");
 		title = title.replace(">", "&gt;");
@@ -39,9 +36,7 @@ public class PostServiceImpl implements PostService {
 		
 		
 		vo.setTitle(title);
-		vo.setContent(content);
-		vo.setDate(inDate);
-		vo.setTime(inTime);
+		//vo.setContent(content);
 		
     	dao.create(vo);
     }

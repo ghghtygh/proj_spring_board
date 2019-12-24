@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 
@@ -72,10 +72,6 @@ $(document).ready(function() {
 
     height: 100%;
 	}
-
-
-
-출처: https://offbyone.tistory.com/341 [쉬고 싶은 개발자]
 </style>
 </head>
 <form id="frm">
@@ -89,7 +85,7 @@ $(document).ready(function() {
 	</nav>
 	
 	<div class="container" style="height:100%;">
-		<div style="margin-top:50px;">
+		<div style="margin-top:20px;">
 				
 			<div class="col-lg-8 col-md-7 col-sm-6">
 			</div>
@@ -100,10 +96,25 @@ $(document).ready(function() {
 				<div>
 					<h4 style="word-break:break-all;">제목 : ${postVO.title}</h4>
 				</div>
-				<div style="">
-					<p class="text-muted">
-						<div>작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
-						<div>작성일자 : ${postVO.date}</div>
+				<div style="font-size:90%;margin-top:30px;">
+					<p class="text-muted" style="">
+						<div align="right">
+							<div style="width:40%;text-align:left;">
+								<div style="margin-top:5px;">작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
+								<div style="margin-top:5px;">작성일 : <fmt:formatDate value="${postVO.wrtDt}" pattern="yyyy.MM.dd kk:mm"/></div>
+								<div style="margin-top:5px;">
+									<c:if test="${postVO.wrtDt ne postVO.reDt}">
+										수정일 : <fmt:formatDate value="${postVO.reDt}" pattern="yyyy.MM.dd kk:mm"/>
+									</c:if>
+								</div>
+								<div style="margin-top:5px;">
+									<c:if test="${!(postVO.fileName eq ''||empty postVO.fileName)}">
+										첨부파일 : ${postVO.fileName}
+									</c:if>
+								</div>
+							</div>
+						
+						
 					</p>
 				</div>
 				<hr>
@@ -112,7 +123,7 @@ $(document).ready(function() {
 				<c:out value="${postVO.content}" escapeXml="false" />
 			</div>
 			<hr>
-			<div>
+			<div style="margin-top:20px;">
 				<div align="right">
 					<c:if test="${not empty user and (user.userId=='admin' or user.userNum==postVO.writer)}">
 						
@@ -125,7 +136,16 @@ $(document).ready(function() {
 					
 					</c:if>
 				</div>
-				<a class="text-muted" href="/?page=${page}" ><b>돌아가기</b></a>
+				<div>
+				<c:choose>
+					<c:when test="${empty keyword}">
+						<a class="text-muted" href="/?page=${page}" ><b>돌아가기</b></a>
+					</c:when>
+					<c:otherwise>
+						<a class="text-muted" href="/?page=${page}&searchOption=${searchOption}&keyword=${keyword}" ><b>돌아가기</b></a>
+					</c:otherwise>
+				</c:choose>
+				</div>
 			</div>
 		</div>
 	</div>

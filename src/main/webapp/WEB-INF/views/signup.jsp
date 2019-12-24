@@ -45,12 +45,12 @@
 		            	
 		                if (data.cnt > 0) {
 		                	idck = false;
-		                    alert("해당 아이디 존재, 다른 아이디를 입력");
+		                    alert("해당 아이디 존재, 다른 아이디를 입력하세요");
 		                    $("#userId").val('');
 		                
 		                } else {
 		                	idck = true;
-		                    alert("사용가능 아이디");
+		                    alert("사용가능 아이디입니다.");
 		                    
 		                    
 		                }
@@ -148,7 +148,7 @@
 							<div class="input-group mb-3">
 							
 								<label class="col-sm-3 col-form-label">아이디</label>
-								<input type="text" class="form-control-plaintext" id="userId" name="userId" aria-describedby="emailHelp" placeholder="Enter ID">
+								<input type="text" class="form-control-plaintext" id="userId" name="userId" aria-describedby="emailHelp" placeholder="Enter ID" maxlength =30>
 								<button type="button" class="btn btn-secondary" name="idck" id="idck">중복확인</button>
 							
 							</div>
@@ -156,14 +156,14 @@
 							<div class="input-group mb-3">
 							
 								<label class="col-sm-3 col-form-label">비밀번호</label>
-								<input type="password" class="form-control-plaintext" id="pw1" name="userPw" onkeyup="rePw()" aria-describedby="emailHelp" placeholder="Enter Password">
+								<input type="password" class="form-control-plaintext" id="pw1" name="userPw" onkeyup="rePw()" aria-describedby="emailHelp" placeholder="Enter Password"  maxlength =32>
 							
 							</div>
 							
 							<div class="input-group mb-3">
 							
 								<label class="col-sm-3 col-form-label">비밀번호 확인</label>
-								<input type="password" class="form-control-plaintext" id="pw2" onkeyup="checkPw()" aria-describedby="emailHelp" placeholder="Password Confirm">
+								<input type="password" class="form-control-plaintext" id="pw2" onkeyup="checkPw()" aria-describedby="emailHelp" placeholder="Password Confirm"  maxlength =32>
 							</div>
 							
 							<p id="checkPw" class="input-group mb-3">&nbsp;</p>
@@ -171,7 +171,7 @@
 						</li>
 						<li class="list-group-item">
 							<div class="input-group mb-3">
-								<label class="col-sm-3 col-form-label">이메일</label>
+								<label class="col-sm-3 col-form-label" maxlength =100>이메일</label>
 								<input type="text" class="form-control-plaintext" name="userEmail" aria-describedby="emailHelp" placeholder="Example@example.com">
 							</div>
 						</li>

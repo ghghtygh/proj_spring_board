@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 
@@ -90,14 +91,17 @@ $(document).ready(function() {
 			<div>
 				
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label" maxlength =50>제목</label>
-					<input type="text" class="form-control" name="title" value="${postVO.title}">
+					<label class="col-sm-3 col-form-label">제목</label>
+					<input type="text" class="form-control" maxlength =50 name="title" value="${postVO.title}">
 				</div>
-				<div class="input-group mb-3">
-					<label class="col-sm-5 col-form-label">
+				<div style="font-size:90%;" align="right" >
+					<div style="text-align:left;width:40%;">
 						작성자 : ${postVO.wrtId}<br>
-						작성일자 : ${postVO.date}
-					</label>
+						작성일 : <fmt:formatDate value="${postVO.wrtDt}" pattern="yyyy.MM.dd kk:mm"/><br>
+						<c:if test="${postVO.wrtDt ne postVO.reDt}">
+							수정일 : <fmt:formatDate value="${postVO.reDt}" pattern="yyyy.MM.dd kk:mm"/>
+						</c:if>
+					</div>
 				</div>
 				<hr>
 			
