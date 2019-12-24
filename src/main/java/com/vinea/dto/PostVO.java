@@ -1,5 +1,7 @@
 package com.vinea.dto;
 
+import java.util.Date;
+
 public class PostVO {
 	 
 	
@@ -15,12 +17,15 @@ public class PostVO {
     // 작성 유저 번호
     private int writer;
     
-    // 작성 일자 ex)20191210
-    private String date;
+    // 작성일
+    private Date wrtDt;
     
-    // 작성 시간 ex)1835
-    private String time;
+    // 수정일
+    private Date reDt;
     
+    // 첨부파일명
+    private String fileName;
+
     // 첨부파일 경로
     private String fileDir;
     
@@ -55,17 +60,23 @@ public class PostVO {
 	public void setWriter(int writer) {
 		this.writer = writer;
 	}
-	public String getDate() {
-		return date;
+	public Date getWrtDt() {
+		return wrtDt;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setWrtDt(Date wrtDt) {
+		this.wrtDt = wrtDt;
 	}
-	public String getTime() {
-		return time;
+	public Date getReDt() {
+		return reDt;
 	}
-	public void setTime(String time) {
-		this.time = time;
+	public void setReDt(Date reDt) {
+		this.reDt = reDt;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	public String getFileDir() {
 		return fileDir;

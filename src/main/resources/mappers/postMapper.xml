@@ -4,15 +4,27 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="com.vinea.mapper.postMapper">
-     
+     <!-- 
+     postNum : 글 번호 (기본키)
+     title : 글 제목
+     content : 글 내용
+     writer : 작성 회원 번호 (외래키)
+     wrtDt : 작성일자
+     reDt : 수정일자
+     fileName : 첨부파일명
+     fileDir : 첨부파일 경로
+     viewCnt : 조회수
+     wrtId : 작성 회원 아이디
+      -->
      <resultMap id="postMap" type="postVO">
 
         <result property="postNum" column="POST_NO_PK" />
 		<result property="title" column="TITLE" />
 		<result property="content" column="CONTENT" />
 		<result property="writer" column="WRT_NO" />
-		<result property="date" column="WRT_DT" />
-		<result property="time" column="WRT_TM" />
+		<result property="wrtDt" column="WRT_DATE"/>
+		<result property="reDt" column="WRT_RE_DATE"/>
+		<result property="fileName" column="FILE_NAME" />
 		<result property="fileDir" column="FILE_DIR" />
 		<result property="viewCnt" column="VIEW_CNT" />
 		<result property="wrtId" column="USER_ID"/>
@@ -29,7 +41,9 @@
    		 POST_TB
    		 
  		JOIN
-         user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+         USER_TB
+        ON
+         POST_TB.WRT_NO = USER_TB.USER_NO_PK
          
    		<include refid="search"></include>
     		 
@@ -39,17 +53,7 @@
     <select id="selectPost" resultMap="postMap">
     <!-- 전체 게시글 리턴 -->
     
-        SELECT
-        
-          POST_NO_PK
-        , TITLE
-        , CONTENT
-        , WRT_NO
-        , WRT_DT
-        , WRT_TM
-        , FILE_DIR
-        , VIEW_CNT
-        , USER_ID
+        SELECT *
         
          FROM
           POST_TB
@@ -61,6 +65,7 @@
          
          ORDER BY
           POST_NO_PK
+          
          DESC
            
     </select>
@@ -68,17 +73,8 @@
     <select id="listPost" parameterType="hashmap" resultMap="postMap">
     <!-- 해당 페이지 게시글 리턴 -->
     	
-        SELECT
-           POST_NO_PK
-         , TITLE
-         , CONTENT
-         , WRT_NO
-         , WRT_DT
-         , WRT_TM
-         , FILE_DIR
-         , VIEW_CNT
-         , USER_ID
-        
+        SELECT *
+          
          FROM
           POST_TB
         
@@ -103,6 +99,7 @@
 	 
     	<choose>
     		<when test="searchOption=='all'">
+    		<!-- 검색옵션 : 전체(디폴트값) -->
     		
     			WHERE
     			 USER_ID like CONCAT('%',#{keyword},'%')
@@ -114,18 +111,21 @@
     		</when>
     		
     		<when test="searchOption=='userId'">
+    		<!-- 검색옵션 : 작성자 아이디 -->
     		
     			WHERE
     			 USER_ID like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		<when test="searchOption=='content'">
+    		<!-- 검색옵션 : 내용 -->
     		
     			WHERE
     			 CONTENT like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		<when test="searchOption=='title'">
+    		<!-- 검색옵션 : 제목 -->
     		
     			WHERE
     			 TITLE like CONCAT('%',#{keyword},'%')
@@ -133,7 +133,8 @@
     		</when>
     		
     		<otherwise>
-    			
+    		<!-- 검색옵션 : 오류 -->
+    		
     			WHERE
     			 TITLE like CONCAT('%','404','%')
     		
@@ -143,10 +144,13 @@
     
 	<update id="viewCntPost">
 	<!-- viewCntPost : 조회수 증가 -->	
+	
 		UPDATE
 		 POST_TB
+		 
 		SET
 		 VIEW_CNT = VIEW_CNT+1
+		 
 		WHERE
 		 POST_NO_PK = #{postNum}
 	
@@ -160,9 +164,10 @@
     	 POST_TB
     	 
     	SET
-    	 TITLE=#{title},
-    	 CONTENT=#{content},
-    	 FILE_DIR=#{fileDir}
+    	   TITLE=#{title}
+    	 , CONTENT=#{content}
+    	 , FILE_DIR=#{fileDir}
+    	 , WRT_RE_DATE=NOW()
     	 
     	WHERE
     	 POST_NO_PK = #{postNum}
@@ -182,19 +187,10 @@
     
     
     <select id="read" resultType="postVO" resultMap="postMap">
-    <!-- 게시글 읽기 -->
+    <!-- 게시글 읽기   -->
     
-    	SELECT
-    	   POST_NO_PK
-    	 , TITLE
-    	 , CONTENT
-    	 , USER_ID
-    	 , WRT_NO
-    	 , WRT_DT
-    	 , WRT_TM
-    	 , FILE_DIR
-    	 , VIEW_CNT
-    	 
+    	SELECT *
+    	   
     	FROM
     	 POST_TB
     	 
@@ -209,22 +205,19 @@
     </select>
     
     <insert id="create">
-    <!-- 게시글 생성 -->
+    <!-- 게시글 작성 -->
+    
 	    INSERT INTO
 	    
 	     POST_TB(
 	       TITLE
 	     , CONTENT
-	     , WRT_NO
-	     , WRT_DT
-	     , WRT_TM)
+	     , WRT_NO)
 	     
 	     VALUES(
 	       #{title}
 	     , #{content}
-	     , #{writer}
-	     , #{date}
-	     , #{time})
+	     , #{writer})
 	     
     </insert>
     

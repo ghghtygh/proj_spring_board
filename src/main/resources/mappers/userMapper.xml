@@ -6,9 +6,15 @@
   
 <mapper namespace="com.vinea.mapper.userMapper">
 
-
+	<!-- 
+	userNum : 회원 번호 (기본키)
+	userId : 회원 아이디
+	userPw : 회원 비밀번호
+	userEmail : 회원 이메일
+	 -->
+	 
 	<resultMap id="userMap" type="com.vinea.dto.UserVO">
-
+	
         <result property="userNum" column="USER_NO_PK" />
 		<result property="userId" column="USER_ID" />
 		<result property="userPw" column="USER_PW" />
@@ -18,42 +24,59 @@
      
      
 	<insert id="create">
-	
-		Insert INTO USER_TB(user_id,user_pw,user_email)
-		values(#{userId},#{userPw},#{userEmail})
+	<!-- 회원가입 -->
+		INSERT INTO USER_TB(
+		
+		  USER_ID
+		, USER_PW
+		, USER_EMAIL
+		
+		)
+		
+		VALUES(
+		
+		  #{userId}
+		, #{userPw}
+		, #{userEmail}
+		
+		)
 		
 	</insert>
 
      
-	<select id ="selectUser" resultType="com.vinea.dto.UserVO">
+	<select id ="selectUser" resultMap="userMap">
+	<!-- 모든 회원 찾기 -->
 	
-		SELECT
-		 USER_NO_PK,USER_ID,USER_PW,USER_EMAIL
+		SELECT *
+		 
 		FROM
-		 USER_TB 
+		 USER_TB
+		 
 	</select>
 
 	<select id="idCheck" parameterType="String" resultType="java.lang.Integer">
-    	
+    <!-- 아이디 중복확인 (같은 아이디 개수 리턴) -->
    		SELECT
    			COUNT(USER_NO_PK)
+   			
    		FROM
 		 USER_TB
 		 
 		WHERE
-		 USER_ID=#{userId}
+		 USER_ID = #{userId}
    		 
     </select>
 
 	<select id="login" resultMap="userMap">
-		
+	<!-- 입력한 아이디 유저 정보 리턴 -->
 	
-		SELECT
-		 USER_NO_PK,USER_ID,USER_PW,USER_EMAIL
+		SELECT *
+		
 		FROM
 		 USER_TB
+		 
 		WHERE
-		 USER_ID = #{userId} AND USER_PW = #{userPw}
+		 USER_ID = #{userId}
 		
 	</select>
 

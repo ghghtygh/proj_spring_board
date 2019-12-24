@@ -159,10 +159,9 @@ body.a{
 				        <thead>
 				        	<colgroup>
 				        		<col width="10%"/>
-				        		<col width="*"/>
+				        		<col width="35%"/>
 				        		<col width="15%"/>
-				        		<col width="17%"/>
-				        		<col width="10%"/>
+				        		<col width="30%"/>
 				        		<col width="10%"/>
 				        	</colgroup>
 				        	
@@ -170,8 +169,7 @@ body.a{
 				            	<td>글번호</td>
 				                <td>제목</td>
 				                <td>작성자</td>
-				                <td>날짜</td>
-				                <td>시간</td>
+				                <td>작성일</td>
 				                <td>조회수</td>
 				            </tr>
 				        </thead>
@@ -196,25 +194,35 @@ body.a{
 				                	<td>${post.postNum}</td>
 				                    <td style="text-align:left;text-overflow:ellipsis; overflow:hidden;">
 				                    	<nobr>
-				                    	<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}' title="${post.title}"
-				                    	 style="color:#2C3E50;font-weight:600;">
-				                    		${post.title}
-				                    	</a>
+				                    	<c:choose>
+				                    	
+					                    	<c:when test="${keyword eq ''||empty keyword}">
+					                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}' title="${post.title}"
+						                    	 style="color:#2C3E50;font-weight:600;">
+						                    		${post.title}
+						                    	</a>					                    	
+					                    	</c:when>
+					                    	
+					                    	<c:otherwise>
+					                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}&selectOption=${selectOption}&keyword=${keyword}' title="${post.title}"
+						                    	 style="color:#2C3E50;font-weight:600;">
+						                    		${post.title}
+						                    	</a>
+					                    	</c:otherwise>
+				                    	
+				                    	</c:choose>
+				                    	
 				                    	</nobr>
 				                    	
 				                    </td>
 				                    <td>${post.wrtId}</td>
-				                    <td>
-				                    	<fmt:parseDate value="${post.date}" var="noticePostDate" pattern="yyyyMMdd"/>
-										<fmt:formatDate value="${noticePostDate}" pattern="yyyy.MM.dd"/>
-				                    </td>
-				                    <td>
 				                    
-				                    	<fmt:parseDate value="${post.time}" var="noticePostTime" pattern="HHmm"/>
-				                    	<fmt:formatDate value="${noticePostTime}" pattern="HH:mm" />
-				                    
+				                    <td>
+				                    	<fmt:formatDate value="${post.wrtDt}" pattern="yyyy.MM.dd kk:mm"/>
 				                    </td>
 				                    <td style="text-align:right">${post.viewCnt}</td>
+				                    
+				                     
 				                </tr>
 				            </c:forEach>
 				        </tbody>

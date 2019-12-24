@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -28,21 +29,23 @@ public class UserController {
 	@Inject
     private UserService service;
 	
-	
+	// 리디렉트 방지
 	@RequestMapping(value="/doSignup",method=RequestMethod.GET)
 	public void doSignupGET() {
 		
 	}
+	// 회원가입 페이지로 이동
 	@RequestMapping(value="/doSignup",method=RequestMethod.POST)
 	public String doSignupPOST(UserInfo userInfo) {
 		return "signup";
 	}
-	
+	// 리디렉트 방지
 	@RequestMapping(value="/signup",method=RequestMethod.GET)
 	public void signupGET() {
 		
 	}
 	
+	// 회원가입 기능 수행
 	@RequestMapping(value="/signup",method=RequestMethod.POST)
 	public String signupPOST(UserVO vo) throws Exception {
 		
@@ -51,6 +54,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	// 아이디 중복 확인
 	@RequestMapping(value="/idCheck", method=RequestMethod.POST)
 	
 		@ResponseBody
@@ -69,38 +73,48 @@ public class UserController {
 	        return map;
 	    }
 	
+	// 로그인 페이지 이동 
 	@RequestMapping(value="/signin",method=RequestMethod.GET)
-	public void signinGET(@RequestParam(defaultValue="")String userId, Model model) throws Exception {
-		model.addAttribute("userId",userId);
+	public String signinGET(@RequestParam(defaultValue="")String userId,HttpSession session, Model model) throws Exception {
+		
+		// 로그인 되어있을 경우 메인화면 이동
+		if (session.getAttribute("user")!=null){
+			
+			 return "redirect:/";
+			 
+		}else{
+			
+			model.addAttribute("userId",userId);
+			return null;
+			
+		}
 	}
 	
+	// 로그인 기능 수행
 	@RequestMapping(value="/signin",method=RequestMethod.POST)
-	public String signinPOST(UserInfo userInfo,HttpSession session,Model model) throws Exception {
+	public String signinPOST(UserInfo userInfo,HttpSession session,HttpServletRequest request,Model model) throws Exception {
 		
 		
 		UserVO vo = service.login(userInfo);
 		
 		if(vo==null) {
+			
 			model.addAttribute("userId",userInfo.getUserId());
 			return "signin";
+			
+		}else{
+		
+			session.setAttribute("user",vo);
+		
+			String referer = request.getHeader("Referer");
+		
+			return "redirect:"+referer;
+		
 		}
-		
-		session.setAttribute("user",vo);
-	
-		return "redirect:/";
-		
-		/*
-		 * 이전페이지
-		 * 
-		 * public String signinPOST(UserInfo userInfo,HttpSession session,HttpServletRequest request,Model model) throws Exception {
-		 * 
-		 * String referer = request.getHeader("Referer");
-		 * 
-		 * return "redirect:/"+referer;
-		 * 
-		 */
 	
 	}
+	
+	// 로그아웃 기능 수행
 	@RequestMapping("/signout")
 	public String signout(HttpSession session) throws Exception{
 		

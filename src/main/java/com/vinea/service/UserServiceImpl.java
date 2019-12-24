@@ -4,17 +4,22 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vinea.dao.UserDAO;
 import com.vinea.dto.UserInfo;
 import com.vinea.dto.UserVO;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Inject
 	private UserDAO dao;
+	
+	@Inject
+	PasswordEncoder pwEncoder;
 	
 	@Override
 	public List<UserVO> selectUser() throws Exception {
@@ -25,6 +30,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void create(UserVO vo) throws Exception {
 		// TODO Auto-generated method stub
+		
+		String encPw = pwEncoder.encode(vo.getUserPw());
+		vo.setUserPw(encPw);
 		
 		dao.create(vo);
 	}
@@ -37,8 +45,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO login(UserInfo userInfo) throws Exception{
 		
+		UserVO vo = dao.login(userInfo);
 		
-		return dao.login(userInfo);
+		if(vo==null){
+			return null;
+		}
+		
+		if(pwEncoder.matches(userInfo.getUserPw(), vo.getUserPw())){
+			return vo;
+		}else{
+			return null;
+		}
+		
+		
 	}
 	
 }

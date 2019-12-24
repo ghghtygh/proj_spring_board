@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
@@ -14,7 +13,9 @@
 
 <title>Write</title>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
+ integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 <link href="<c:url value='/resources/css/bootstrap.css' />" rel="stylesheet">
 <link href="<c:url value='/resources/css/_bootswatch.scss' />" rel="stylesheet">
@@ -47,7 +48,7 @@ $(document).ready(function() {
 		
 		if($("#summernote").val().length > 4000) {
 			
-        	alert("글자수 제한됩니다.");
+        	alert("글자수가 4000 이하로 제한됩니다.");
             $("#summernote").val($("#summernote").val().substring(0, 4000));
 
         }
@@ -61,16 +62,78 @@ $(document).ready(function() {
 			formObj.attr("action","/write");
 			formObj.attr("method","post");
 			formObj.submit();
+			
 		}
 		
 	});
 	
-	 $('#summernote').on('keyup', function() {
+	
+	
+	
+	
+	/*===============   테스트   ===============*/
 
-	        
+	$("#sbmt2").click(function(){
+		
+		if($("#summernote").val().length > 4000) {
+			
+        	alert("글자수가 4000 이하로 제한됩니다.");
+            $("#summernote").val($("#summernote").val().substring(0, 4000));
 
-	  });
-
+        }
+		
+		
+		var result=confirm("게시글을 작성하시겠습니까 ?");
+		
+		if (result){
+			
+			var filesChk = $("input[name='files[0]'").val();
+			
+			if (filesChk== ""){
+				$("input[name='files[0]'").remove;
+			}
+			
+			$("#frm").ajaxForm({
+				url		: "/write2",
+				enctype	: "multipart/form-data",
+				cache	: false,
+				async	: true,
+				type	: "POST",
+				success	: function(obj){
+					insertBoardCallback(obj);
+				},
+				error	: function(xhr,status,error){alert("fail")}
+				
+				
+			}).submit();
+			
+		}
+		
+	});
+	
+	
+	
+	function insertBoardCallback(obj){
+		
+		if(obj!=null){
+			var result = obj.result;
+			
+			if(result=="SUCCESS"){
+				alert('게시글 등록 성공');
+				
+			}else{
+				alert("게시글 등록 실패");
+			}
+		}
+	}
+	/*========================================*/
+	
+	
+	
+	
+	
+	
+	
 });
 
 /*
@@ -155,13 +218,15 @@ function sendFile(file, el) {
 			</div>
 			
 			<div>
+				<input type="file" class="" id="files[0]" name="files[0]" style="border:0px solid black;"/>
 			</div>
-			
+
 			<div align = "right">
-			
 				<input type="hidden" name="writer" value="${user.userNum}">
-				 
 				<input type="button" class="btn btn-primary" id="sbmt" value="등록">
+				<!-- 
+				<input type="button" class="btn btn-primary" id="sbmt2" value="테스트">
+				-->
 				<button type="button" class="btn btn-secondary" onClick="location.href='/'">취소</button>
 				
 			</div>

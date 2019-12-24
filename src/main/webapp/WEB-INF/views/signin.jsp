@@ -46,12 +46,12 @@
 								<c:choose>
 									<c:when test="${empty userId||userId==''}">
 										    
-										<input type="text" autofocus name="userId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="Enter ID" >
+										<input type="text" autofocus name="userId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="Enter ID" maxlength =30>
 							
 									</c:when>
 										    
 								    <c:otherwise>
-										<input type="text" autofocus name="userId" value="${userId}" class="form-control-plaintext">							
+										<input type="text" autofocus name="userId" value="${userId}" class="form-control-plaintext" maxlength =30>							
 								    </c:otherwise>
 										    
 								</c:choose>
@@ -59,7 +59,7 @@
 							<div class="input-group mb-3">
 							
 								<label class="col-sm-3 col-form-label">비밀번호</label>
-								<input type="password" class="form-control-plaintext" name="userPw" placeholder="Password">
+								<input type="password" class="form-control-plaintext" name="userPw" placeholder="Password"  maxlength =32>
 							
 							</div>
 							<div align="center" class="text-danger">
