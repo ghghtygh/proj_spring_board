@@ -33,14 +33,36 @@
 
 <script>
 $(document).ready(function() {
-	  $('#summernote').summernote({
- 	    	placeholder: 'content',
-	        minHeight: 370,
-	        maxHeight: null,
-	        focus: true, 
-	        lang : 'ko-KR'
-	  });
+	$('#summernote').summernote({
+	   	placeholder: 'content',
+	      minHeight: 370,
+	      maxHeight: null,
+	      focus: true, 
+	      lang : 'ko-KR'
 	});
+	  
+	
+	$('#delete').click(function(){
+		
+		var result = confirm("글을 삭제하시겠습니까 ?");
+		
+		if(result){
+			
+			var formObj=$('#frm');
+			formObj.attr("action","/delete");
+			formObj.attr("method","post");
+			formObj.submit();
+			
+			
+		}
+		
+	});
+	  
+	  
+	  
+	  
+	  
+});
 </script>
 
 <style>
@@ -56,7 +78,7 @@ $(document).ready(function() {
 출처: https://offbyone.tistory.com/341 [쉬고 싶은 개발자]
 </style>
 </head>
-<form>
+<form id="frm">
 <body>
 
 
@@ -75,14 +97,18 @@ $(document).ready(function() {
 		</div>
 		<div class="jumbotron" style="min-height:50%;">
 			<div>
-				<h4>제목 : ${postVO.title}</h4>
-				<p class="text-muted">
-					<div>작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
-					<div>작성일자 : ${postVO.date}</div>
-				</p>
+				<div>
+					<h4 style="word-break:break-all;">제목 : ${postVO.title}</h4>
+				</div>
+				<div style="">
+					<p class="text-muted">
+						<div>작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
+						<div>작성일자 : ${postVO.date}</div>
+					</p>
+				</div>
 				<hr>
 			</div>
-			<div style="min-height:300px;">
+			<div style="min-height:300px;word-break:break-all;">
 				<c:out value="${postVO.content}" escapeXml="false" />
 			</div>
 			<hr>
@@ -95,11 +121,11 @@ $(document).ready(function() {
 						
 						<button type="submit" class="btn btn-secondary" formaction="/doModify" formmethod="post">수정</button>
 						
-						<button type="submit" class="btn btn-secondary" formaction="/delete" formmethod="post">삭제</button>
+						<input type="button" class="btn btn-secondary" id="delete" value="삭제">
 					
 					</c:if>
 				</div>
-				<a class="text-muted" href="/?page=${page}" >돌아가기</a>
+				<a class="text-muted" href="/?page=${page}" ><b>돌아가기</b></a>
 			</div>
 		</div>
 	</div>

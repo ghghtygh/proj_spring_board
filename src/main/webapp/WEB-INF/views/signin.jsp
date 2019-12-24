@@ -46,12 +46,12 @@
 								<c:choose>
 									<c:when test="${empty userId||userId==''}">
 										    
-										<input type="text" name="userId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="Enter ID">
+										<input type="text" autofocus name="userId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="Enter ID" >
 							
 									</c:when>
 										    
 								    <c:otherwise>
-										<input type="text" name="userId" value="${userId}" class="form-control-plaintext">							
+										<input type="text" autofocus name="userId" value="${userId}" class="form-control-plaintext">							
 								    </c:otherwise>
 										    
 								</c:choose>

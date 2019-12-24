@@ -76,7 +76,7 @@
 		    	
 		    	}else{
 		    		
-		    		var result = confirm("회원 가입 ?");
+		    		var result = confirm("회원가입 하시겠습니까 ?");
 					
 		    		if(result){
 		    			var formObj = $("#frm");

@@ -6,13 +6,19 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vinea.dto.PostVO;
@@ -27,6 +33,8 @@ public class PostController {
     
     @Inject
     private PostService service;
+    
+    private final static Logger logger = Logger.getLogger(PostController.class);
     
     @RequestMapping(value = "/")
     public String home(@RequestParam(defaultValue="1") int page,
@@ -131,5 +139,55 @@ public class PostController {
     }
     
     
+    @RequestMapping(value="/sub/test", method=RequestMethod.GET)
+    public String testGET() throws Exception{
+    	
     
+    	
+    	return "sub/test";
+    }
+    
+    
+    @RequestMapping(value="/sub/test", method=RequestMethod.POST)
+    public void testPOST(PostVO post) throws Exception{
+    	
+    }
+    
+    
+    
+    
+    @RequestMapping(value="/test", method=RequestMethod.GET)
+    public String testGET2(HttpSession session) throws Exception{
+    	
+    	UserVO user = (UserVO) session.getAttribute("user");
+    	
+    	if (user==null) {
+    		return "redirect:/signin";
+    	}else {
+    		return "sub/test";
+    		
+    		
+    	}
+    }
+    
+    
+    @RequestMapping(value="/test", method=RequestMethod.POST)
+    public void testPOST2(PostVO post) throws Exception{
+    	
+    	logger.info("==============");
+    	logger.info(post.getContent());
+    	logger.info("==============");
+    }
+    
+    @RequestMapping(value="/image", method=RequestMethod.POST)
+    public void imgPOST(@RequestParam("file") MultipartFile file) throws Exception{
+    	
+    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
+    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
+    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
+    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
+    	
+    	
+    }
+
 }

@@ -21,6 +21,7 @@
     
     
     <select id="countPost" parameterType="hashmap" resultType="java.lang.Integer">
+    <!-- 게시글 건수 -->
     	
    		SELECT
    			COUNT(POST_NO_PK)
@@ -36,31 +37,61 @@
     
     
     <select id="selectPost" resultMap="postMap">
-        SELECT POST_NO_PK, TITLE, CONTENT, WRT_NO, WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT,USER_ID
+    <!-- 전체 게시글 리턴 -->
+    
+        SELECT
+        
+          POST_NO_PK
+        , TITLE
+        , CONTENT
+        , WRT_NO
+        , WRT_DT
+        , WRT_TM
+        , FILE_DIR
+        , VIEW_CNT
+        , USER_ID
         
          FROM
           POST_TB
         
          JOIN
-          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+          USER_TB
+         ON
+          POST_TB.WRT_NO = USER_TB.USER_NO_PK
          
-         ORDER BY POST_NO_PK DESC
+         ORDER BY
+          POST_NO_PK
+         DESC
            
     </select>
     
     <select id="listPost" parameterType="hashmap" resultMap="postMap">
-        	
-        SELECT POST_NO_PK, TITLE, CONTENT, WRT_NO, WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT,USER_ID
+    <!-- 해당 페이지 게시글 리턴 -->
+    	
+        SELECT
+           POST_NO_PK
+         , TITLE
+         , CONTENT
+         , WRT_NO
+         , WRT_DT
+         , WRT_TM
+         , FILE_DIR
+         , VIEW_CNT
+         , USER_ID
         
          FROM
           POST_TB
         
          JOIN
-          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+          USER_TB
+         ON
+          POST_TB.WRT_NO = USER_TB.USER_NO_PK
          
          <include refid="search"></include>
          
-         ORDER BY POST_NO_PK DESC
+         ORDER BY
+          POST_NO_PK
+         DESC
          
          LIMIT
           #{start}, #{end}
@@ -68,41 +99,50 @@
     </select>
     
 	 <sql id ="search">
+	 <!-- 검색결과를 위한 쿼리문 -->
+	 
     	<choose>
     		<when test="searchOption=='all'">
     		
-    			WHERE USER_ID like CONCAT('%',#{keyword},'%')
-    			OR CONTENT like CONCAT('%',#{keyword},'%')
-    			OR TITLE like CONCAT('%',#{keyword},'%')
+    			WHERE
+    			 USER_ID like CONCAT('%',#{keyword},'%')
+    			OR
+    			 CONTENT like CONCAT('%',#{keyword},'%')
+    			OR
+    			 TITLE like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		
     		<when test="searchOption=='userId'">
     		
-    			WHERE USER_ID like CONCAT('%',#{keyword},'%')
+    			WHERE
+    			 USER_ID like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		<when test="searchOption=='content'">
     		
-    			WHERE CONTENT like CONCAT('%',#{keyword},'%')
+    			WHERE
+    			 CONTENT like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		<when test="searchOption=='title'">
     		
-    			WHERE TITLE like CONCAT('%',#{keyword},'%')
+    			WHERE
+    			 TITLE like CONCAT('%',#{keyword},'%')
     			
     		</when>
     		
     		<otherwise>
     			
-    			WHERE TITLE like CONCAT('%','404','%')
+    			WHERE
+    			 TITLE like CONCAT('%','404','%')
     		
     		</otherwise>
     	</choose>
 	</sql>
     
 	<update id="viewCntPost">
-		
+	<!-- viewCntPost : 조회수 증가 -->	
 		UPDATE
 		 POST_TB
 		SET
@@ -114,39 +154,77 @@
     
     
     <update id="modifyPost">
+    <!-- 게시글 수정 -->
+    
     	UPDATE
     	 POST_TB
+    	 
     	SET
     	 TITLE=#{title},
     	 CONTENT=#{content},
     	 FILE_DIR=#{fileDir}
+    	 
     	WHERE
     	 POST_NO_PK = #{postNum}
+    	 
     </update>
     
     <delete id ="deletePost">
+    <!-- 게시글 삭제 -->
+    
     	DELETE FROM 
     	 POST_TB
+    	 
     	WHERE
     	 POST_NO_PK = #{postNum}    
+    	 
     </delete>
     
     
     <select id="read" resultType="postVO" resultMap="postMap">
+    <!-- 게시글 읽기 -->
+    
     	SELECT
-    	 POST_NO_PK, TITLE, CONTENT, USER_ID,WRT_NO,WRT_DT, WRT_TM, FILE_DIR, VIEW_CNT
+    	   POST_NO_PK
+    	 , TITLE
+    	 , CONTENT
+    	 , USER_ID
+    	 , WRT_NO
+    	 , WRT_DT
+    	 , WRT_TM
+    	 , FILE_DIR
+    	 , VIEW_CNT
+    	 
     	FROM
     	 POST_TB
+    	 
     	JOIN
-          user_tb ON post_tb.wrt_no = user_tb.user_no_pk
+          USER_TB
+        ON
+          POST_TB.WRT_NO = USER_TB.USER_NO_PK
+          
     	WHERE
     	 POST_NO_PK = #{num}
+    	 
     </select>
     
     <insert id="create">
-    
-	    INSERT INTO POST_TB(title,content,wrt_no,wrt_dt,wrt_tm)
-	     VALUES(#{title},#{content},#{writer},#{date},#{time})
+    <!-- 게시글 생성 -->
+	    INSERT INTO
+	    
+	     POST_TB(
+	       TITLE
+	     , CONTENT
+	     , WRT_NO
+	     , WRT_DT
+	     , WRT_TM)
+	     
+	     VALUES(
+	       #{title}
+	     , #{content}
+	     , #{writer}
+	     , #{date}
+	     , #{time})
 	     
     </insert>
     
