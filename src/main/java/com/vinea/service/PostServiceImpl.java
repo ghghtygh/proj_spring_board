@@ -2,43 +2,63 @@ package com.vinea.service;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
- 
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.vinea.common.FileUtils;
 import com.vinea.dao.PostDAO;
 import com.vinea.dto.PostVO;
  
+
+
 @Service
 public class PostServiceImpl implements PostService {
  
     @Inject
     private PostDAO dao;
     
+    @Autowired
+    @Resource(name="fileUtils")
+    private FileUtils fileUtils;
+    
+    SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+	
+	
+    private final static Logger logger = Logger.getLogger(PostServiceImpl.class);
+    
     @Override
     public List<PostVO> selectPost() throws Exception {
  
         return dao.selectPost();
     }
-
+    
+    
+    
     @Override
-    public void create(PostVO vo) throws Exception{
+    public void create(PostVO vo, HttpServletRequest request) throws Exception{
     	
-		String title = vo.getTitle();
-		//String content = vo.getContent();
-		
-		title = title.replace("<", "&lt;");
-		title = title.replace(">", "&gt;");
-		title = title.replace("  ", "&nbsp;&nbsp");
-		
-		
-		vo.setTitle(title);
-		//vo.setContent(content);
-		
+    	vo.setTitle(checkTitle(vo.getTitle()));
+    	
     	dao.create(vo);
+    	
+    	
+    	List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(vo,request);
+    	
+    	for (int i =0,size=list.size();i<size;i++){
+    		dao.insertFile(list.get(i));
+    	}
+    	
+    	
     }
     
     
@@ -50,7 +70,7 @@ public class PostServiceImpl implements PostService {
     
     @Override
     public List<PostVO> listPost(int start, int end, String searchOption, String keyword) throws Exception{
-    
+    	
     	return dao.listPost(start,end,searchOption,keyword);
     }
     
@@ -66,6 +86,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public void modifyPost(PostVO vo) throws Exception{
     	
+    	vo.setTitle(checkTitle(vo.getTitle()));
+    	
     	dao.modifyPost(vo);
     }
     
@@ -80,38 +102,29 @@ public class PostServiceImpl implements PostService {
     public PostVO read(Integer num)throws Exception{
     	return dao.read(num);
     }
-    /*
+    
     @Override
-    public UploadFile store(MultipartFile file) throws Exception {
-        try {
-            if (file.isEmpty()) {
-                throw new Exception("Failed to store empty file " + file.getOriginalFilename());
-            }
-            
-            String saveFileName = UploadFileUtils.fileSave(rootLocation.toString(), file);
-            
-            if (saveFileName.toCharArray()[0] == '/') {
-                saveFileName = saveFileName.substring(1);
-            }
-            
-            Resource resource = loadAsResource(saveFileName);
-            
-            UploadFile saveFile = new UploadFile();
-            saveFile.setSaveFileName(saveFileName);
-            saveFile.setFileName(file.getOriginalFilename());
-            saveFile.setContentType(file.getContentType());
-            saveFile.setFilePath(rootLocation.toString() + File.separator + saveFileName);
-            saveFile.setSize(resource.contentLength());
-            saveFile.setRegDate(new Date());
-            saveFile = fileRepository.save(saveFile);
-            
-            return saveFile;
-        } catch (IOException e) {
-            throw new Exception("Failed to store file " + file.getOriginalFilename(), e);
-        }
+    public List<Map<String,Object>> selectFileList(Integer num) throws Exception{
+    	
+    	return dao.selectFileList(num);
     }
-
-	*/
+    
+    @Override
+    public Map<String,Object> selectFile(Integer num) throws Exception{
+    	
+    	return dao.selectFile(num);
+    }
+	public String checkTitle(String title) throws Exception{
+	   if (title.equals("")){
+		   return "제목 없음";
+	   }
+		   
+	   title = title.replace("<", "&lt;");
+	   title = title.replace(">", "&gt;");
+	   title = title.replace("  ", "&nbsp;&nbsp");
+	   
+	   return title;
+	}
  
 }
  

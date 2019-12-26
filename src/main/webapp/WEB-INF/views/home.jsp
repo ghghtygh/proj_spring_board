@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <html>
 <head>
 <title>Home</title>
@@ -218,7 +220,7 @@ body.a{
 				                    <td>${post.wrtId}</td>
 				                    
 				                    <td>
-				                    	<fmt:formatDate value="${post.wrtDt}" pattern="yyyy.MM.dd kk:mm"/>
+				                    	${fn:substring(post.wrtDt,0,16) }
 				                    </td>
 				                    <td style="text-align:right">${post.viewCnt}</td>
 				                    

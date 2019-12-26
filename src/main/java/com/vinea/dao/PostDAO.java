@@ -1,6 +1,7 @@
 package com.vinea.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.vinea.dto.PostVO;
  
@@ -21,6 +22,12 @@ public interface PostDAO {
     public void create(PostVO vo)throws Exception;
 
     public int countPost(String searchOption,String keyword) throws Exception;
+
+	public void insertFile(Map<String, Object> map);
+
+	public List<Map<String,Object>> selectFileList(Integer num) throws Exception;
+
+	public Map<String, Object> selectFile(Integer num) throws Exception;
 
 	    
 }

@@ -5,29 +5,29 @@
  
 <mapper namespace="com.vinea.mapper.postMapper">
      <!-- 
-     postNum : 글 번호 (기본키)
-     title : 글 제목
-     content : 글 내용
-     writer : 작성 회원 번호 (외래키)
-     wrtDt : 작성일자
-     reDt : 수정일자
-     fileName : 첨부파일명
-     fileDir : 첨부파일 경로
-     viewCnt : 조회수
-     wrtId : 작성 회원 아이디
+     
+     postNum 	: 글 번호 (기본키)
+     title 		: 글 제목
+     content 	: 글 내용
+     writer 	: 작성 회원 번호 (외래키)
+     wrtDt 		: 작성일자
+     reDt 		: 수정일자
+     fileName 	: 첨부파일명
+     fileDir 	: 첨부파일 경로
+     viewCnt 	: 조회수
+     wrtId 		: 작성 회원 아이디
+     
       -->
      <resultMap id="postMap" type="postVO">
 
-        <result property="postNum" column="POST_NO_PK" />
-		<result property="title" column="TITLE" />
-		<result property="content" column="CONTENT" />
-		<result property="writer" column="WRT_NO" />
-		<result property="wrtDt" column="WRT_DATE"/>
-		<result property="reDt" column="WRT_RE_DATE"/>
-		<result property="fileName" column="FILE_NAME" />
-		<result property="fileDir" column="FILE_DIR" />
-		<result property="viewCnt" column="VIEW_CNT" />
-		<result property="wrtId" column="USER_ID"/>
+        <result property="postNum"		column="POST_NO_PK" />
+		<result property="title" 		column="TITLE" />
+		<result property="content" 		column="CONTENT" />
+		<result property="writer"		column="WRT_NO" />
+		<result property="wrtDt" 		column="WRT_DATE"/>
+		<result property="reDt" 		column="WRT_RE_DATE"/>
+		<result property="viewCnt" 		column="VIEW_CNT" />
+		<result property="wrtId" 		column="USER_ID"/>
 		
      </resultMap>
     
@@ -164,13 +164,12 @@
     	 POST_TB
     	 
     	SET
-    	   TITLE=#{title}
-    	 , CONTENT=#{content}
-    	 , FILE_DIR=#{fileDir}
-    	 , WRT_RE_DATE=NOW()
+    			TITLE		=	#{title}
+    		, CONTENT		=	#{content}
+    	 	, WRT_RE_DATE	=	NOW()
     	 
     	WHERE
-    	 POST_NO_PK = #{postNum}
+    		POST_NO_PK 	= 	#{postNum}
     	 
     </update>
     
@@ -204,24 +203,79 @@
     	 
     </select>
     
-    <insert id="create">
+    <insert id="create" useGeneratedKeys="true" keyProperty="postNum">
     <!-- 게시글 작성 -->
     
-	    INSERT INTO
-	    
-	     POST_TB(
-	       TITLE
-	     , CONTENT
-	     , WRT_NO)
+	    INSERT INTO POST_TB
+	    (
+	     	  TITLE
+	    	, CONTENT
+	    	, WRT_NO
+	    	, WRT_DATE
+	    	, WRT_RE_DATE
+	    )
 	     
-	     VALUES(
-	       #{title}
-	     , #{content}
-	     , #{writer})
+	    VALUES
+	     
+	    (
+	    	  #{title}
+	    	, #{content}
+	    	, #{writer}
+	    	, NOW()
+	    	, NOW()
+	    )
 	     
     </insert>
     
+    <insert id="insertFile" parameterType="hashmap">
+    <!-- 첨부파일 저장 -->
     
+    	INSERT INTO FILE_TB
+    	(
+    		  POST_NO
+    		, ORIGINAL_NAME
+    		, STORED_NAME
+    		, FILE_SIZE
+    	
+    	)
+    	VALUES
+    	(
+    		  #{postNum}
+    		, #{originalFileName}
+    		, #{storedFileName}
+    		, #{fileSize}
+    		
+    	
+    	)
+    	
+    </insert>
+    <select id="selectFileList" resultType="hashmap">
     
+    <![CDATA[
+    	
+    	SELECT
+    		  FILE_NO_PK
+    		, ORIGINAL_NAME
+    		, ROUND(FILE_SIZE/1024,1)	AS FILE_SIZE
+    	FROM
+    		  FILE_TB
+   		WHERE
+   			  POST_NO = #{num}
+    ]]>
+    
+    </select>
+    
+    <select id ="selectFile" resultType="hashmap">
+    	SELECT
+    	
+    		  STORED_NAME
+    		, ORIGINAL_NAME
+    		
+    	FROM
+    		  FILE_TB
+    		  
+    	WHERE
+    		  POST_NO = #{num}
+    </select>
 </mapper>
 

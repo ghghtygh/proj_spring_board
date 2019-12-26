@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -53,14 +54,36 @@ $(document).ready(function() {
 			formObj.attr("method","post");
 			formObj.submit();
 			
-			
 		}
 		
 	});
 	  
+	$("a[name='file']").click(function(){
+		
+		
+		//fn_downloadFile($(this));
+		var formObj = $("#frm");
+		formObj.attr("action","/downloadFile");
+		formObj.attr("method","post");
+		formObj.submit();
+		
+	});
 	  
-	  
-	  
+	function fn_downloadFile(obj){
+		
+		alert(obj);
+	
+		var postNum = ${postVO.postNum};
+		var comSubmit = new ComSubmit();
+		var formCount = $("#frm");
+		comSubmit.setUrl("<c:url value='/downloadFile'/>");
+		comSubmit.addParam("postNum",postNum);
+		comSubmit.submit();
+		
+		if (formCount.length>0){
+			formCount.children().remove();
+		}
+	}  
 	  
 });
 </script>
@@ -99,17 +122,26 @@ $(document).ready(function() {
 				<div style="font-size:90%;margin-top:30px;">
 					<p class="text-muted" style="">
 						<div align="right">
-							<div style="width:40%;text-align:left;">
+							<div style="width:250px;text-align:left;">
 								<div style="margin-top:5px;">작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
-								<div style="margin-top:5px;">작성일 : <fmt:formatDate value="${postVO.wrtDt}" pattern="yyyy.MM.dd kk:mm"/></div>
+								<div style="margin-top:5px;">작성일 : ${fn:substring(postVO.wrtDt,0,16) }</div>
 								<div style="margin-top:5px;">
 									<c:if test="${postVO.wrtDt ne postVO.reDt}">
-										수정일 : <fmt:formatDate value="${postVO.reDt}" pattern="yyyy.MM.dd kk:mm"/>
+										수정일 : ${fn:substring(postVO.reDt,0,16) }
 									</c:if>
 								</div>
-								<div style="margin-top:5px;">
-									<c:if test="${!(postVO.fileName eq ''||empty postVO.fileName)}">
-										첨부파일 : ${postVO.fileName}
+								<div style="margin-top:5px;" class="input-group mb-3">
+									
+									<c:if test="${fn:length(postVO.fileNames) > 0}">
+										<input type="hidden" name="postNum" value="${postVO.postNum}">
+										<div>
+											첨부파일 :
+										</div>
+										<div>
+											<c:forEach items="${postVO.fileNames}" var="files">
+												<a href="#" name="file">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a><br>
+											</c:forEach>
+										</div>
 									</c:if>
 								</div>
 							</div>
@@ -119,7 +151,7 @@ $(document).ready(function() {
 				</div>
 				<hr>
 			</div>
-			<div style="min-height:300px;word-break:break-all;">
+			<div style="padding:20px;margin-left:50px;margin-right:50px;min-height:300px;word-break:break-all;background-color:white">
 				<c:out value="${postVO.content}" escapeXml="false" />
 			</div>
 			<hr>

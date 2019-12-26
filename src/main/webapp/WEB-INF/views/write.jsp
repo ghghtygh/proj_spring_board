@@ -4,6 +4,7 @@
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <html>
@@ -48,22 +49,48 @@ $(document).ready(function() {
 		
 		if($("#summernote").val().length > 4000) {
 			
-        	alert("글자수가 4000 이하로 제한됩니다.");
-            $("#summernote").val($("#summernote").val().substring(0, 4000));
-
+        	var result=confirm("글자수 초과\n4000자 이하로 글자수가 제한됩니다.");
+        	
+			if (result){
+				
+				var result=confirm("게시글을 작성하시겠습니까 ?");
+				
+				if (result){
+					
+					$("#summernote").val($("#summernote").val().substring(0, 4000));
+					
+					
+					var formObj = $("#frm");
+					
+					formObj.attr("action","/write");
+					
+					formObj.attr("method","post");
+					
+					formObj.submit();
+					
+					
+				}
+			
+			}
+			
+        }else{
+		
+		
+			var result=confirm("게시글을 작성하시겠습니까 ?");
+			
+			if (result){
+			
+				
+				var formObj = $("#frm");
+				formObj.attr("action","/write");
+				formObj.attr("method","post");
+				formObj.submit();
+				
+			}
         }
 		
 		
-		var result=confirm("게시글을 작성하시겠습니까 ?");
 		
-		if (result){
-			
-			var formObj = $("#frm");
-			formObj.attr("action","/write");
-			formObj.attr("method","post");
-			formObj.submit();
-			
-		}
 		
 	});
 	
@@ -71,114 +98,33 @@ $(document).ready(function() {
 	
 	
 	
-	/*===============   테스트   ===============*/
+});
 
-	$("#sbmt2").click(function(){
-		
-		if($("#summernote").val().length > 4000) {
-			
-        	alert("글자수가 4000 이하로 제한됩니다.");
-            $("#summernote").val($("#summernote").val().substring(0, 4000));
+var fileNum = 0;
 
-        }
-		
-		
-		var result=confirm("게시글을 작성하시겠습니까 ?");
-		
-		if (result){
-			
-			var filesChk = $("input[name='files[0]'").val();
-			
-			if (filesChk== ""){
-				$("input[name='files[0]'").remove;
-			}
-			
-			$("#frm").ajaxForm({
-				url		: "/write2",
-				enctype	: "multipart/form-data",
-				cache	: false,
-				async	: true,
-				type	: "POST",
-				success	: function(obj){
-					insertBoardCallback(obj);
-				},
-				error	: function(xhr,status,error){alert("fail")}
-				
-				
-			}).submit();
-			
-		}
-		
-	});
+function fn_add(){
+	fileNum+=1;
+	
+	
+	// 클릭된 태그 제거
+	$("#fileAdd").detach();
 	
 	
 	
-	function insertBoardCallback(obj){
-		
-		if(obj!=null){
-			var result = obj.result;
-			
-			if(result=="SUCCESS"){
-				alert('게시글 등록 성공');
-				
-			}else{
-				alert("게시글 등록 실패");
-			}
-		}
+		//새로 만들기
+	$("#fileParent").append("<input type=file name='file"+fileNum+"'><a href='#' id='fileAdd' onclick='fn_add();return false;'>파일추가</a><br>");
+	if(fileNum>5){
+		$("#fileAdd").detach();
 	}
-	/*========================================*/
-	
-	
-	
-	
-	
-	
-	
-});
-
-/*
-$(document).ready(function() {
-	$('#summernote').summernote({
-	  	placeholder: 'content',
-		minHeight: 370,
-		maxHeight: null,
-		focus: true, 
-		lang : 'ko-KR',
-		callbacks: {
-		    onImageUpload: function(files, editor, welEditable) {
-		      for (var i = files.length - 1; i >= 0; i--) {
-		        sendFile(files[i], this);
-		      }
-		    }
-		}
-	});
-});
-
-function sendFile(file, el) {
-  var form_data = new FormData();
-  form_data.append('file', file);
-	$.ajax({
-		data: form_data,
-		type: "POST",
-		url: '/image',
-		cache: false,
-		contentType: false,
-		enctype: 'multipart/form-data',
-		processData: false,
-		success: function(url) {
-		  $(el).summernote('editor.insertImage', url);
-		  $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
-		}
-	});
 }
-*/
+
 </script>
 
 
 </head>
 <body>
 
-<form name="frm" id="frm">
+<form name="frm" id="frm" enctype="multipart/form-data">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div style="margin-left:10px;">
 			<a class="navbar-brand" href="/">home</a>
@@ -200,33 +146,41 @@ function sendFile(file, el) {
 			<div>
 				
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label">제목</label>
-					<input type="text" class="form-control" maxlength =50 name="title" aria-describedby="emailHelp" placeholder="제목 없음">
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
+						제목
+					</label>
+					<div style="width:70%;">
+						<input type="text" class="form-control" maxlength =50 name="title" aria-describedby="emailHelp" placeholder="제목 없음">
+					</div>
 				</div>
 				
 				<hr>
 			
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label">
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
 						내용
 					</label>
-					<textarea id="summernote" name="content"></textarea>
+					<div style="width:70%;">
+						<textarea id="summernote" name="content"></textarea>
+					</div>
 				</div>
 					
-				
+				<div class="input-group mb-3">
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
+						첨부파일
+					</label>
+					<div style="width:70%;padding:5px;" id="fileParent">
+						<input type="file" class="" id="fileId[0]" name="fileName[0]" style="border:0px solid black;"/>
+						 <a href="#" id="fileAdd" onclick="fn_add();return false;">파일추가</a><br>
+					</div>
 						
-			</div>
+				</div>
 			
-			<div>
-				<input type="file" class="" id="files[0]" name="files[0]" style="border:0px solid black;"/>
 			</div>
-
-			<div align = "right">
+			<div align = "right" style="margin-right:20px;">
 				<input type="hidden" name="writer" value="${user.userNum}">
 				<input type="button" class="btn btn-primary" id="sbmt" value="등록">
-				<!-- 
-				<input type="button" class="btn btn-primary" id="sbmt2" value="테스트">
-				-->
+				
 				<button type="button" class="btn btn-secondary" onClick="location.href='/'">취소</button>
 				
 			</div>

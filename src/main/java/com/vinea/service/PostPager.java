@@ -4,7 +4,7 @@ public class PostPager {
 
 	
 	// 페이지마다 게시글 수
-    private int pageSize = 5;
+    private int pageSize = 10;
     
     // 블럭마다 페이지 수
     private int rangeSize = 5;
