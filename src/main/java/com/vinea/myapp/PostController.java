@@ -1,11 +1,19 @@
 package com.vinea.myapp;
 
 
+import java.io.File;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.List;
- 
+import java.util.Locale;
+import java.util.Map;
+
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +44,8 @@ public class PostController {
     private PostService service;
     
     private final static Logger logger = Logger.getLogger(PostController.class);
+    
+    
     
     @RequestMapping(value = "/")
     public String home(@RequestParam(defaultValue="1") int page,
@@ -83,8 +94,11 @@ public class PostController {
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
+    	PostVO vo = service.read(num);
+    	vo.setFileNames(service.selectFileList(vo.getPostNum()));
+    	
     	// 해당 게시글을 읽어들임
-    	model.addAttribute(service.read(num));
+    	model.addAttribute("postVO",vo);
     	
     	// 다시 목록으로 갈 때, 페이지
     	model.addAttribute("page",page);
@@ -121,17 +135,42 @@ public class PostController {
     
     // 게시글 상세보기
     @RequestMapping(value="/read", method=RequestMethod.GET)
-    public void read(@RequestParam("num")int num,
+    public void read(@RequestParam("num")int postNum,
     		@RequestParam(defaultValue="1") int page,
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
-    	service.viewCntPost(num);
+    	service.viewCntPost(postNum);
+    	PostVO vo = service.read(postNum);
+    	vo.setFileNames(service.selectFileList(postNum));
+    	
     	model.addAttribute("searchOption",searchOption);
         model.addAttribute("keyword",keyword);
-    	model.addAttribute("postVO",service.read(num));
+    	model.addAttribute("postVO",vo);
     	model.addAttribute("page",page);
     	
+    }
+    
+    // 파일 다운로드
+    @RequestMapping(value="/downloadFile", method=RequestMethod.POST)
+    public void downloadFile(@RequestParam("postNum")int postNum,HttpServletResponse response)throws Exception{
+    	Map<String,Object> map = service.selectFile(postNum);
+    	logger.info("=================");
+    	logger.info(map.values());
+    	logger.info("=================");
+    	String storedFileName = (String)map.get("STORED_NAME");
+    	String originalFileName = (String)map.get("ORIGINAL_NAME");
+    	
+    	byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\Users\\vinea\\Desktop\\files\\"+storedFileName));
+    	
+    	response.setContentType("application/octet-stream");
+    	response.setContentLength(fileByte.length);
+    	response.setHeader("Content-Disposition", "attachment;fileName=\""+URLEncoder.encode(originalFileName,"UTF-8")+"\";");
+    	response.setHeader("Content-Transfer-Encoding","binary");
+    	response.getOutputStream().write(fileByte);
+    	
+    	response.getOutputStream().flush();
+    	response.getOutputStream().close();
     }
     
     // 게시글 작성 페이지 이동
@@ -149,22 +188,14 @@ public class PostController {
     
     // 게시글 작성
     @RequestMapping(value="/write", method=RequestMethod.POST)
-    public String writePOST(PostVO post) throws Exception{
+    public String writePOST(PostVO post, HttpServletRequest request) throws Exception{
     	
-    	service.create(post);
-    	
-    	return "redirect:/";
-    }
-    
-    // 게시글 작성테스트
-    @RequestMapping(value="/write2", method=RequestMethod.POST)
-    public String write2POST(PostVO post) throws Exception{
-    	
-    	service.create(post);
+    	service.create(post, request);
     	
     	return "redirect:/";
     }
     
+        
     //이미지 업로드
     @RequestMapping(value="/image", method=RequestMethod.POST)
     public void imgPOST(@RequestParam("file") MultipartFile file) throws Exception{

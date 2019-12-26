@@ -3,7 +3,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -39,26 +39,45 @@ $(document).ready(function() {
 	        maxHeight: null,
 	        focus: true, 
 	        lang : 'ko-KR'
+	        
+	        
+	        
 	  });
 	  $("#sbmt").click(function(){
 			
 			if($("#summernote").val().length > 4000) {
 				
-	        	alert("글자수 제한됩니다.");
-	            $("#summernote").val($("#summernote").val().substring(0, 4000));
-
-	        }
-			
-			
-			var result=confirm("게시글을 수정하시겠습니까 ?");
-			
-			if (result){
+				var result=confirm("4000자 이하로 글자수가 제한됩니다.");
 				
-				var formObj = $("#frm");
-				formObj.attr("action","/modify");
-				formObj.attr("method","post");
-				formObj.submit();
-			}
+				if (result){
+					
+					var result=confirm("게시글을 수정하시겠습니까 ?");
+					
+					if (result){
+						
+						$("#summernote").val($("#summernote").val().substring(0, 4000));
+						
+						var formObj = $("#frm");
+						
+						formObj.attr("action","/modify");
+						
+						formObj.attr("method","post");
+						formObj.submit();
+						
+					}
+				}
+	        }else{
+			
+				var result=confirm("게시글을 수정하시겠습니까 ?");
+				
+				if (result){
+					
+					var formObj = $("#frm");
+					formObj.attr("action","/modify");
+					formObj.attr("method","post");
+					formObj.submit();
+				}
+	        }
 			
 		});
 	  
@@ -91,28 +110,51 @@ $(document).ready(function() {
 			<div>
 				
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label">제목</label>
-					<input type="text" class="form-control" maxlength =50 name="title" value="${postVO.title}">
-				</div>
-				<div style="font-size:90%;" align="right" >
-					<div style="text-align:left;width:40%;">
-						작성자 : ${postVO.wrtId}<br>
-						작성일 : <fmt:formatDate value="${postVO.wrtDt}" pattern="yyyy.MM.dd kk:mm"/><br>
-						<c:if test="${postVO.wrtDt ne postVO.reDt}">
-							수정일 : <fmt:formatDate value="${postVO.reDt}" pattern="yyyy.MM.dd kk:mm"/>
-						</c:if>
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
+						제목
+					</label>
+					<div style="width:70%;">
+						<input type="text" class="form-control" maxlength =50 name="title" value="${postVO.title}"aria-describedby="emailHelp" placeholder="제목 없음">
 					</div>
 				</div>
+
+				<div style="font-size:90%;margin-top:30px;width:90%;">
+					<p class="text-muted" style="">
+						<div align="right">
+							<div style="width:200px;text-align:left;">
+								<div style="margin-top:5px;">작성자 : ${postVO.wrtId} | 조회수 : ${postVO.viewCnt}</div>
+								<div style="margin-top:5px;">작성일 : ${fn:substring(postVO.wrtDt,0,16) }</div>
+								<div style="margin-top:5px;">
+									<c:if test="${postVO.wrtDt ne postVO.reDt}">
+										수정일 : ${fn:substring(postVO.reDt,0,16) }
+									</c:if>
+								</div>
+							</div>
+						</div>
+					</p>
+				</div>
+
 				<hr>
 			
 				<div class="input-group mb-3">
-					<label class="col-sm-3 col-form-label">
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
 						내용
 					</label>
-					<textarea id="summernote" name="content">${postVO.content}</textarea>
+					<div style="width:70%;">
+						<textarea id="summernote" name="content" >${postVO.content}</textarea>
+					</div>
 				</div>
+				<div class="input-group mb-3">
+					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
+						첨부파일
+					</label>	
+					<div>
+						<c:forEach items="${postVO.fileNames}" var="files">
+							<a href="#" name="file">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a><br>
+						</c:forEach>
+					</div>
 					
-				
+				</div>
 						
 			</div>
 			

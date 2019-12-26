@@ -31,10 +31,14 @@ public class PostDAOImpl implements PostDAO {
    @Override
    public void create(PostVO vo)throws Exception{
 	   
-	   vo = checkTitle(vo);
 	   sqlSession.insert(Namespace+".create",vo);
    }
-   
+   @Override
+   public void insertFile(Map<String, Object> map){
+	   
+	   sqlSession.insert(Namespace+".insertFile",map);
+	   
+   }
    
    @Override
    public int countPost(String searchOption,String keyword) throws Exception{
@@ -44,7 +48,7 @@ public class PostDAOImpl implements PostDAO {
 	   map.put("searchOption", searchOption);
 	   map.put("keyword", keyword);
 	   
-	   return sqlSession.selectOne(Namespace+".countPost",map);
+	   return sqlSession.selectOne(Namespace+".countPost", map);
    }
    
    @Override
@@ -70,7 +74,7 @@ public class PostDAOImpl implements PostDAO {
    @Override
    public void modifyPost(PostVO vo) throws Exception{
 	   
-	   vo = checkTitle(vo);
+	   
 	   sqlSession.update(Namespace+".modifyPost",vo);
    }
    
@@ -86,14 +90,18 @@ public class PostDAOImpl implements PostDAO {
 	   return sqlSession.selectOne(Namespace+".read", num);
    }
    
-   public PostVO checkTitle(PostVO vo) throws Exception{
-	   
-	   if (vo.getTitle()=="") {
-		   vo.setTitle("제목 없음");
-	   }
-	   
-	   return vo;
+   @Override
+   public List<Map<String,Object>> selectFileList(Integer num) throws Exception{
+	   return sqlSession.selectList(Namespace+".selectFileList", num);
    }
+   
+   @Override
+   
+   public Map<String,Object> selectFile(Integer num) throws Exception{
+	   
+	   return sqlSession.selectOne(Namespace+".selectFile",num);
+   }
+   
 
 
 }

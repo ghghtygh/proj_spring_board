@@ -1,6 +1,8 @@
 package com.vinea.dto;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class PostVO {
 	 
@@ -18,17 +20,14 @@ public class PostVO {
     private int writer;
     
     // 작성일
-    private Date wrtDt;
+    private String wrtDt;
     
     // 수정일
-    private Date reDt;
+    private String reDt;
     
     // 첨부파일명
-    private String fileName;
-
-    // 첨부파일 경로
-    private String fileDir;
-    
+    private List<Map<String,Object>> fileNames;
+ 
     // 조회 수
     private int viewCnt;
     
@@ -60,29 +59,25 @@ public class PostVO {
 	public void setWriter(int writer) {
 		this.writer = writer;
 	}
-	public Date getWrtDt() {
+	public String getWrtDt() {
 		return wrtDt;
 	}
-	public void setWrtDt(Date wrtDt) {
+	public void setWrtDt(String wrtDt) {
 		this.wrtDt = wrtDt;
 	}
-	public Date getReDt() {
+	public String getReDt() {
 		return reDt;
 	}
-	public void setReDt(Date reDt) {
+	public void setReDt(String reDt) {
 		this.reDt = reDt;
 	}
-	public String getFileName() {
-		return fileName;
+	
+	
+	public List<Map<String,Object>> getFileNames() {
+		return fileNames;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-	public String getFileDir() {
-		return fileDir;
-	}
-	public void setFileDir(String fileDir) {
-		this.fileDir = fileDir;
+	public void setFileNames(List<Map<String,Object>> fileNames) {
+		this.fileNames = fileNames;
 	}
 	public long getViewCnt() {
 		return viewCnt;
