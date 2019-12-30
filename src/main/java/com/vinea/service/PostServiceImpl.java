@@ -2,9 +2,7 @@ package com.vinea.service;
 
 
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -31,9 +29,7 @@ public class PostServiceImpl implements PostService {
     @Resource(name="fileUtils")
     private FileUtils fileUtils;
     
-    SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-	
-	
+    
     private final static Logger logger = Logger.getLogger(PostServiceImpl.class);
     
     @Override
@@ -69,51 +65,71 @@ public class PostServiceImpl implements PostService {
     }
     
     @Override
-    public List<PostVO> listPost(int start, int end, String searchOption, String keyword) throws Exception{
+    public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception{
     	
-    	return dao.listPost(start,end,searchOption,keyword);
+    	return dao.listPost(start,pageSize,searchOption,keyword);
     }
     
     
     @Override
-	public void viewCntPost(Integer num) throws Exception {
+	public void viewCntPost(Integer postNo) throws Exception {
 		
-    	dao.viewCntPost(num);
+    	dao.viewCntPost(postNo);
     	
 	}
     
     
     @Override
-    public void modifyPost(PostVO vo) throws Exception{
+    public void modifyPost(PostVO vo, HttpServletRequest request) throws Exception{
     	
     	vo.setTitle(checkTitle(vo.getTitle()));
     	
     	dao.modifyPost(vo);
+    	
+    	vo = read(vo.getPostNum());
+    	
+    	List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(vo,request);
+    	
+    	for (int i =0,size=list.size();i<size;i++){
+    		
+    		logger.info(list.get(i));
+    		
+    		dao.insertFile(list.get(i));
+    	}
     }
     
     @Override
-    public void deletePost(Integer num) throws Exception{
+    public void deletePost(Integer postNo) throws Exception{
     	
+    	dao.deletePost(postNo);
+    	dao.deleteFiles(postNo);
     	
-    	dao.deletePost(num);
     }
     
     @Override
-    public PostVO read(Integer num)throws Exception{
-    	return dao.read(num);
+    public PostVO read(Integer postNo)throws Exception{
+    	return dao.read(postNo);
     }
     
     @Override
-    public List<Map<String,Object>> selectFileList(Integer num) throws Exception{
+    public List<Map<String,Object>> selectFileList(Integer postNo) throws Exception{
     	
-    	return dao.selectFileList(num);
+    	return dao.selectFileList(postNo);
     }
     
     @Override
-    public Map<String,Object> selectFile(Integer num) throws Exception{
+    public Map<String,Object> selectFile(Integer fileNo) throws Exception{
     	
-    	return dao.selectFile(num);
+    	return dao.selectFile(fileNo);
     }
+    
+    @Override
+    public void deleteFile(Integer fileNo) throws Exception{
+    	
+    	dao.deleteFile(fileNo);
+    }
+    
+    
 	public String checkTitle(String title) throws Exception{
 	   if (title.equals("")){
 		   return "제목 없음";

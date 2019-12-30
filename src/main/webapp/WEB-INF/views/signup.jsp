@@ -15,117 +15,146 @@
 <link href="<c:url value='/resources/css/_bootswatch.scss' />" rel="stylesheet">
 <link href="<c:url value='/resources/css/_variables.scss' />" rel="stylesheet">
 
-	<script type="text/javascript">
+<script type="text/javascript">
+	
+	// 아이디 중복확인 여부
+	var idck = false;
+	
+	// 비밀번호 일치,입력 여부
+	var pwck = false;
+	var reck = false;
+	
+	// 이메일 입력 여부
+	var emck = false;
+	$(function() {
 		
-		var idck = false;
-		var pwck = false;
-		var reck = false;
-		
-		$(function() {
-			
-		    //중복확인 
-		    $("#idck").click(function() {
-		        
-		        var userId =  $("#userId").val(); 
-		        
-		        if (userId==""){
-		        	alert("아이디 입력");
-		        	return;
-		        }
-		        $.ajax({
-		        	async: true,
-		        	url : "${pageContext.request.contextPath}/idCheck",
-		            type : 'POST',
-		            data : {
-		            	"userId":userId
-		            },
-		            dataType:"json",
-		            
-		            success : function(data){
-		            	
-		                if (data.cnt > 0) {
-		                	idck = false;
-		                    alert("해당 아이디 존재, 다른 아이디를 입력하세요");
-		                    $("#userId").val('');
-		                
-		                } else {
-		                	idck = true;
-		                    alert("사용가능 아이디입니다.");
-		                    
-		                    
-		                }
-		            },
-		            error:function(request, error){
-		            	//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
-		            }
-		        });
-		    });
-		    
-		    //회원가입
-		    $("#sbmt").click(function() {
-		    	
-		    	var m_idck = idck;
-		    	var m_pwck = pwck;
-		    	if(!m_idck){
-		    	
-		    		alert("아이디 중복 확인");
-		    	
-		    	}else if(!m_pwck){
-		    	
-		    		alert("패스워드 확인");
-		    	
-		    	}else{
-		    		
-		    		var result = confirm("회원가입 하시겠습니까 ?");
-					
-		    		if(result){
-		    			var formObj = $("#frm");
-		    			formObj.attr("action","/signup");
-		    			formObj.attr("method","post");
-		    			formObj.submit();
-		    		}
-		    	}
-		    	
-		    });
-		});
-		function checkPw(){
-			
-			var f1 = document.getElementById("frm");
-			
-			var pw1 = f1.pw1.value;
-			var pw2 = f1.pw2.value;
-			if (pw1!=pw2){
-				document.getElementById("checkPw").style.color="red";
-				document.getElementById("checkPw").innerHTML="동일한 암호를 입력하세요";
-				pwck = false;
-			}else{
-				document.getElementById("checkPw").style.color="black";
-				document.getElementById("checkPw").innerHTML="";
-				pwck = true;
-			}
-		}
-		
-		function rePw(){
-			
-			if(pwck){
+	    //중복확인 
+	    $("#idck").click(function() {
+	        
+	        var userId =  $("#userId").val(); 
+	        
+	        if (userId==""){
+	        	alert("아이디 입력");
+	        	return;
+	        }
+	        $.ajax({
+	        	async: true,
+	        	url : "${pageContext.request.contextPath}/idCheck",
+	            type : 'POST',
+	            data : {
+	            	"userId":userId
+	            },
+	            dataType:"json",
+	            
+	            success : function(data){
+	            	
+	                if (data.cnt > 0) {
+	                	idck = false;
+	                    alert("해당 아이디 존재, 다른 아이디를 입력하세요");
+	                    $("#userId").val('');
+	                
+	                } else {
+	                	idck = true;
+	                    alert("사용가능 아이디입니다.");
+	                    
+	                    
+	                }
+	            },
+	            error:function(request, error){
+	            	//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+	            }
+	        });
+	    });
+	    
+	    //회원가입
+	    $("#sbmt").click(function() {
+	    	
+	    	var m_idck = idck;
+	    	var m_pwck = pwck;
+	    	var m_emck = emck;
+	    	
+	    	if(!m_idck){
+	    	
+	    		alert("아이디 중복 확인");
+	    	
+	    	}else if(!m_pwck){
+	    	
+	    		alert("패스워드 확인");
+	    	}else if(!m_emck){
+	    		
+	    		alert("이메일 확인");
+	    		
+	    	
+	    	}else{
+	    		
+	    		var result = confirm("회원가입 하시겠습니까 ?");
 				
-				reck=true;
+	    		if(result){
+	    			var formObj = $("#frm");
+	    			formObj.attr("action","/signup");
+	    			formObj.attr("method","post");
+	    			formObj.submit();
+	    		}
+	    	}
+	    	
+	    });
+	});
+	function checkPw(){
+		
+		var f1 = document.getElementById("frm");
+		
+		var pw1 = f1.pw1.value;
+		var pw2 = f1.pw2.value;
+		if (pw1!=pw2){
+			document.getElementById("checkPw").style.color="red";
+			document.getElementById("checkPw").innerHTML="동일한 암호를 입력하세요";
+			pwck = false;
+		}else{
+			document.getElementById("checkPw").style.color="black";
+			document.getElementById("checkPw").innerHTML="";
+			pwck = true;
+		}
+	}
+	
+	function rePw(){
+		
+		if(pwck){
+			
+			reck=true;
+			checkPw();
+			
+		}else{
+			
+			if(reck){
+				
 				checkPw();
 				
-			}else{
-				
-				if(reck){
-					
-					checkPw();
-					
-				}
-				
 			}
 			
-			
 		}
-	 
-	</script>
+		
+		
+	}
+ 	
+	function chkEmail(){
+		
+		var email = document.getElementById("email").value;
+
+		
+		var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+
+		if (exptext.test(email)==false){
+			document.getElementById("checkEm").style.color="red";
+			document.getElementById("checkEm").innerHTML="올바르지 않은 이메일 형식입니다";
+			emck =false;
+		}else{
+			emck = true;
+			document.getElementById("checkEm").innerHTML="";
+		}
+		
+	}
+	
+</script>
 </head>
 
 <form name="frm" id="frm">
@@ -172,8 +201,9 @@
 						<li class="list-group-item">
 							<div class="input-group mb-3">
 								<label class="col-sm-3 col-form-label" maxlength =100>이메일</label>
-								<input type="text" class="form-control-plaintext" name="userEmail" aria-describedby="emailHelp" placeholder="Example@example.com">
+								<input type="text" class="form-control-plaintext" id="email" name="userEmail" onkeyup="chkEmail()" aria-describedby="emailHelp" placeholder="Example@example.com">
 							</div>
+							<p id="checkEm" class="input-group mb-3">&nbsp;</p>
 						</li>
 						<li class="list-group-item">
 							<div align="right">

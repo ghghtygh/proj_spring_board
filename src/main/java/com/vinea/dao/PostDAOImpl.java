@@ -52,12 +52,12 @@ public class PostDAOImpl implements PostDAO {
    }
    
    @Override
-   public List<PostVO> listPost(int start, int end, String searchOption, String keyword) throws Exception{
+   public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception{
 
 	   Map<String,Object> map = new HashMap<String,Object>();
 	   
 	   map.put("start", start);
-	   map.put("end", end);
+	   map.put("pageSize", pageSize);
 	   
 	   map.put("searchOption", searchOption);
 	   map.put("keyword", keyword);
@@ -66,42 +66,49 @@ public class PostDAOImpl implements PostDAO {
    }
    
    @Override
-   public void viewCntPost(Integer num) throws Exception{
+   public void viewCntPost(Integer postNo) throws Exception{
 	   
-	   sqlSession.update(Namespace+".viewCntPost",num);
+	   sqlSession.update(Namespace+".viewCntPost", postNo);
    }
    
    @Override
    public void modifyPost(PostVO vo) throws Exception{
 	   
 	   
-	   sqlSession.update(Namespace+".modifyPost",vo);
+	   sqlSession.update(Namespace+".modifyPost", vo);
    }
    
    @Override
-   public void deletePost(Integer num) throws Exception{
+   public void deletePost(Integer postNo) throws Exception{
 	   
-	   sqlSession.delete(Namespace+".deletePost",num);
+	   sqlSession.update(Namespace+".deletePost", postNo);
    }
    
    @Override
-   public PostVO read(Integer num) throws Exception{
+   public PostVO read(Integer postNo) throws Exception{
 	
-	   return sqlSession.selectOne(Namespace+".read", num);
+	   return sqlSession.selectOne(Namespace+".read", postNo);
    }
    
    @Override
-   public List<Map<String,Object>> selectFileList(Integer num) throws Exception{
-	   return sqlSession.selectList(Namespace+".selectFileList", num);
+   public List<Map<String,Object>> selectFileList(Integer postNo) throws Exception{
+	   return sqlSession.selectList(Namespace+".selectFileList", postNo);
    }
    
    @Override
-   
-   public Map<String,Object> selectFile(Integer num) throws Exception{
+   public Map<String,Object> selectFile(Integer fileNo) throws Exception{
 	   
-	   return sqlSession.selectOne(Namespace+".selectFile",num);
+	   return sqlSession.selectOne(Namespace+".selectFile",fileNo);
    }
    
+   @Override
+   public void deleteFiles(Integer postNo) throws Exception{
+	   sqlSession.update(Namespace+".deleteFiles", postNo);
+   }
 
+   @Override
+   public void deleteFile(Integer fileNo) throws Exception{
+	   sqlSession.update(Namespace+".deleteFile", fileNo);
+   }
 
 }

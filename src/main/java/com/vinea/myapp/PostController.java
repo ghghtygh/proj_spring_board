@@ -3,9 +3,7 @@ package com.vinea.myapp;
 
 import java.io.File;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -15,20 +13,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vinea.dto.PostVO;
 import com.vinea.dto.UserVO;
@@ -117,9 +107,32 @@ public class PostController {
     
     // 게시글 수정
     @RequestMapping(value="/modify", method=RequestMethod.POST) 
-    public String modifyPOST(PostVO post) throws Exception{
+    
+    
+    
+    public String modifyPOST(@RequestParam(defaultValue="")List<String> deleteFileNo ,PostVO post, HttpServletRequest request) throws Exception{
     	
-    	service.modifyPost(post);
+    	logger.info("===============");
+    	
+    	
+    	if(!deleteFileNo.isEmpty()){
+    		logger.info("deleteFileNo: "+deleteFileNo);
+    		for (String dfn:deleteFileNo){
+        		
+        		
+        		service.deleteFile(Integer.parseInt(dfn));
+        		
+        		logger.info(dfn);
+        		
+        	}
+    	}else{
+    		logger.info("빈 deleteFileNo: "+deleteFileNo);
+    	}
+    	logger.info(request);
+    	logger.info("===============");
+    	
+    	service.modifyPost(post, request);
+    	//service.modifyPost(post);
     	
     	return "redirect:/read?num="+post.getPostNum();
     }
@@ -140,9 +153,17 @@ public class PostController {
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
-    	service.viewCntPost(postNum);
+    	
+    	// 게시글 불러오기
     	PostVO vo = service.read(postNum);
+    	
+    	// 첨부파일 세팅
     	vo.setFileNames(service.selectFileList(postNum));
+    	
+    	// 조회수 증가시킴
+    	service.viewCntPost(postNum);
+    	
+    	
     	
     	model.addAttribute("searchOption",searchOption);
         model.addAttribute("keyword",keyword);
@@ -150,14 +171,23 @@ public class PostController {
     	model.addAttribute("page",page);
     	
     }
-    
+    @RequestMapping(value="/downloadFile", method=RequestMethod.GET)
+    public String downloadFileGET()throws Exception{
+    	
+    	return "redirect:/";
+    }
     // 파일 다운로드
     @RequestMapping(value="/downloadFile", method=RequestMethod.POST)
-    public void downloadFile(@RequestParam("postNum")int postNum,HttpServletResponse response)throws Exception{
-    	Map<String,Object> map = service.selectFile(postNum);
-    	logger.info("=================");
-    	logger.info(map.values());
-    	logger.info("=================");
+    public void downloadFile(@RequestParam("fileNo")int fileNo,HttpServletResponse response)throws Exception{
+    	
+    	
+    	//logger.info("=================");
+    	//logger.info(fileNo);
+    	//logger.info("=================");
+    	
+    	
+    	Map<String,Object> map = service.selectFile(fileNo);    	
+
     	String storedFileName = (String)map.get("STORED_NAME");
     	String originalFileName = (String)map.get("ORIGINAL_NAME");
     	
@@ -195,17 +225,5 @@ public class PostController {
     	return "redirect:/";
     }
     
-        
-    //이미지 업로드
-    @RequestMapping(value="/image", method=RequestMethod.POST)
-    public void imgPOST(@RequestParam("file") MultipartFile file) throws Exception{
-    	
-    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
-    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
-    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
-    	logger.info("imageUploadimageUploadimageUploadimageUploadimageUpload");
-    	
-    	
-    }
 
 }

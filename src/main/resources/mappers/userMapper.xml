@@ -25,20 +25,21 @@
      
 	<insert id="create">
 	<!-- 회원가입 -->
-		INSERT INTO USER_TB(
+	
+		INSERT INTO
 		
-		  USER_ID
-		, USER_PW
-		, USER_EMAIL
-		
+		USER_TB
+		(
+			USER_ID
+		,	USER_PW
+		,	USER_EMAIL
 		)
 		
-		VALUES(
-		
-		  #{userId}
-		, #{userPw}
-		, #{userEmail}
-		
+		VALUES
+		(
+			#{userId}
+		,	#{userPw}
+		,	#{userEmail}
 		)
 		
 	</insert>
@@ -50,7 +51,7 @@
 		SELECT *
 		 
 		FROM
-		 USER_TB
+			USER_TB
 		 
 	</select>
 
@@ -60,10 +61,10 @@
    			COUNT(USER_NO_PK)
    			
    		FROM
-		 USER_TB
+			USER_TB
 		 
 		WHERE
-		 USER_ID = #{userId}
+			USER_ID = #{userId}
    		 
     </select>
 
@@ -73,10 +74,10 @@
 		SELECT *
 		
 		FROM
-		 USER_TB
+			USER_TB
 		 
 		WHERE
-		 USER_ID = #{userId}
+			USER_ID = #{userId}
 		
 	</select>
 

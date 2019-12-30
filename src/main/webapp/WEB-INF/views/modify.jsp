@@ -32,41 +32,50 @@
 
 
 <script>
-$(document).ready(function() {
-	  $('#summernote').summernote({
- 	    	placeholder: 'content',
-	        minHeight: 370,
-	        maxHeight: null,
-	        focus: true, 
-	        lang : 'ko-KR'
-	        
-	        
-	        
-	  });
-	  $("#sbmt").click(function(){
+
+	var fileNum = 0;
+	var valChk  = true;
+	$(document).ready(function() {
+		
+		$('#summernote').summernote({
+			placeholder: 'content',
+			minHeight: 370,
+			maxHeight: null,
+			focus: true, 
+			lang : 'ko-KR',
+			toolbar: [
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['color', ['color']],
+				['para', ['ul', 'ol']]
+			]
+		      
+		      
+		      
+		});
+		$("#sbmt").click(function(){
 			
 			if($("#summernote").val().length > 4000) {
 				
-				var result=confirm("4000자 이하로 글자수가 제한됩니다.");
-				
+				var result=confirm("글자수 초과\n4000자 이하로 글자수를 제한합니다.");
+	        	
 				if (result){
 					
-					var result=confirm("게시글을 수정하시겠습니까 ?");
+					var idx = 3990;
 					
-					if (result){
-						
-						$("#summernote").val($("#summernote").val().substring(0, 4000));
-						
-						var formObj = $("#frm");
-						
-						formObj.attr("action","/modify");
-						
-						formObj.attr("method","post");
-						formObj.submit();
-						
+					if(valChk){
+						$("#summernote").summernote("code", $("#summernote").val().substring(0, idx));
+						valChk = false;
+						setTimeout(function () {
+							valChk = true;
+				        }, 5000);
+					}else{
+						$("#summernote").summernote("code", $("#summernote").val().substring(0, 2000));
+						valChk =true;
 					}
+					
 				}
-	        }else{
+				
+			}else{
 			
 				var result=confirm("게시글을 수정하시겠습니까 ?");
 				
@@ -77,18 +86,100 @@ $(document).ready(function() {
 					formObj.attr("method","post");
 					formObj.submit();
 				}
-	        }
+			}
 			
 		});
 	  
+	  
+	  
+		 $("a[name='delete']").on("click",function(e){
+			e.preventDefault();
+		
+			fn_del($(this));
+			
+		});
+		 
+		fileNum = ${fn:length(postVO.fileNames)};
+		 
 	});
+	
+	
+	var click = true;
+	
+	function fn_del(obj){
 
+		if (click){
+
+			obj.parent().remove();
+			
+			fileNum=fileNum-1;
+			click=!click;
+			
+			setTimeout(function () {
+	            click = true;
+	        }, 500);
+		}else{
+			
+		}
+		
+		console.log("fileNum "+fileNum);
+	}
+	function fn_add(){
+		
+		if(fileNum>4){
+			alert("파일은 총 5개까지 추가됩니다");
+			return false;
+		}
+		
+		//새로 만들기
+		$("#fileParent").append("<div id='div_"+fileNum+"'><input type=file name='file"+fileNum+"'>		\
+									<a href='#' id='fd' name='delete'>									\
+									<b>&nbsp;&nbsp;x&nbsp;&nbsp;</b>														\
+									</a>																\
+								</div>");
+		$("a[name='delete']").on("click",function(e){
+			
+			e.preventDefault();
+
+			fn_del($(this));
+			
+		});
+		
+		fileNum+=1;
+		
+		
+		console.log("fileNum "+fileNum);
+	}
+	
+	function fn_delete(obj,vl){
+		
+		if (click){
+			var tag;
+			tag = "<input type='hidden' name='deleteFileNo', value='"+vl+"'/>";
+			$("#frm").append(tag);
+			
+			obj.parent().remove();
+			
+			fileNum=fileNum-1;
+			click=!click;
+			
+			console.log
+			console.log("fileNum "+fileNum);
+			
+			setTimeout(function () {
+	            click = true;
+	        }, 500);
+		}else{
+			
+		}
+		
+	}
 </script>
 
 
 </head>
 <body>
-<form name="frm" id="frm">
+<form name="frm" id="frm" enctype="multipart/form-data">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div style="margin-left:10px;">
 			<a class="navbar-brand" href="/">home</a>
@@ -100,6 +191,7 @@ $(document).ready(function() {
 		<div style="margin-top:50px;">
 				
 			<div class="col-lg-8 col-md-7 col-sm-6">
+			
 			</div>
 			
 		</div>
@@ -137,23 +229,44 @@ $(document).ready(function() {
 				<hr>
 			
 				<div class="input-group mb-3">
+				
 					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
 						내용
 					</label>
+					
+
 					<div style="width:70%;">
 						<textarea id="summernote" name="content" >${postVO.content}</textarea>
 					</div>
+					
 				</div>
 				<div class="input-group mb-3">
 					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
 						첨부파일
-					</label>	
-					<div>
-						<c:forEach items="${postVO.fileNames}" var="files">
-							<a href="#" name="file">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a><br>
-						</c:forEach>
+					</label>
+					<div class="input-group mb-3" style="width:70%;">
+						<div id="fileParent" style="width:60%;">
+							<c:forEach items="${postVO.fileNames}" var="files">
+								<div>
+									<a href="#" name="files">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a>
+									&nbsp;
+									<a href="#" name="delete2" onclick="fn_delete($(this),${files.FILE_NO_PK});"><b>&nbsp;&nbsp;x&nbsp;&nbsp;</b></a>
+									<br>
+								</div>
+							</c:forEach>
+						</div>
+						<div style="width:15%;">
+							<a href='#' id='fileAdd' onclick='fn_add();return false;' style="">
+								파일추가
+							</a>
+						</div>
+						<div align = "right" style="width:25%;">
+							
+							<input type="hidden" name="postNum" value="${postVO.postNum}">
+							<input type="button" class="btn btn-primary" id="sbmt" value="수정">
+							<button type="button" class="btn btn-secondary" onClick="location.href='/read?num=${postVO.postNum}&page=${page}'">취소</button>
+						</div>
 					</div>
-					
 				</div>
 						
 			</div>
@@ -161,11 +274,7 @@ $(document).ready(function() {
 			<div>
 			</div>
 			
-			<div align = "right">
-				<input type="hidden" name="postNum" value="${postVO.postNum}">
-				<input type="button" class="btn btn-primary" id="sbmt" value="수정">
-				<button type="button" class="btn btn-secondary" onClick="location.href='/read?num=${postVO.postNum}&page=${page}'">취소</button>
-			</div>
+			
 		</div>
 	</div>
 

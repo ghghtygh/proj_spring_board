@@ -19,9 +19,8 @@ import com.vinea.myapp.PostController;
 
 @Component("fileUtils")
 public class FileUtils {
-	
-	 private final static Logger logger = Logger.getLogger(FileUtils.class);
 
+	private final static Logger logger = Logger.getLogger(FileUtils.class);
 	private static final String filePath="C:\\Users\\vinea\\Desktop\\files\\";
 	
 	public List<Map<String,Object>> parseInsertFileInfo(PostVO vo,HttpServletRequest request )throws Exception{
@@ -34,26 +33,32 @@ public class FileUtils {
 		String originalFileExtension = null;
 		String storedFileName = null;
 		
+		// 파일 정보 저장할 리스트
 		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
+		// 파일 정보
 		Map<String,Object> listMap = null;
 		
 		int postNum = vo.getPostNum();
 		
 		File file = new File(filePath);
 		
+		// 디렉토리 없으면 새로생성
 		if(file.exists()==false){
 			file.mkdirs();
 		}
 
-		int count = 0;
 		while(iterator.hasNext()){
 			
 			multipartFile = multipartHttpServletRequest.getFile(iterator.next());
 			
 			if(multipartFile.isEmpty()==false){
-				
-				
+				/*
+				 * postNum				게시글 번호
+				 * originalFileName		원본 파일이름
+				 * storedFileName		저장된 파일이름
+				 * fileSize				파일 크기
+				 */
 				
 				originalFileName = multipartFile.getOriginalFilename();
 				originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
@@ -68,15 +73,8 @@ public class FileUtils {
 				listMap.put("storedFileName", storedFileName);
 				listMap.put("fileSize", multipartFile.getSize());
 				list.add(listMap);
-				
-				logger.info("파일파일파일파일파일파일파일");
-				logger.info(++count);
-				logger.info(originalFileName);
-				logger.info("파일파일파일파일파일파일파일");
 			}
 		}
-		
-		
 		return list;
 	}
 	
