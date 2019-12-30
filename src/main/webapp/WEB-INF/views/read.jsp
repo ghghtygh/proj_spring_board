@@ -56,36 +56,23 @@ $(document).ready(function() {
 			
 		}
 		
-	});
-	  
-	$("a[name='file']").click(function(){
-		
-		
-		//fn_downloadFile($(this));
-		var formObj = $("#frm");
-		formObj.attr("action","/downloadFile");
-		formObj.attr("method","post");
-		formObj.submit();
-		
-	});
-	  
-	function fn_downloadFile(obj){
-		
-		alert(obj);
-	
-		var postNum = ${postVO.postNum};
-		var comSubmit = new ComSubmit();
-		var formCount = $("#frm");
-		comSubmit.setUrl("<c:url value='/downloadFile'/>");
-		comSubmit.addParam("postNum",postNum);
-		comSubmit.submit();
-		
-		if (formCount.length>0){
-			formCount.children().remove();
-		}
-	}  
+	}); 
 	  
 });
+function fn_download(obj){
+	
+	$("#fn").val(obj);
+	
+	console.log($("#fn").val());
+	
+	
+	var formObj = $("#frm");
+	formObj.attr("action","/downloadFile");
+	formObj.attr("method","post");
+	formObj.submit();
+	
+	
+}
 </script>
 
 <style>
@@ -98,6 +85,7 @@ $(document).ready(function() {
 </style>
 </head>
 <form id="frm">
+<input type="hidden" id = "fn" name="fileNo" value="">
 <body>
 
 
@@ -139,7 +127,7 @@ $(document).ready(function() {
 										</div>
 										<div>
 											<c:forEach items="${postVO.fileNames}" var="files">
-												<a href="#" name="file">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a><br>
+												<a href="#" name="file" onclick="fn_download('${files.FILE_NO_PK}')">${files.ORIGINAL_NAME}(${files.FILE_SIZE}KB)</a><br>
 											</c:forEach>
 										</div>
 									</c:if>

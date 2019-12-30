@@ -269,18 +269,18 @@ body.a{
 				        			
 				        			<c:otherwise>
 				        				<a href="#" class="btn btn-primary" onClick="fn_paging('${pageNum}')">${pageNum}</a>
-				        			
-				        			</c:otherwise>
-				        			
+										
+									</c:otherwise>
+						 			
 								</c:choose>     
 								   	
-				        	</c:forEach>
+							</c:forEach>
 				        	
 				        	
-				        	<c:choose>
-							  	<c:when test="${pager.nowPage ne pager.pageCnt && pager.pageCnt > 0 }">
-							  		
-							  		<a class="btn btn-primary" href="#" onClick="fn_paging('${pager.nextPage}')">&raquo;</a>
+							<c:choose>
+								<c:when test="${pager.nowPage ne pager.pageCnt && pager.pageCnt > 0 }">
+									
+									<a class="btn btn-primary" href="#" onClick="fn_paging('${pager.nextPage}')">&raquo;</a>
 									
 									
 								</c:when>
@@ -290,8 +290,7 @@ body.a{
 									
 								</c:otherwise>
 						  	</c:choose>
-						  	
-				        	<c:choose>
+							<c:choose>
 							  	<c:when test="${pager.nowRange ne pager.rangeCnt && pager.rangeCnt>0 }">
 							  		
 							  		<a class="btn btn-primary" href="#" onClick="fn_paging('${pager.pageCnt}')">끝</a>

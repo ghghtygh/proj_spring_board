@@ -35,88 +35,118 @@
 
 
 <script>
-$(document).ready(function() {
-	$('#summernote').summernote({
-	  	placeholder: 'content',
-		minHeight: 370,
-		maxHeight: null,
-		focus: true, 
-		lang : 'ko-KR'
-	});
-	
-	
-	$("#sbmt").click(function(){
+	var fileNum = 0;
+	var valChk  = true;
+	$(document).ready(function() {
+		$('#summernote').summernote({
+		  	placeholder: 'content',
+			minHeight: 370,
+			maxHeight: null,
+			focus: true, 
+			lang : 'ko-KR',
+			toolbar: [
+		        ['style', ['bold', 'italic', 'underline', 'clear']],
+		        ['color', ['color']],
+		        ['para', ['ul', 'ol']]
+		    ]
+		});
 		
-		if($("#summernote").val().length > 4000) {
+		
+		
+		$("#sbmt").click(function(){
 			
-        	var result=confirm("글자수 초과\n4000자 이하로 글자수가 제한됩니다.");
-        	
-			if (result){
+			if($("#summernote").val().length > 4000) {
 				
+	        	var result=confirm("글자수 초과\n4000자 이하로 글자수를 제한합니다.");
+	        	
+				if (result){
+					
+					var idx = 3990;
+					
+					if(valChk){
+						$("#summernote").summernote("code", $("#summernote").val().substring(0, idx));
+						valChk = false;
+						setTimeout(function () {
+							valChk = true;
+				        }, 5000);
+					}else{
+						$("#summernote").summernote("code", $("#summernote").val().substring(0, 2000));
+						valChk =true;
+					}
+					
+				}
+				
+	        }else{
+			
+			
 				var result=confirm("게시글을 작성하시겠습니까 ?");
 				
 				if (result){
-					
-					$("#summernote").val($("#summernote").val().substring(0, 4000));
-					
+				
 					
 					var formObj = $("#frm");
-					
 					formObj.attr("action","/write");
-					
 					formObj.attr("method","post");
-					
 					formObj.submit();
 					
-					
 				}
-			
-			}
-			
-        }else{
+	        }
+		});
 		
-		
-			var result=confirm("게시글을 작성하시겠습니까 ?");
-			
-			if (result){
-			
-				
-				var formObj = $("#frm");
-				formObj.attr("action","/write");
-				formObj.attr("method","post");
-				formObj.submit();
-				
-			}
-        }
 		
 		
 		
 		
 	});
-	
-	
-	
-	
-	
-});
 
 var fileNum = 0;
+var click = true;
 
+function fn_del(obj){
+
+	if (click){
+		obj.parent().remove();
+		fileNum=fileNum-1;
+		click=!click;
+		
+		setTimeout(function () {
+            click = true;
+        }, 500);
+	}else{
+		
+	}
+
+	
+	console.log("fileNum "+fileNum);
+}
 function fn_add(){
+	
+	if(fileNum>4){
+		alert("파일은 총 5개까지 추가됩니다");
+		return false;
+	}
+	
+	//새로 만들기
+	$("#fileParent").append("<div id='div_"+fileNum+"'><input type=file name='file"+fileNum+"'>		\
+								<a href='#' id='fd' name='delete'>									\
+								<b>&nbsp;&nbsp;x&nbsp;&nbsp;</b>														\
+								</a>																\
+							</div>");
+	$("a[name='delete']").on("click",function(e){
+		
+		e.preventDefault();
+
+		fn_del($(this));
+		
+	});
+	
 	fileNum+=1;
 	
 	
-	// 클릭된 태그 제거
-	$("#fileAdd").detach();
-	
-	
-	
-		//새로 만들기
-	$("#fileParent").append("<input type=file name='file"+fileNum+"'><a href='#' id='fileAdd' onclick='fn_add();return false;'>파일추가</a><br>");
-	if(fileNum>5){
-		$("#fileAdd").detach();
-	}
+	console.log("fileNum "+fileNum);
 }
+
+
 
 </script>
 
@@ -169,21 +199,30 @@ function fn_add(){
 					<label class="col-sm-2 col-form-label" style="text-align:right;margin-right:20px;">
 						첨부파일
 					</label>
-					<div style="width:70%;padding:5px;" id="fileParent">
-						<input type="file" class="" id="fileId[0]" name="fileName[0]" style="border:0px solid black;"/>
-						 <a href="#" id="fileAdd" onclick="fn_add();return false;">파일추가</a><br>
-					</div>
+					<div class="input-group mb-3" style="width:70%;">
+						<div style="width:60%;padding:5px;" id="fileParent" name="f_Parent">
+						</div>
+						<div style="width:15%;">
 						
+						
+							<a href='#' id='fileAdd' onclick='fn_add();return false;' style="">
+								파일추가
+							</a>
+						</div>
+						<div align = "right" style="width:25%;">
+							
+							<input type="hidden" name="writer" value="${user.userNum}">
+							<input type="button" class="btn btn-primary" id="sbmt" value="등록">
+							<button type="button" class="btn btn-secondary" onClick="location.href='/'">취소</button>
+						</div>
+					</div>
+					
+					
 				</div>
 			
 			</div>
-			<div align = "right" style="margin-right:20px;">
-				<input type="hidden" name="writer" value="${user.userNum}">
-				<input type="button" class="btn btn-primary" id="sbmt" value="등록">
-				
-				<button type="button" class="btn btn-secondary" onClick="location.href='/'">취소</button>
-				
-			</div>
+			
+			
 		</div>
 	</div>
 </form>
