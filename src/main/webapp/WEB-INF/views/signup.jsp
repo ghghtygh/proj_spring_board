@@ -213,8 +213,8 @@
 					</ul>
 				</div>
 				
-				<div class="card-footer">
-					<a class="text-muted" href="/" >돌아가기</a>
+				<div class="card-footer" align="right">
+					<a class="text-muted" href="/" ><b>돌아가기</b></a>
 				</div>
 				
 			</div>

@@ -156,15 +156,15 @@ function fn_download(obj){
 					
 					</c:if>
 				</div>
-				<div>
-				<c:choose>
-					<c:when test="${empty keyword}">
-						<a class="text-muted" href="/?page=${page}" ><b>돌아가기</b></a>
-					</c:when>
-					<c:otherwise>
-						<a class="text-muted" href="/?page=${page}&searchOption=${searchOption}&keyword=${keyword}" ><b>돌아가기</b></a>
-					</c:otherwise>
-				</c:choose>
+				<div align="right" style="margin-top:20px;">
+					<c:choose>
+						<c:when test="${empty keyword}">
+							<a class="text-muted" href="/?page=${page}" ><b>목록으로</b></a>
+						</c:when>
+						<c:otherwise>
+							<a class="text-muted" href="/?page=${page}&searchOption=${searchOption}&keyword=${keyword}" ><b>돌아가기</b></a>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
