@@ -77,8 +77,8 @@
 						
 					</li>
 				</ul>
-				<div class="card-footer">
-					<a class="text-muted" href="/" >돌아가기</a>
+				<div align="right" class="card-footer">
+					<a class="text-muted" href="/" ><b>돌아가기</b></a>
 				</div>
 				
 			</div>
