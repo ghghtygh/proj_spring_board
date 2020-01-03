@@ -52,6 +52,13 @@ public class PostDAOImpl implements PostDAO {
    }
    
    @Override
+   public int countFile(Integer postNo) throws Exception{
+	   
+	   
+	   return sqlSession.selectOne(Namespace+".fileCheck",postNo);
+   }
+   
+   @Override
    public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception{
 
 	   Map<String,Object> map = new HashMap<String,Object>();

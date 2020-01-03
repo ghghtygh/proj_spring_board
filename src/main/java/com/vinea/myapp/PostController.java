@@ -69,6 +69,30 @@ public class PostController {
         return "home";
     }
     
+    // 잘못된 입력 방지
+    @RequestMapping(value="/doDelete",method=RequestMethod.GET)
+    public String doDeleteGET() throws Exception{
+    	return "redirect:/";
+    }
+    
+    @RequestMapping(value="/doDelete",method=RequestMethod.POST)
+    public String doDeletePOST(@RequestParam(defaultValue="")List<String> deletePostNo) throws Exception{
+
+    	logger.info("===========");
+    	logger.info(deletePostNo);
+    	logger.info("===========");
+    	service.deletePosts(deletePostNo);
+    	return "redirect:/";
+    }
+    // 게시글 삭제
+    @RequestMapping(value="/delete", method=RequestMethod.POST) 
+    public String deleteGET(@RequestParam("num")int num) throws Exception{
+    	
+    	service.deletePost(num);
+    	
+    	return "redirect:/";
+    }
+    
     // 리다이렉트 방지
     @RequestMapping(value="/doModify", method=RequestMethod.GET) 
     public String doModifyGET() throws Exception{
@@ -94,6 +118,7 @@ public class PostController {
     	model.addAttribute("page",page);
     	model.addAttribute("searchOption",searchOption);
         model.addAttribute("keyword",keyword);
+        
     	return "modify";
     }
     
@@ -137,14 +162,7 @@ public class PostController {
     	return "redirect:/read?num="+post.getPostNum();
     }
     
-    // 게시글 삭제
-    @RequestMapping(value="/delete", method=RequestMethod.POST) 
-    public String deleteGET(@RequestParam("num")int num) throws Exception{
-    	
-    	service.deletePost(num);
-    	
-    	return "redirect:/";
-    }
+
     
     // 게시글 상세보기
     @RequestMapping(value="/read", method=RequestMethod.GET)

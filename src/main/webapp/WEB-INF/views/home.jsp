@@ -16,8 +16,65 @@
 <link href="<c:url value='/resources/css/_variables.scss' />" rel="stylesheet">
 
 <script>
-
-
+	
+	$(document).ready(function() {
+		
+		$("#chk_all").on("mouseover",function(){
+			
+			$("#nohover_tr").css("color","white");
+		});
+		
+		$("#chk_all").on("click",function(){
+			
+			console.log($("input[name='chk_all']").prop('checked'));
+			console.log($("input[name='chk_all']").attr('checked'));
+			
+			if($("#chk_all").prop('checked')){
+				 //console.log("체크됨");
+				 $("input[name='deletePostNo']").prop('checked',true);
+			}else{
+				//console.log("체크안댐");
+				$("input[name='deletePostNo']").prop('checked',false);
+			}
+		});
+		
+		$("input[name='deletePostNo']").on("click",function(){
+			
+			$("input[name='chk_all']").prop('checked',false);
+		});
+		
+		
+		$("#del_sbmt").click(function(){
+			
+			var result = false;
+			var count = $("input[name='deletePostNo']:checked").length;
+			if (count<=0){
+				
+				alert("선택된 게시글이 없습니다");
+				
+				return;
+				
+			}else if (count==1){
+				
+				result=confirm("1개의 게시글이 선택되었습니다.\n삭제하시겠습니까 ?");
+				
+			}else{
+				
+				result=confirm("총 "+$("input[name='deletePostNo']:checked").length+"개의 게시글이 선택되었습니다.\n모두 삭제하시겠습니까 ?");
+				
+			}
+			
+			if(result){
+				var formObj = $("#frm");
+				formObj.attr("action","/doDelete");
+				formObj.attr("method","post");
+				formObj.submit();
+			}
+			
+		});
+		
+	});
+	
 	var kw = "${keyword}";
 	var so = "${searchOption}";
 	
@@ -47,16 +104,17 @@
 
 <style>
 
-#nohover{
-	pointer-events:none;
-} 
+#nohover:not(.chk){
+	//pointer-events:none;
+}
+
 body.a{
 	text
 }
 </style>
 </head>
 <body>
-<form id="form1">
+<form id="frm">
 	
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div style="margin-left:10px;">
@@ -85,7 +143,7 @@ body.a{
 							        <input type="button" class="btn btn-primary" onClick="location.href='/signup'" value="회원가입">
 							        
 						        </c:when>
-						        <c:when test="${user.userNum eq 1 }">
+						        <c:when test="${user.userId eq 'admin' }">
 						        
 				                       <p class="btn btn-primary disabled">
 				                       		관리자 ${user.userId}
@@ -160,23 +218,31 @@ body.a{
 				    <table class="table table-hover" style="width:100%; max-width: 1200px; font-size:100%; text-align:center; table-layout:fixed; word-break:break-all;">
 				        <thead>
 				        	<colgroup>
-				        		<col width="10%"/>
-				        		<col width="35%"/>
+				        		<col width="2%"/>
+				        		<col width="8%"/>
+				        		<col width="37%"/>
 				        		<col width="15%"/>
-				        		<col width="30%"/>
-				        		<col width="10%"/>
+				        		<col width="29%"/>
+				        		<col width="9%"/>
 				        	</colgroup>
 				        	
-				            <tr id="nohover" class="table-primary">
-				            	<td>글번호</td>
-				                <td>제목</td>
-				                <td>작성자</td>
-				                <td>작성일</td>
-				                <td>조회수</td>
-				            </tr>
+				            
 				        </thead>
 				        <tbody>
-				        	
+				        	<tr class="table-primary" id="nohover_tr">
+				            
+								<td id="nohover_td" style="pointer-events:none;">
+									<c:if test="${!(empty user.userId)}">
+										<input style="pointer-events: all;" type="checkbox" name="chk_all" id="chk_all">
+									</c:if>
+				            	</td>
+				            	<td style="pointer-events:none;">글번호</td>
+				                <td style="pointer-events:none;">제목</td>
+				                <td style="pointer-events:none;">작성자</td>
+				                <td style="pointer-events:none;">작성일</td>
+				                <td style="pointer-events:none;">조회수</td>
+				            </tr>
+				            
 				        	<c:if test="${pager.listCnt<=0}">
 				        		<tr>
 				        			<td colspan="6">
@@ -193,29 +259,45 @@ body.a{
 				        	</c:if>
 				            <c:forEach items="${postList}" var="post">
 				                <tr class="table-light">
-				                	<td>${post.postNum}</td>
-				                    <td style="text-align:left;text-overflow:ellipsis; overflow:hidden;">
-				                    	<nobr>
-				                    	<c:choose>
-				                    	
-					                    	<c:when test="${keyword eq ''||empty keyword}">
-					                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}' title="${post.title}"
-						                    	 style="color:#2C3E50;font-weight:600;">
-						                    		${post.title}
-						                    	</a>					                    	
-					                    	</c:when>
+				                	<td>
+					                	<c:if test="${(user.userId eq 'admin' )or(user.userId eq post.wrtId)}">
+					                			<input type="checkbox" name="deletePostNo" value="${post.postNum}">
+					                	</c:if>
+				                	</td>
+				                	<td>
+				                		${post.postNum}
+				                	</td>
+				                    <td style="">
+				                    	<div style="width:100%;">
 					                    	
-					                    	<c:otherwise>
-					                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}&selectOption=${selectOption}&keyword=${keyword}' title="${post.title}"
-						                    	 style="color:#2C3E50;font-weight:600;">
-						                    		${post.title}
-						                    	</a>
-					                    	</c:otherwise>
-				                    	
-				                    	</c:choose>
-				                    	
-				                    	</nobr>
-				                    	
+					                    	
+					                    	<div style="width:90%;float:left;text-align:left;text-overflow:ellipsis; overflow:hidden;">
+						                    	<nobr>
+						                    	<c:choose>
+							                    	<c:when test="${keyword eq ''||empty keyword}">
+							                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}' title="${post.title}"
+								                    	 style="color:#2C3E50;font-weight:600;">
+								                    		${post.title}
+								                    	</a>					                    	
+							                    	</c:when>
+							                    	
+							                    	<c:otherwise>
+							                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}&selectOption=${selectOption}&keyword=${keyword}' title="${post.title}"
+								                    	 style="color:#2C3E50;font-weight:600;">
+								                    		${post.title}
+								                    	</a>
+							                    	</c:otherwise>
+						                    	
+						                    	</c:choose>
+						                    	
+						                    	</nobr>
+					                    	</div>
+					                    	<div align="right" style="width:10%;float:right">
+					                    		<c:if test="${post.countFiles>0}">
+					                    			<img src='/resources/image/disk.ico' style="width:auto;height:15px;">
+					                    		</c:if>
+					                    	</div>
+				                    	</div>
 				                    </td>
 				                    <td>${post.wrtId}</td>
 				                    
@@ -308,6 +390,10 @@ body.a{
 					</div>
 					
 					<div style="left:0;top:0;position:absolute;text-align:right;width:100%;">
+						
+						<c:if test="${!(empty user)}">
+							<input type="button" class="btn btn-secondary" style="margin-right: 5px;" id="del_sbmt" value="게시글 삭제">
+						</c:if>
 						<input type="button" class="btn btn-primary" style="margin-right: 5px;" onClick="location.href='/write'" value="게시글 작성">
 					</div>
 					

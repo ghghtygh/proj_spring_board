@@ -35,10 +35,15 @@
 
 
 <script>
+
 	var fileNum = 0;
+	
 	var valChk  = true;
+	
 	$(document).ready(function() {
+		
 		$('#summernote').summernote({
+			
 		  	placeholder: 'content',
 			minHeight: 370,
 			maxHeight: null,
@@ -132,6 +137,7 @@ function fn_add(){
 								<b>&nbsp;&nbsp;x&nbsp;&nbsp;</b>														\
 								</a>																\
 							</div>");
+	
 	$("a[name='delete']").on("click",function(e){
 		
 		e.preventDefault();

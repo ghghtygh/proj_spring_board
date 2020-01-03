@@ -67,7 +67,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception{
     	
-    	return dao.listPost(start,pageSize,searchOption,keyword);
+    	List<PostVO> list =  dao.listPost(start,pageSize,searchOption,keyword);
+    	
+    	for (int i =0,size=list.size();i<size;i++){
+    		PostVO vo = list.get(i);
+    		vo.setCountFiles(dao.countFile(vo.getPostNum()));
+    	}
+    	return list;
     }
     
     
@@ -106,6 +112,19 @@ public class PostServiceImpl implements PostService {
     	
     }
     
+    @Override
+    public void deletePosts(List<String> postNoList) throws Exception{
+    	
+    	for (int i =0,size=postNoList.size();i<size;i++){
+    		
+    		int postNo = Integer.parseInt(postNoList.get(i));
+    		
+    		dao.deletePost(postNo);
+    		
+        	dao.deleteFiles(postNo);
+    	}
+    	
+    }
     @Override
     public PostVO read(Integer postNo)throws Exception{
     	return dao.read(postNo);
