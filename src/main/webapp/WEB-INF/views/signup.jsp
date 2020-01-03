@@ -99,6 +99,8 @@
 	    	
 	    });
 	});
+	
+	// 비밀번호 같은지 체크
 	function checkPw(){
 		
 		var f1 = document.getElementById("frm");
@@ -115,7 +117,7 @@
 			pwck = true;
 		}
 	}
-	
+	// 비밀번호 다시 입력했을 때
 	function rePw(){
 		
 		if(pwck){
@@ -136,6 +138,7 @@
 		
 	}
  	
+	// 이메일 정규식
 	function chkEmail(){
 		
 		var email = document.getElementById("email").value;
@@ -146,7 +149,7 @@
 		if (exptext.test(email)==false){
 			document.getElementById("checkEm").style.color="red";
 			document.getElementById("checkEm").innerHTML="올바르지 않은 이메일 형식입니다";
-			emck =false;
+			emck = false;
 		}else{
 			emck = true;
 			document.getElementById("checkEm").innerHTML="";

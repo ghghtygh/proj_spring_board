@@ -34,6 +34,8 @@ public class PostVO {
     // 유저 아이디
     private String wrtId;
     
+    // 첨부파일 여부
+    private int countFiles;
     
 	public int getPostNum() {
 		return postNum;
@@ -71,8 +73,6 @@ public class PostVO {
 	public void setReDt(String reDt) {
 		this.reDt = reDt;
 	}
-	
-	
 	public List<Map<String,Object>> getFileNames() {
 		return fileNames;
 	}
@@ -91,8 +91,13 @@ public class PostVO {
 	public void setWrtId(String wrtId) {
 		this.wrtId = wrtId;
 	}
-    
-    
+	public int getCountFiles() {
+		return countFiles;
+	}
+	public void setCountFiles(int countFiles) {
+		this.countFiles = countFiles;
+	}
+	
     
  
 }

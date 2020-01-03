@@ -99,13 +99,42 @@
 			
 		});
 		 
-		fileNum = ${fn:length(postVO.fileNames)};
+		fileNum =${fn:length(postVO.fileNames)};
 		 
 	});
 	
 	
 	var click = true;
 	
+	// 파일추가 버튼 클릭
+	function fn_add(){
+		
+		if(fileNum>4){
+			alert("파일은 총 5개까지 추가됩니다");
+			return false;
+		}
+		
+		//새로 만들기
+		$("#fileParent").append("<div id='div_"+fileNum+"'><input type=file name='file"+fileNum+"'>		\
+									<a href='#' id='fd' name='delete'>									\
+									<b>&nbsp;&nbsp;x&nbsp;&nbsp;</b>									\
+									</a>																\
+								</div>");
+		$("a[name='delete']").on("click",function(e){
+			
+			e.preventDefault();
+
+			fn_del($(this));
+			
+		});
+		
+		fileNum+=1;
+		
+		
+		//console.log("fileNum "+fileNum);
+	}
+	
+	// 수정폼에서 추가된 파일 삭제
 	function fn_del(obj){
 
 		if (click){
@@ -122,38 +151,14 @@
 			
 		}
 		
-		console.log("fileNum "+fileNum);
-	}
-	function fn_add(){
-		
-		if(fileNum>4){
-			alert("파일은 총 5개까지 추가됩니다");
-			return false;
-		}
-		
-		//새로 만들기
-		$("#fileParent").append("<div id='div_"+fileNum+"'><input type=file name='file"+fileNum+"'>		\
-									<a href='#' id='fd' name='delete'>									\
-									<b>&nbsp;&nbsp;x&nbsp;&nbsp;</b>														\
-									</a>																\
-								</div>");
-		$("a[name='delete']").on("click",function(e){
-			
-			e.preventDefault();
-
-			fn_del($(this));
-			
-		});
-		
-		fileNum+=1;
-		
-		
-		console.log("fileNum "+fileNum);
+		//console.log("fileNum "+fileNum);
 	}
 	
+	// 첨부파일 삭제
 	function fn_delete(obj,vl){
 		
 		if (click){
+			
 			var tag;
 			tag = "<input type='hidden' name='deleteFileNo', value='"+vl+"'/>";
 			$("#frm").append(tag);
@@ -163,8 +168,7 @@
 			fileNum=fileNum-1;
 			click=!click;
 			
-			console.log
-			console.log("fileNum "+fileNum);
+			//console.log("fileNum "+fileNum);
 			
 			setTimeout(function () {
 	            click = true;

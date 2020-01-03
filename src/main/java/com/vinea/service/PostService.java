@@ -18,6 +18,8 @@ public interface PostService {
     public void modifyPost(PostVO vo, HttpServletRequest request) throws Exception;
     
     public void deletePost(Integer postNo) throws Exception;
+ 
+    public void deletePosts(List<String> postNoList) throws Exception;
     
     public PostVO read(Integer postNo) throws Exception;
     
@@ -30,6 +32,8 @@ public interface PostService {
     public Map<String, Object> selectFile(Integer fileNo) throws Exception;
     
     public void deleteFile(Integer fileNo) throws Exception;
+
+
 }
  
 

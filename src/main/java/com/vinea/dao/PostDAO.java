@@ -23,6 +23,8 @@ public interface PostDAO {
 
     public int countPost(String searchOption,String keyword) throws Exception;
 
+    public int countFile(Integer postNo) throws Exception;
+    
 	public void insertFile(Map<String, Object> map);
 
 	public List<Map<String,Object>> selectFileList(Integer postNo) throws Exception;

@@ -54,10 +54,8 @@
 	<!-- 전체 게시글 리턴 -->
 
 		SELECT *
-	
 		FROM
     		POST_TB	AS a
-    	 
     	JOIN
 			USER_TB	AS b
 		ON
@@ -74,10 +72,8 @@
 	<!-- 해당 페이지 게시글 리턴 -->
 		
 		SELECT *
-		
 		FROM
     		POST_TB	AS a
-    	 
     	JOIN
 			USER_TB	AS b
 		ON
@@ -144,18 +140,35 @@
 		    		</otherwise>
 		    	</choose>
 		    )
-    		
+
 	</sql>
+    
+    <select id="fileCheck" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+    <!-- 첨부파일 개수 리턴 -->
+    	/* /src/main/resources/mappers/postMapper.xml - fileCheck */
+		SELECT
+			COUNT(FILE_NO_PK)
+		FROM
+			FILE_TB
+		WHERE
+			DEL_FL = "N"
+		AND
+		(
+			POST_NO = #{postNo}
+		)
+    
+    
+    </select>
+    
     
 	<update id="viewCntPost">
 	<!-- 조회수 증가 -->	
-	
+	    /* /src/main/resources/mappers/postMapper.xml - viewCntPost */
+	    
 		UPDATE
 			POST_TB
-		 
 		SET
 			VIEW_CNT = VIEW_CNT+1
-		 
 		WHERE
 			POST_NO_PK = #{postNo}
 	
@@ -167,12 +180,10 @@
     
     	UPDATE
     		POST_TB
-    	 
     	SET
     		TITLE		=	#{title}
     	,	CONTENT		=	#{content}
     	,	WRT_RE_DATE	=	NOW()
-    	 
     	WHERE
     		POST_NO_PK 	= 	#{postNum}
     	 
@@ -183,10 +194,8 @@
     
     	UPDATE
     		POST_TB
-    	
     	SET
-    		DEL_FL = "Y"	
-    	 
+    		DEL_FL = "Y"
     	WHERE
     		POST_NO_PK = #{postNo}
     	 
@@ -257,8 +266,8 @@
     	)
     	
     </insert>
-    <select id="selectFileList" resultType="hashmap">
     
+    <select id="selectFileList" resultType="hashmap">
     <!-- 첨부파일 리스트 불러오기 -->
     
     <![CDATA[
