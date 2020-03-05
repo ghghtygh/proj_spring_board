@@ -1,6 +1,5 @@
 package com.vinea.dto;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,31 +8,22 @@ public class PostVO {
 	
 	// 게시글 번호
 	private int postNum;
-	
 	// 게시글 제목
     private String title;
-    
     // 게시글 내용
     private String content;
-    
     // 작성 유저 번호
     private int writer;
-    
     // 작성일
     private String wrtDt;
-    
     // 수정일
     private String reDt;
-    
     // 첨부파일명
     private List<Map<String,Object>> fileNames;
- 
     // 조회 수
     private int viewCnt;
-    
     // 유저 아이디
     private String wrtId;
-    
     // 첨부파일 여부
     private int countFiles;
     

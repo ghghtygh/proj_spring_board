@@ -54,15 +54,9 @@ public class PostDAO{
 	   return sqlSession.selectOne(Namespace+".fileCheck",postNo);
    }
    
-   public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception{
+   public List<PostVO> listPost(Map<String,Object> map) throws Exception{
 
-	   Map<String,Object> map = new HashMap<String,Object>();
-	   
-	   map.put("start", start);
-	   map.put("pageSize", pageSize);
-	   
-	   map.put("searchOption", searchOption);
-	   map.put("keyword", keyword);
+	  
 	   
 	   return sqlSession.selectList(Namespace+".listPost",map);
    }
