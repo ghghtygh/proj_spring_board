@@ -70,13 +70,13 @@ public class PostServiceImpl implements PostService {
 
 		for (int i = 0, size = list.size(); i < size; i++) {
 			PostVO vo = list.get(i);
-			vo.setCountFiles(dao.countFile(vo.getPostNum()));
+			vo.setCountFiles(Integer.toString(dao.countFile(vo.getPostNum())));
 		}
 		return list;
 	}
 
 	@Override
-	public void viewCntPost(Integer postNo) throws Exception {
+	public void viewCntPost(String postNo) throws Exception {
 
 		dao.viewCntPost(postNo);
 
@@ -102,7 +102,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(Integer postNo) throws Exception {
+	public void deletePost(String postNo) throws Exception {
 
 		dao.deletePost(postNo);
 		dao.deleteFiles(postNo);
@@ -114,7 +114,7 @@ public class PostServiceImpl implements PostService {
 
 		for (int i = 0, size = postNoList.size(); i < size; i++) {
 
-			int postNo = Integer.parseInt(postNoList.get(i));
+			String postNo = postNoList.get(i);
 
 			dao.deletePost(postNo);
 
@@ -124,24 +124,24 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostVO read(Integer postNo) throws Exception {
+	public PostVO read(String postNo) throws Exception {
 		return dao.read(postNo);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectFileList(Integer postNo) throws Exception {
+	public List<Map<String, Object>> selectFileList(String postNo) throws Exception {
 
 		return dao.selectFileList(postNo);
 	}
 
 	@Override
-	public Map<String, Object> selectFile(Integer fileNo) throws Exception {
+	public Map<String, Object> selectFile(String fileNo) throws Exception {
 
 		return dao.selectFile(fileNo);
 	}
 
 	@Override
-	public void deleteFile(Integer fileNo) throws Exception {
+	public void deleteFile(String fileNo) throws Exception {
 
 		dao.deleteFile(fileNo);
 	}

@@ -1,5 +1,8 @@
 package com.vinea.dto;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class UserVO {
 
 	// 유저 번호
@@ -39,7 +42,9 @@ public class UserVO {
 		this.userEmail = userEmail;
 	}
 	
-
+	public String toStringMultiline() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 	
 	
 	
