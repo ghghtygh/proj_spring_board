@@ -23,7 +23,7 @@
 		<result property="postNum"		column="POST_NO_PK" />
 		<result property="title" 		column="TITLE" />
 		<result property="content" 		column="CONTENT" />
-		<result property="writer"		column="WRT_NO" />
+		<result property="wrt_no"		column="WRT_NO" />
 		<result property="wrtDt" 		column="WRT_DATE"/>
 		<result property="reDt" 		column="WRT_RE_DATE"/>
 		<result property="viewCnt" 		column="VIEW_CNT" />
@@ -143,7 +143,7 @@
 
 	</sql>
     
-    <select id="fileCheck" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+    <select id="fileCheck" parameterType="java.lang.String"  resultType="java.lang.Integer">
     <!-- 첨부파일 개수 리턴 -->
     	/* /src/main/resources/mappers/postMapper.xml - fileCheck */
 		SELECT
@@ -237,7 +237,7 @@
 	    (
 	    		#{title}
 	    	,	#{content}
-	    	,	#{writer}
+	    	,	#{wrt_no}
 	    	,	NOW()
 	    	,	NOW()
 	    )

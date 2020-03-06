@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +34,7 @@ public class PostController {
     @Inject
     private PostService service;
     
-    private final static Logger logger = Logger.getLogger(PostController.class);
-    
+    private Logger logger = LoggerFactory.getLogger(this.getClass());    
     
     
     @RequestMapping(value = "/")
@@ -79,14 +79,14 @@ public class PostController {
     public String doDeletePOST(@RequestParam(defaultValue="")List<String> deletePostNo) throws Exception{
 
     	logger.info("===========");
-    	logger.info(deletePostNo);
+    	//logger.info(deletePostNo);
     	logger.info("===========");
     	service.deletePosts(deletePostNo);
     	return "redirect:/";
     }
     // 게시글 삭제
     @RequestMapping(value="/delete", method=RequestMethod.POST) 
-    public String deleteGET(@RequestParam("num")int num) throws Exception{
+    public String deleteGET(@RequestParam("num")String num) throws Exception{
     	
     	service.deletePost(num);
     	
@@ -104,7 +104,7 @@ public class PostController {
     
     // 게시글 수정페이지로 전환
     @RequestMapping(value="/doModify", method=RequestMethod.POST) 
-    public String doModifyPost(@RequestParam("num")int num,@RequestParam("page")int page,
+    public String doModifyPost(@RequestParam("num")String num,@RequestParam("page")int page,
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
@@ -145,7 +145,7 @@ public class PostController {
     		for (String dfn:deleteFileNo){
         		
         		
-        		service.deleteFile(Integer.parseInt(dfn));
+        		service.deleteFile(dfn);
         		
         		logger.info(dfn);
         		
@@ -153,7 +153,7 @@ public class PostController {
     	}else{
     		logger.info("빈 deleteFileNo: "+deleteFileNo);
     	}
-    	logger.info(request);
+    	//logger.info(request);
     	logger.info("===============");
     	
     	service.modifyPost(post, request);
@@ -166,7 +166,7 @@ public class PostController {
     
     // 게시글 상세보기
     @RequestMapping(value="/read", method=RequestMethod.GET)
-    public void read(@RequestParam("num")int postNum,
+    public void read(@RequestParam("num")String postNum,
     		@RequestParam(defaultValue="1") int page,
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
@@ -196,7 +196,7 @@ public class PostController {
     }
     // 파일 다운로드
     @RequestMapping(value="/downloadFile", method=RequestMethod.POST)
-    public void downloadFile(@RequestParam("fileNo")int fileNo,HttpServletResponse response)throws Exception{
+    public void downloadFile(@RequestParam("fileNo")String fileNo,HttpServletResponse response)throws Exception{
     	
     	
     	//logger.info("=================");

@@ -48,7 +48,7 @@ public class PostDAO{
 	   return sqlSession.selectOne(Namespace+".countPost", map);
    }
    
-   public int countFile(Integer postNo) throws Exception{
+   public int countFile(String postNo) throws Exception{
 	   
 	   
 	   return sqlSession.selectOne(Namespace+".fileCheck",postNo);
@@ -61,7 +61,7 @@ public class PostDAO{
 	   return sqlSession.selectList(Namespace+".listPost",map);
    }
    
-   public void viewCntPost(Integer postNo) throws Exception{
+   public void viewCntPost(String postNo) throws Exception{
 	   
 	   sqlSession.update(Namespace+".viewCntPost", postNo);
    }
@@ -72,30 +72,30 @@ public class PostDAO{
 	   sqlSession.update(Namespace+".modifyPost", vo);
    }
    
-   public void deletePost(Integer postNo) throws Exception{
+   public void deletePost(String postNo) throws Exception{
 	   
 	   sqlSession.update(Namespace+".deletePost", postNo);
    }
    
-   public PostVO read(Integer postNo) throws Exception{
+   public PostVO read(String postNo) throws Exception{
 	
 	   return sqlSession.selectOne(Namespace+".read", postNo);
    }
    
-   public List<Map<String,Object>> selectFileList(Integer postNo) throws Exception{
+   public List<Map<String,Object>> selectFileList(String postNo) throws Exception{
 	   return sqlSession.selectList(Namespace+".selectFileList", postNo);
    }
    
-   public Map<String,Object> selectFile(Integer fileNo) throws Exception{
+   public Map<String,Object> selectFile(String fileNo) throws Exception{
 	   
 	   return sqlSession.selectOne(Namespace+".selectFile",fileNo);
    }
    
-   public void deleteFiles(Integer postNo) throws Exception{
+   public void deleteFiles(String postNo) throws Exception{
 	   sqlSession.update(Namespace+".deleteFiles", postNo);
    }
 
-   public void deleteFile(Integer fileNo) throws Exception{
+   public void deleteFile(String fileNo) throws Exception{
 	   sqlSession.update(Namespace+".deleteFile", fileNo);
    }
 

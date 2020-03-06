@@ -3,17 +3,20 @@ package com.vinea.dto;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class PostVO {
 	 
 	
 	// 게시글 번호
-	private int postNum;
+	private String postNum;
 	// 게시글 제목
     private String title;
     // 게시글 내용
     private String content;
     // 작성 유저 번호
-    private int writer;
+    private String wrt_no;
     // 작성일
     private String wrtDt;
     // 수정일
@@ -21,16 +24,16 @@ public class PostVO {
     // 첨부파일명
     private List<Map<String,Object>> fileNames;
     // 조회 수
-    private int viewCnt;
+    private String viewCnt;
     // 유저 아이디
     private String wrtId;
     // 첨부파일 여부
-    private int countFiles;
+    private String countFiles;
     
-	public int getPostNum() {
+	public String getPostNum() {
 		return postNum;
 	}
-	public void setPostNum(int postNum) {
+	public void setPostNum(String postNum) {
 		this.postNum = postNum;
 	}
 	public String getTitle() {
@@ -45,11 +48,11 @@ public class PostVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getWriter() {
-		return writer;
+	public String getWrt_no() {
+		return wrt_no;
 	}
-	public void setWriter(int writer) {
-		this.writer = writer;
+	public void setWrt_no(String writer) {
+		this.wrt_no = writer;
 	}
 	public String getWrtDt() {
 		return wrtDt;
@@ -69,10 +72,10 @@ public class PostVO {
 	public void setFileNames(List<Map<String,Object>> fileNames) {
 		this.fileNames = fileNames;
 	}
-	public long getViewCnt() {
+	public String getViewCnt() {
 		return viewCnt;
 	}
-	public void setViewCnt(int viewCnt) {
+	public void setViewCnt(String viewCnt) {
 		this.viewCnt = viewCnt;
 	}
 	public String getWrtId() {
@@ -81,13 +84,16 @@ public class PostVO {
 	public void setWrtId(String wrtId) {
 		this.wrtId = wrtId;
 	}
-	public int getCountFiles() {
+	public String getCountFiles() {
 		return countFiles;
 	}
-	public void setCountFiles(int countFiles) {
+	public void setCountFiles(String countFiles) {
 		this.countFiles = countFiles;
 	}
 	
+	public String toStringMultiline() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
     
  
 }

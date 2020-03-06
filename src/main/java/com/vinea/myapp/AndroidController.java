@@ -5,9 +5,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -20,7 +24,7 @@ public class AndroidController {
 	@Inject
     private PostService service;
     
-    private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping("/android")
 	public ModelAndView androidTest() throws Exception{
@@ -31,9 +35,49 @@ public class AndroidController {
 		
 		List<PostVO> list = new ArrayList<PostVO>();
 		
-		list = service.listPost(0,100,"all","");
+		//list = service.listPost(0,100,"all","");
+		
+		list = service.selectPost();
 		
 		String json = gson.toJson(list);
+		
+		mav.addObject("testJson",json);
+		
+		return mav;
+	}
+	//@ModelAttribute PostVO vo
+	@RequestMapping("/android/write")
+	public ModelAndView androidWrite(@ModelAttribute PostVO vo) throws Exception{
+		
+		//PostVO vo = new PostVO();
+		
+		ModelAndView mav = new ModelAndView("android/write");
+		
+		logger.info(getClass().getName());
+		
+		try{
+			logger.info(vo.toStringMultiline());
+		}catch(Exception e){
+			logger.info("vo -> null");
+		}
+		
+		service.create(vo,null);
+		
+		mav.addObject("testJson","성공");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/android/login",method=RequestMethod.POST)
+	public ModelAndView androidLogin() throws Exception{
+		
+		ModelAndView mav = new ModelAndView("android/login");
+		
+		Gson gson = new Gson();
+		
+		
+		
+		String json = gson.toJson("");
 		
 		mav.addObject("testJson",json);
 		
