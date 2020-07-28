@@ -39,7 +39,7 @@ public class FileUtils {
 		// 파일 정보
 		Map<String,Object> listMap = null;
 		
-		int postNum = vo.getPostNum();
+		String postNum = vo.getPostNum();
 		
 		File file = new File(filePath);
 		
