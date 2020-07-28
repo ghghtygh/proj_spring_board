@@ -140,7 +140,9 @@ function fn_download(obj){
 				<hr>
 			</div>
 			<div style="padding:20px;margin-left:50px;margin-right:50px;min-height:300px;word-break:break-all;background-color:white">
+		
 				<c:out value="${postVO.content}" escapeXml="false" />
+				
 			</div>
 			<hr>
 			<div style="margin-top:20px;">

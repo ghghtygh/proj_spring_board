@@ -45,6 +45,18 @@ public class AndroidController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/android/dbtest")
+	public ModelAndView androidDBTest(@RequestParam(defaultValue="") String sendMsg) throws Exception{
+		
+		ModelAndView mav = new ModelAndView("android/dbtest");
+		
+		logger.info("sendMsg : "+sendMsg.toString());
+		
+		return mav;
+	}
+	
+	
 	//@ModelAttribute PostVO vo
 	@RequestMapping("/android/write")
 	public ModelAndView androidWrite(@ModelAttribute PostVO vo) throws Exception{
