@@ -1,4 +1,4 @@
-package com.vinea.myapp;
+package com.jupo.app.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.vinea.dto.PostVO;
-import com.vinea.service.PostService;
+import com.jupo.post.vo.PostVO;
+import com.jupo.post.service.PostService;
 
 @Controller
 public class AndroidController {

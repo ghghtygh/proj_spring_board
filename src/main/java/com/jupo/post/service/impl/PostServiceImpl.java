@@ -1,4 +1,4 @@
-package com.vinea.service;
+package com.jupo.post.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,13 +8,13 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.jupo.post.service.PostService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vinea.common.FileUtils;
-import com.vinea.dao.PostDAO;
-import com.vinea.dto.PostVO;
+import com.jupo.common.util.FileUtils;
+import com.jupo.post.vo.PostVO;
 
 @Service
 public class PostServiceImpl implements PostService {

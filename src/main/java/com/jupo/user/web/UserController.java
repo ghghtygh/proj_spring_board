@@ -1,4 +1,4 @@
-package com.vinea.myapp;
+package com.jupo.user.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vinea.dto.UserInfo;
-import com.vinea.dto.UserVO;
-import com.vinea.service.UserService;
+import com.jupo.user.vo.UserInfo;
+import com.jupo.user.vo.UserVO;
+import com.jupo.user.service.UserService;
 
 
 @Controller

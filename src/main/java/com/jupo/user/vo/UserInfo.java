@@ -1,4 +1,4 @@
-package com.vinea.dto;
+package com.jupo.user.vo;
 
 public class UserInfo {
 

@@ -1,4 +1,4 @@
-package com.vinea.service;
+package com.jupo.common.util;
 
 public class PostPager {
 

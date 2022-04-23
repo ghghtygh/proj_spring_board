@@ -1,9 +1,9 @@
-package com.vinea.service;
+package com.jupo.user.service;
 
 import java.util.List;
 
-import com.vinea.dto.UserInfo;
-import com.vinea.dto.UserVO;
+import com.jupo.user.vo.UserInfo;
+import com.jupo.user.vo.UserVO;
 
 public interface UserService {
 	

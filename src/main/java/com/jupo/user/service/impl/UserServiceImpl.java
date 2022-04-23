@@ -1,15 +1,15 @@
-package com.vinea.service;
+package com.jupo.user.service.impl;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import com.jupo.user.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vinea.dao.UserDAO;
-import com.vinea.dto.UserInfo;
-import com.vinea.dto.UserVO;
+import com.jupo.user.vo.UserInfo;
+import com.jupo.user.vo.UserVO;
 
 
 @Service

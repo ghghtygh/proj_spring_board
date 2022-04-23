@@ -1,4 +1,4 @@
-package com.vinea.dao;
+package com.jupo.user.service.impl;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.vinea.dto.UserInfo;
-import com.vinea.dto.UserVO;
+import com.jupo.user.vo.UserInfo;
+import com.jupo.user.vo.UserVO;
 
 @Repository
 public class UserDAO{
@@ -16,7 +16,7 @@ public class UserDAO{
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String Namespace="com.vinea.mapper.userMapper";
+	private static final String Namespace="com.jupo.mapper.userMapper";
 	
 	
 	public List<UserVO> selectUser() throws Exception {

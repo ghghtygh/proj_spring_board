@@ -1,4 +1,4 @@
-package com.vinea.common;
+package com.jupo.common;
 
 import java.util.HashMap;
 import java.util.Map;
