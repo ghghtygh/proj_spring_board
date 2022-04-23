@@ -1,4 +1,4 @@
-package com.vinea.dto;
+package com.jupo.post.vo;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.vinea.common;
+package com.jupo.common.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,18 +9,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.vinea.dto.PostVO;
-import com.vinea.myapp.PostController;
+import com.jupo.post.vo.PostVO;
 
 @Component("fileUtils")
 public class FileUtils {
 
-	private final static Logger logger = Logger.getLogger(FileUtils.class);
 	private static final String filePath="C:\\Users\\vinea\\Desktop\\files\\";
 	
 	public List<Map<String,Object>> parseInsertFileInfo(PostVO vo,HttpServletRequest request )throws Exception{
@@ -62,7 +60,7 @@ public class FileUtils {
 				
 				originalFileName = multipartFile.getOriginalFilename();
 				originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				storedFileName=CommonUtils.getRandomString()+originalFileExtension;
+				storedFileName= CommonUtils.getRandomString()+originalFileExtension;
 				
 				file = new File(filePath+storedFileName);
 				multipartFile.transferTo(file);

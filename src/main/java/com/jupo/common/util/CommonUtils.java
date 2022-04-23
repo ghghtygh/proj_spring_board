@@ -1,4 +1,4 @@
-package com.vinea.common;
+package com.jupo.common.util;
 
 import java.util.UUID;
 

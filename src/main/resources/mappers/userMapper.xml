@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.vinea.mapper.userMapper">
+<mapper namespace="com.jupo.mapper.userMapper">
 
 	<!-- 
 	userNum : 회원 번호 (기본키)
@@ -13,9 +13,9 @@
 	userEmail : 회원 이메일
 	 -->
 	 
-	<resultMap id="userMap" type="com.vinea.dto.UserVO">
-	
-        <result property="userNum" column="USER_NO_PK" />
+	<resultMap id="userMap" type="com.jupo.user.vo.UserVO">
+
+		<result property="userNum" column="USER_NO_PK" />
 		<result property="userId" column="USER_ID" />
 		<result property="userPw" column="USER_PW" />
 		<result property="userEmail" column="USER_EMAIL" />

@@ -1,4 +1,4 @@
-package com.vinea.dao;
+package com.jupo.post.service.impl;
 
 
 
@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.vinea.dto.PostVO;
+import com.jupo.post.vo.PostVO;
 
 @Repository
 public class PostDAO{
@@ -20,7 +20,7 @@ public class PostDAO{
    @Inject
    private SqlSession sqlSession;
    
-   private static final String Namespace = "com.vinea.mapper.postMapper";
+   private static final String Namespace = "com.jupo.mapper.postMapper";
    
    public List<PostVO> selectPost() throws Exception {
 

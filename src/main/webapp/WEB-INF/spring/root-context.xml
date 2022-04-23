@@ -24,14 +24,11 @@
     <bean id="dataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-        <!-- <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> -->
         <property name="url"
-            value="jdbc:mysql://127.0.0.1:3306/db_board?useSSL=false&amp;serverTimezone=UTC">
-<!--         <property name="url"
-            value="jdbc:log4jdbc:mysql://127.0.0.1:3306/db_board?useSSL=false&amp;serverTimezone=UTC"> -->
+            value="jdbc:mysql://127.0.0.1:13306/board?useSSL=false&amp;serverTimezone=UTC">
         </property>
         <property name="username" value="jupo"></property>
-        <property name="password" value="qwe123"></property>
+        <property name="password" value="1234"></property>
     </bean>
 
 
@@ -41,17 +38,16 @@
         <property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>
         
     </bean>
-    
-    
+
     <!-- mybatis      -->
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
         destroy-method="clearCache">
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
-    
-    <context:component-scan base-package="com.vinea.common"></context:component-scan>
-    <context:component-scan base-package="com.vinea.dao"></context:component-scan>
- 	<context:component-scan base-package="com.vinea.service"></context:component-scan>
 
-
+    <context:component-scan base-package="com.jupo">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 </beans>

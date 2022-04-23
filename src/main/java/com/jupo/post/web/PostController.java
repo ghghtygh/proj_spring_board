@@ -1,4 +1,4 @@
-package com.vinea.myapp;
+package com.jupo.post.web;
 
 
 import java.io.File;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.vinea.dto.PostVO;
-import com.vinea.dto.UserVO;
-import com.vinea.service.PostPager;
-import com.vinea.service.PostService;
+import com.jupo.post.vo.PostVO;
+import com.jupo.user.vo.UserVO;
+import com.jupo.common.util.PostPager;
+import com.jupo.post.service.PostService;
 
 
 @Controller

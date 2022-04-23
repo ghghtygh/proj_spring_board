@@ -1,11 +1,11 @@
-package com.vinea.service;
+package com.jupo.post.service;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.vinea.dto.PostVO;
+import com.jupo.post.vo.PostVO;
  
 public interface PostService {
     
