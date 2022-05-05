@@ -22,8 +22,8 @@ import org.jupo.board.post.service.PostService;
 public class AndroidController {
 	
 	@Inject
-    private PostService service;
-    
+    private PostService postService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping("/android")
@@ -35,9 +35,7 @@ public class AndroidController {
 		
 		List<PostVO> list = new ArrayList<PostVO>();
 		
-		//list = service.listPost(0,100,"all","");
-		
-		list = service.selectPost();
+		list = postService.selectPostList(1,100,"","");
 		
 		String json = gson.toJson(list);
 		
@@ -72,8 +70,8 @@ public class AndroidController {
 		}catch(Exception e){
 			logger.info("vo -> null");
 		}
-		
-		service.create(vo,null);
+
+		postService.create(vo,null);
 		
 		mav.addObject("testJson","성공");
 		
