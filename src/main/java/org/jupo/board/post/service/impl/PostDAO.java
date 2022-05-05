@@ -3,6 +3,7 @@ package org.jupo.board.post.service.impl;
 
 
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +21,19 @@ public class PostDAO{
    private SqlSession sqlSession;
    
    private static final String Namespace = "org.jupo.board.mapper.postMapper";
-   
-   public List<PostVO> selectPost() throws Exception {
 
-       return sqlSession.selectList(Namespace+".selectPost");
+    /***
+     * 게시글 리스트를 조회한다.
+     * @param vo
+     * @return
+     * @throws Exception
+     */
+   public List<PostVO> selectPostList(PostVO vo) throws Exception {
+
+       return sqlSession.selectList(Namespace+".selectPostList", vo);
    }
    
-   public void create(PostVO vo)throws Exception{
+   public void insertPostInfo(PostVO vo) throws Exception{
 	   
 	   sqlSession.insert(Namespace+".create",vo);
    }
@@ -37,14 +44,14 @@ public class PostDAO{
 	   
    }
    
-   public int countPost(String searchOption,String keyword) throws Exception{
+   public int selectPostListCnt(String searchOption, String keyword) throws Exception{
 	   
 	   Map<String,Object> map = new HashMap<String,Object>();
 	   
 	   map.put("searchOption", searchOption);
 	   map.put("keyword", keyword);
 	   
-	   return sqlSession.selectOne(Namespace+".countPost", map);
+	   return sqlSession.selectOne(Namespace+".selectPostListCnt", map);
    }
    
    public int countFile(String postNo) throws Exception{
@@ -52,14 +59,7 @@ public class PostDAO{
 	   
 	   return sqlSession.selectOne(Namespace+".fileCheck",postNo);
    }
-   
-   public List<PostVO> listPost(Map<String,Object> map) throws Exception{
 
-	  
-	   
-	   return sqlSession.selectList(Namespace+".listPost",map);
-   }
-   
    public void viewCntPost(String postNo) throws Exception{
 	   
 	   sqlSession.update(Namespace+".viewCntPost", postNo);

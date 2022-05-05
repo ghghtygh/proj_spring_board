@@ -42,7 +42,7 @@ public class PostController {
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
  
     	// 전체 포스트 개수 (searchOption: 검색옵션, keyword: 검색어)
-    	int count = service.countPost(searchOption,keyword);
+    	int count = service.selectPostListCnt(searchOption,keyword);
         
     	// 페이징 위한 객체 (count: 전체포스트개수, page: 요청페이지)
     	PostPager pager = new PostPager(count,page);
@@ -53,7 +53,7 @@ public class PostController {
     	// 게시물 개수
     	int pagesize = pager.getPageSize();
 
-        List<PostVO> postList = service.listPost(start,pagesize,searchOption,keyword);
+        List<PostVO> postList = service.selectPostList(start,pagesize,searchOption,keyword);
 
 
     	//List<PostVO> postList = service.selectPost();

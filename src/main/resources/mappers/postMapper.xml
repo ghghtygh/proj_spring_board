@@ -32,130 +32,98 @@
 	</resultMap>
 
 
-	<select id="countPost" parameterType="hashmap" resultType="java.lang.Integer">
-	<!-- 게시글 건수 -->
-		
+	<select id="selectPostListCnt" parameterType="hashMap" resultType="java.lang.Integer">
+	/* 게시글 건수 조회 */
 		SELECT
 			COUNT(POST_NO_PK)
 		FROM
     		POST_TB	AS a
     	 
-    	JOIN
+    	LEFT JOIN
 			USER_TB	AS b
 		ON
 			a.WRT_NO = b.USER_NO_PK
-
+		WHERE 1=1
+		AND A.DEL_FL = 'N'
 		<include refid="search"></include>
 			 
 	</select>
 
 
-	<select id="selectPost" resultMap="postMap">
-	<!-- 전체 게시글 리턴 -->
-
-		SELECT *
+	<select id="selectPostList" resultMap="postMap" parameterType="postVO">
+	/* 게시글 리스트 조회 - selectPostList */
+		SELECT
+		ALL_LIST.*
 		FROM
-    		POST_TB	AS a
-    	JOIN
-			USER_TB	AS b
-		ON
-			a.WRT_NO = b.USER_NO_PK
-	
-		ORDER BY
-			POST_NO_PK
-	
-		DESC
+		(
+			SELECT
+				  a.TITLE
+				, a.CONTENT
+				, a.WRT_NO
+				, a.WRT_DATE
+				, a.WRT_RE_DATE
+				, a.VIEW_CNT
+				, b.USER_ID
+			FROM
+				POST_TB	AS a
+			LEFT JOIN
+				USER_TB	AS b
+			ON
+				a.WRT_NO = b.USER_NO_PK
+			WHERE 1=1
+			AND A.DEL_FL= 'N'
+			<include refid="search"></include>
+
+			ORDER BY
+			POST_NO_PK DESC
+		) ALL_LIST
+		LIMIT #{start}, #{pageSize}
 
 	</select>
 
-	<select id="listPost" parameterType="hashmap" resultMap="postMap">
-	<!-- 해당 페이지 게시글 리턴 -->
-		
-		SELECT
-			  a.TITLE
-			, a.CONTENT
-			, a.WRT_NO
-			, a.WRT_DATE
-			, a.WRT_RE_DATE
-			, a.VIEW_CNT
-			, b.USER_ID
-		FROM
-		POST_TB	AS a
-    	JOIN
-			USER_TB	AS b
-		ON
-			a.WRT_NO = b.USER_NO_PK
+	<sql id ="search">
+	<!-- 검색결과를 위한 쿼리문 -->
+		<choose>
+			<when test="searchOption=='all'">
+			<!-- 검색옵션 : 전체(디폴트값) -->
+				AND (
+					   B.USER_ID like CONCAT('%',#{keyword},'%')
+					OR A.CONTENT like CONCAT('%',#{keyword},'%')
+					OR A.TITLE like CONCAT('%',#{keyword},'%')
+				)
+			</when>
 
-		<include refid="search"></include>
-         
-		ORDER BY
-			POST_NO_PK
-		DESC
-         
-		LIMIT
-				#{start}
-			,	#{pageSize}
-         
-    </select>
-    
-	 <sql id ="search">
-	 <!-- 검색결과를 위한 쿼리문 -->
-		WHERE
-			1=1
-			AND DEL_FL= 'N'
-    			
-    		AND
-    		(
-		    	<choose>
-		    	
-		    		
-		    		<when test="searchOption=='all'">
-		    		<!-- 검색옵션 : 전체(디폴트값) -->
-		    		
-		    			
-		    			USER_ID like CONCAT('%',#{keyword},'%')
-		    			OR
-		    			CONTENT like CONCAT('%',#{keyword},'%')
-		    			OR
-		    			TITLE like CONCAT('%',#{keyword},'%')
-		    			
-		    		</when>
-		    		
-		    		<when test="searchOption=='userId'">
-		    		<!-- 검색옵션 : 작성자 아이디 -->
-		    	
-		    			 USER_ID like CONCAT('%',#{keyword},'%')
-		    			
-		    		</when>
-		    		<when test="searchOption=='content'">
-		    		<!-- 검색옵션 : 내용 -->
-		    		
-		    			 CONTENT like CONCAT('%',#{keyword},'%')
-		    			
-		    		</when>
-		    		<when test="searchOption=='title'">
-		    		<!-- 검색옵션 : 제목 -->
-		    		
-		    			 TITLE like CONCAT('%',#{keyword},'%')
-		    			
-		    		</when>
-		    		
-		    		<otherwise>
-		    		<!-- 검색옵션 : 오류 -->
-		    		
-		    			 TITLE like CONCAT('%','404','%')
-		    		
-		    		</otherwise>
-		    	</choose>
-		    )
+			<when test="searchOption=='userId'">
+			<!-- 검색옵션 : 작성자 아이디 -->
 
+				 AND B.USER_ID like CONCAT('%',#{keyword},'%')
+
+			</when>
+			<when test="searchOption=='content'">
+			<!-- 검색옵션 : 내용 -->
+
+				 AND A.CONTENT like CONCAT('%',#{keyword},'%')
+
+			</when>
+			<when test="searchOption=='title'">
+			<!-- 검색옵션 : 제목 -->
+
+				 AND A.TITLE like CONCAT('%',#{keyword},'%')
+
+			</when>
+
+			<otherwise>
+			<!-- 검색옵션 : 오류 -->
+
+			</otherwise>
+		</choose>
 	</sql>
     
     <select id="fileCheck" parameterType="java.lang.String"  resultType="java.lang.Integer">
     <!-- 첨부파일 개수 리턴 -->
     	/* /src/main/resources/mappers/postMapper.xml - fileCheck */
 		SELECT
-			COUNT(FILE_NO_PK)
+			COUNT(FILE_NO)
 		FROM
 			FILE_TB
 		WHERE 1=1
@@ -166,9 +134,8 @@
     
     
 	<update id="viewCntPost">
-	<!-- 조회수 증가 -->	
-	    /* /src/main/resources/mappers/postMapper.xml - viewCntPost */
-	    
+	/* 게시글 조회 수 증가 - viewCntPost */
+
 		UPDATE
 			POST_TB
 		SET
@@ -180,8 +147,7 @@
     
 
     <update id="modifyPost">
-    <!-- 게시글 수정 -->
-    
+    /* 게시글 수정 - modifyPost */
     	UPDATE
     		POST_TB
     	SET
@@ -194,21 +160,19 @@
     </update>
     
     <update id ="deletePost">
-    <!-- 게시글 삭제 -->
-    
+
     	UPDATE
     		POST_TB
     	SET
-    		DEL_FL = "Y"
+    		DEL_FL = 'Y'
     	WHERE
     		POST_NO_PK = #{postNo}
     	 
     </update>
     
     
-    <select id="read" resultType="postVO" resultMap="postMap">
-    <!-- 게시글 읽기   -->
-    
+    <select id="selectPostDetail" resultType="postVO" resultMap="postMap">
+    /* 게시글 상세정보 조회 - selectPostDetail */
     	SELECT
 			  a.TITLE
 			, a.CONTENT
@@ -220,7 +184,7 @@
 		FROM
 		POST_TB	AS a
     	 
-    	JOIN
+    	LEFT JOIN
 			USER_TB	AS b
         ON
 			a.WRT_NO = b.USER_NO_PK
@@ -230,8 +194,8 @@
     	 
     </select>
     
-    <insert id="create" useGeneratedKeys="true" keyProperty="postNum">
-    <!-- 게시글 작성 -->
+    <insert id="insertPostInfo" useGeneratedKeys="true" keyProperty="postNum">
+	/* 게시글 작성 - insertPostInfo */
     
 	    INSERT INTO POST_TB
 	    (
@@ -283,7 +247,7 @@
     <![CDATA[
     	
     	SELECT
-    		  FILE_NO_PK
+    		  FILE_NO
     		, ORIGINAL_NAME
     		, ROUND(FILE_SIZE/1024,1)	AS FILE_SIZE
     	FROM
@@ -313,7 +277,7 @@
 			FILE_TB
 
 		WHERE
-			FILE_NO_PK = #{fileNo}
+			FILE_NO = #{fileNo}
 			
 			
 			
@@ -340,10 +304,10 @@
     		FILE_TB
     	
     	SET
-    		DEL_FL = "Y"	
+    		DEL_FL = 'Y'
     	 
     	WHERE
-    		FILE_NO_PK = #{fileNo}
+    		FILE_NO = #{fileNo}
     	 
     </update>
     

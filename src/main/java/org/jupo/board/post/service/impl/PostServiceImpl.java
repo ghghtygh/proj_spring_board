@@ -9,7 +9,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jupo.board.post.service.PostService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +27,14 @@ public class PostServiceImpl implements PostService {
 	@Resource(name = "fileUtils")
 	private FileUtils fileUtils;
 
-	private final static Logger logger = Logger.getLogger(PostServiceImpl.class);
-
-	@Override
-	public List<PostVO> selectPost() throws Exception {
-
-		return dao.selectPost();
-	}
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public void create(PostVO vo, HttpServletRequest request) throws Exception {
 
 		vo.setTitle(checkTitle(vo.getTitle()));
 
-		dao.create(vo);
+		dao.insertPostInfo(vo);
 
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(vo, request);
 
@@ -50,23 +45,22 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int countPost(String searchOption, String keyword) throws Exception {
+	public int selectPostListCnt(String searchOption, String keyword) throws Exception {
 
-		return dao.countPost(searchOption, keyword);
+		return dao.selectPostListCnt(searchOption, keyword);
 	}
 
 	@Override
-	public List<PostVO> listPost(int start, int pageSize, String searchOption, String keyword) throws Exception {
+	public List<PostVO> selectPostList(int start, int pageSize, String searchOption, String keyword) throws Exception {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		PostVO searchVO = new PostVO();
 
-		map.put("start", start);
-		map.put("pageSize", pageSize);
+		searchVO.setStart(start);
+		searchVO.setPageSize(pageSize);
+		searchVO.setSearchOption(searchOption);
+		searchVO.setKeyword(keyword);
 
-		map.put("searchOption", searchOption);
-		map.put("keyword", keyword);
-		
-		List<PostVO> list = dao.listPost(map);
+		List<PostVO> list = dao.selectPostList(searchVO);
 
 		for (int i = 0, size = list.size(); i < size; i++) {
 			PostVO vo = list.get(i);
@@ -95,7 +89,7 @@ public class PostServiceImpl implements PostService {
 
 		for (int i = 0, size = list.size(); i < size; i++) {
 
-			logger.info(list.get(i));
+			logger.info(String.valueOf(list.get(i)));
 
 			dao.insertFile(list.get(i));
 		}

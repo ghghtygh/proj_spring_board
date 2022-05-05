@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<!-- Appenders -->
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT" />
+		<PatternLayout />
+	</Appenders>
+
+	<!-- Application Loggers -->
+	<Loggers>
+
+		<Logger name="logger" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+
+		<!-- Root Logger -->
+		<Root level="INFO">
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>

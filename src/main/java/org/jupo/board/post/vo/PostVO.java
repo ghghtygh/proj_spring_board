@@ -5,8 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.jupo.board.common.vo.DefaultVO;
 
-public class PostVO {
+public class PostVO extends DefaultVO {
 	 
 	
 	// 게시글 번호
