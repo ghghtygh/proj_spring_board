@@ -9,7 +9,7 @@ import org.jupo.board.post.vo.PostVO;
  
 public interface PostService {
     
-    public List<PostVO> selectPostList(int start, int end, String searchOption, String keyword) throws Exception;
+    public List<PostVO> selectPostList(PostVO searchVO) throws Exception;
     
     public void viewCntPost(String postNo) throws Exception;
     
@@ -23,7 +23,7 @@ public interface PostService {
     
     public void create(PostVO vo, HttpServletRequest request) throws Exception;
 
-    public int selectPostListCnt(String searchOption,String keyword) throws Exception;
+    public int selectPostListCnt(PostVO searchVO) throws Exception;
 
     public List<Map<String,Object>> selectFileList(String postNo) throws Exception;
 

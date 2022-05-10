@@ -45,20 +45,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int selectPostListCnt(String searchOption, String keyword) throws Exception {
+	public int selectPostListCnt(PostVO searchVO) throws Exception {
 
-		return dao.selectPostListCnt(searchOption, keyword);
+		return dao.selectPostListCnt(searchVO);
 	}
 
 	@Override
-	public List<PostVO> selectPostList(int start, int pageSize, String searchOption, String keyword) throws Exception {
-
-		PostVO searchVO = new PostVO();
-
-		searchVO.setStart(start);
-		searchVO.setPageSize(pageSize);
-		searchVO.setSearchOption(searchOption);
-		searchVO.setKeyword(keyword);
+	public List<PostVO> selectPostList(PostVO searchVO) throws Exception {
 
 		List<PostVO> list = dao.selectPostList(searchVO);
 

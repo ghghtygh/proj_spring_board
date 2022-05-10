@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,8 +14,10 @@ import org.jupo.board.post.service.PostService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,40 +31,39 @@ import org.jupo.board.common.util.PostPager;
 public class PostController {
     
     
-    @Inject
-    private PostService service;
-    
+    @Autowired
+    private PostService postService;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());    
-    
+
+    private final String JSP_DIR = "/post/";
     
     @RequestMapping(value = "/")
-    public String home(@RequestParam(defaultValue="1") int page,
-    		@RequestParam(defaultValue="all") String searchOption,
-    		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
+    public String home(@ModelAttribute PostVO searchVO, Model model) throws Exception{
  
     	// 전체 포스트 개수 (searchOption: 검색옵션, keyword: 검색어)
-    	int count = service.selectPostListCnt(searchOption,keyword);
-        
+    	int count = postService.selectPostListCnt(searchVO);
+
+    	int page = searchVO.getPage();
+
     	// 페이징 위한 객체 (count: 전체포스트개수, page: 요청페이지)
-    	PostPager pager = new PostPager(count,page);
-    	
+    	PostPager pager = new PostPager(count, page);
+
     	// 제일 상위 게시물 번호
     	int start = pager.getStartIndex();
 
     	// 게시물 개수
-    	int pagesize = pager.getPageSize();
+    	int pageSize = pager.getPageSize();
 
-        List<PostVO> postList = service.selectPostList(start,pagesize,searchOption,keyword);
+    	searchVO.setStart(start);
+    	searchVO.setPageSize(pageSize);
 
-
-    	//List<PostVO> postList = service.selectPost();
-
+        List<PostVO> postList = postService.selectPostList(searchVO);
 
         model.addAttribute("postList", postList);
-        model.addAttribute("cnt",count);
+        model.addAttribute("cnt", count);
         model.addAttribute("pager", pager);
-        model.addAttribute("searchOption",searchOption);
-        model.addAttribute("keyword",keyword);
+        model.addAttribute("searchVO", searchVO);
         
         return "home";
     }
@@ -80,14 +80,14 @@ public class PostController {
     	logger.info("===========");
     	//logger.info(deletePostNo);
     	logger.info("===========");
-    	service.deletePosts(deletePostNo);
+    	postService.deletePosts(deletePostNo);
     	return "redirect:/";
     }
     // 게시글 삭제
     @RequestMapping(value="/delete", method=RequestMethod.POST) 
     public String deleteGET(@RequestParam("num")String num) throws Exception{
     	
-    	service.deletePost(num);
+    	postService.deletePost(num);
     	
     	return "redirect:/";
     }
@@ -107,8 +107,8 @@ public class PostController {
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
-    	PostVO vo = service.read(num);
-    	vo.setFileNames(service.selectFileList(vo.getPostNum()));
+    	PostVO vo = postService.read(num);
+    	vo.setFileNames(postService.selectFileList(vo.getPostNum()));
     	
     	// 해당 게시글을 읽어들임
     	model.addAttribute("postVO",vo);
@@ -144,7 +144,7 @@ public class PostController {
     		for (String dfn:deleteFileNo){
         		
         		
-        		service.deleteFile(dfn);
+        		postService.deleteFile(dfn);
         		
         		logger.info(dfn);
         		
@@ -155,7 +155,7 @@ public class PostController {
     	//logger.info(request);
     	logger.info("===============");
     	
-    	service.modifyPost(post, request);
+    	postService.modifyPost(post, request);
     	//service.modifyPost(post);
     	
     	return "redirect:/read?num="+post.getPostNum();
@@ -172,13 +172,13 @@ public class PostController {
     	
     	
     	// 게시글 불러오기
-    	PostVO vo = service.read(postNum);
+    	PostVO vo = postService.read(postNum);
     	
     	// 첨부파일 세팅
-    	vo.setFileNames(service.selectFileList(postNum));
+    	vo.setFileNames(postService.selectFileList(postNum));
     	
     	// 조회수 증가시킴
-    	service.viewCntPost(postNum);
+    	postService.viewCntPost(postNum);
     	
     	
     	
@@ -203,7 +203,7 @@ public class PostController {
     	//logger.info("=================");
     	
     	
-    	Map<String,Object> map = service.selectFile(fileNo);    	
+    	Map<String,Object> map = postService.selectFile(fileNo);
 
     	String storedFileName = (String)map.get("STORED_NAME");
     	String originalFileName = (String)map.get("ORIGINAL_NAME");
@@ -237,7 +237,7 @@ public class PostController {
     @RequestMapping(value="/write", method=RequestMethod.POST)
     public String writePOST(PostVO post, HttpServletRequest request) throws Exception{
     	
-    	service.create(post, request);
+    	postService.create(post, request);
     	
     	return "redirect:/";
     }

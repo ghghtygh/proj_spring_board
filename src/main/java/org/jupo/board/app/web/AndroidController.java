@@ -34,8 +34,11 @@ public class AndroidController {
 		Gson gson = new Gson();
 		
 		List<PostVO> list = new ArrayList<PostVO>();
-		
-		list = postService.selectPostList(1,100,"","");
+
+		PostVO searchVO = new PostVO();
+		searchVO.setPage(1);
+		searchVO.setPageSize(100);
+		list = postService.selectPostList(searchVO);
 		
 		String json = gson.toJson(list);
 		

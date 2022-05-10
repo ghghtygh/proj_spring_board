@@ -44,14 +44,9 @@ public class PostDAO{
 	   
    }
    
-   public int selectPostListCnt(String searchOption, String keyword) throws Exception{
+   public int selectPostListCnt(PostVO searchVO) throws Exception{
 	   
-	   Map<String,Object> map = new HashMap<String,Object>();
-	   
-	   map.put("searchOption", searchOption);
-	   map.put("keyword", keyword);
-	   
-	   return sqlSession.selectOne(Namespace+".selectPostListCnt", map);
+	   return sqlSession.selectOne(Namespace+".selectPostListCnt", searchVO);
    }
    
    public int countFile(String postNo) throws Exception{

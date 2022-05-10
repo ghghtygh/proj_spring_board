@@ -75,8 +75,8 @@
 		
 	});
 	
-	var kw = "${keyword}";
-	var so = "${searchOption}";
+	var kw = "${searchVO.keyword}";
+	var so = "${searchVO.searchOption}";
 	
 	function fn_paging(nowPage) {
 		
