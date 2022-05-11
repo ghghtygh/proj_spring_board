@@ -165,7 +165,7 @@ public class PostController {
     
     // 게시글 상세보기
     @RequestMapping(value="/read", method=RequestMethod.GET)
-    public void read(@RequestParam("num") String postNum,
+    public String read(@RequestParam("num") String postNum,
     		@RequestParam(defaultValue="1") int page,
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
@@ -186,7 +186,8 @@ public class PostController {
         model.addAttribute("keyword",keyword);
     	model.addAttribute("postVO",vo);
     	model.addAttribute("page",page);
-    	
+
+    	return JSP_DIR + "read";
     }
     @RequestMapping(value="/downloadFile", method=RequestMethod.GET)
     public String downloadFileGET()throws Exception{
