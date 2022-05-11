@@ -3,7 +3,7 @@
 	<!-- Appenders -->
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT" />
-		<PatternLayout />
+		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 	</Appenders>
 
 	<!-- Application Loggers -->
@@ -13,8 +13,20 @@
 			<AppenderRef ref="console" />
 		</Logger>
 
+		<Logger name="org.springframework" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+
+		<Logger name="org.jupo.board" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+
+		<Logger name="jdbc.sqltiming" level="debug" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+
 		<!-- Root Logger -->
-		<Root level="INFO">
+		<Root level="DEBUG">
 			<AppenderRef ref="console" />
 		</Root>
 	</Loggers>
