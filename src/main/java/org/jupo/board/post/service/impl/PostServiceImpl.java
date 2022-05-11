@@ -76,7 +76,7 @@ public class PostServiceImpl implements PostService {
 
 		dao.modifyPost(vo);
 
-		vo = read(vo.getPostNum());
+		vo = selectPostDetail(vo.getPostNum());
 
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(vo, request);
 
@@ -111,8 +111,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostVO read(String postNo) throws Exception {
-		return dao.read(postNo);
+	public PostVO selectPostDetail(String postNo) throws Exception {
+		return dao.selectPostDetail(postNo);
 	}
 
 	@Override

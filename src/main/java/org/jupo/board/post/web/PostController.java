@@ -39,7 +39,7 @@ public class PostController {
     private final String JSP_DIR = "/post/";
     
     @RequestMapping(value = "/")
-    public String home(@ModelAttribute PostVO searchVO, Model model) throws Exception{
+    public String home(@ModelAttribute("searchVO") PostVO searchVO, Model model) throws Exception{
  
     	// 전체 포스트 개수 (searchOption: 검색옵션, keyword: 검색어)
     	int count = postService.selectPostListCnt(searchVO);
@@ -65,7 +65,7 @@ public class PostController {
         model.addAttribute("pager", pager);
         model.addAttribute("searchVO", searchVO);
         
-        return "home";
+        return JSP_DIR + "home";
     }
     
     // 잘못된 입력 방지
@@ -107,7 +107,7 @@ public class PostController {
     		@RequestParam(defaultValue="all") String searchOption,
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
-    	PostVO vo = postService.read(num);
+    	PostVO vo = postService.selectPostDetail(num);
     	vo.setFileNames(postService.selectFileList(vo.getPostNum()));
     	
     	// 해당 게시글을 읽어들임
@@ -118,7 +118,7 @@ public class PostController {
     	model.addAttribute("searchOption",searchOption);
         model.addAttribute("keyword",keyword);
         
-    	return "modify";
+    	return JSP_DIR + "modify";
     }
     
     // 리디렉트 방지
@@ -172,7 +172,7 @@ public class PostController {
     	
     	
     	// 게시글 불러오기
-    	PostVO vo = postService.read(postNum);
+    	PostVO vo = postService.selectPostDetail(postNum);
     	
     	// 첨부파일 세팅
     	vo.setFileNames(postService.selectFileList(postNum));
@@ -229,7 +229,7 @@ public class PostController {
     	if (user==null) {
     		return "signin";
     	}else {
-    		return "write";
+    		return JSP_DIR + "write";
     	}
     }
     

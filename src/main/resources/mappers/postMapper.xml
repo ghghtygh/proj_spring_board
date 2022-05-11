@@ -58,6 +58,7 @@
 		(
 			SELECT
 				  a.TITLE
+			    , a.POST_NO_PK
 				, a.CONTENT
 				, a.WRT_NO
 				, a.WRT_DATE
@@ -175,6 +176,7 @@
     /* 게시글 상세정보 조회 - selectPostDetail */
     	SELECT
 			  a.TITLE
+			, a.POST_NO_PK
 			, a.CONTENT
 			, a.WRT_NO
 			, a.WRT_DATE

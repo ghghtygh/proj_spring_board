@@ -71,9 +71,9 @@ public class PostDAO{
 	   sqlSession.update(Namespace+".deletePost", postNo);
    }
    
-   public PostVO read(String postNo) throws Exception{
+   public PostVO selectPostDetail(String postNo) throws Exception{
 	
-	   return sqlSession.selectOne(Namespace+".read", postNo);
+	   return sqlSession.selectOne(Namespace+".selectPostDetail", postNo);
    }
    
    public List<Map<String,Object>> selectFileList(String postNo) throws Exception{

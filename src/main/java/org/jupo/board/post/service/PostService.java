@@ -19,7 +19,7 @@ public interface PostService {
  
     public void deletePosts(List<String> postNoList) throws Exception;
     
-    public PostVO read(String postNo) throws Exception;
+    public PostVO selectPostDetail(String postNo) throws Exception;
     
     public void create(PostVO vo, HttpServletRequest request) throws Exception;
 

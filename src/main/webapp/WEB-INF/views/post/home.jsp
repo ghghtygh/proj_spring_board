@@ -97,7 +97,7 @@
 	
 	function goHome(){
 		
-		location.href="/";
+		location.href="../../..";
 	}
 	
 </script>
