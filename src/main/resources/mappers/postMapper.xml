@@ -206,6 +206,7 @@
 	    	,	WRT_NO
 	    	,	WRT_DATE
 	    	,	WRT_RE_DATE
+	    	,	DEL_FL
 	    )
 	     
 	    VALUES
@@ -216,6 +217,7 @@
 	    	,	#{wrt_no}
 	    	,	NOW()
 	    	,	NOW()
+	    	,	'N'
 	    )
 	     
     </insert>
