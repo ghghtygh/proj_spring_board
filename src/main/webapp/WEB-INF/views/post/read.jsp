@@ -156,7 +156,7 @@ function fn_download(obj){
 			<hr>
 			<div style="margin-top:20px;">
 				<div align="right">
-					<c:if test="${not empty user and (user.userId=='admin' or user.userNum==postVO.wrtId)}">
+					<c:if test="${not empty user and (user.userId=='admin' or user.userNum==postVO.wrtNo)}">
 						
 						<input type="hidden" name="num" value="${postVO.postNum}">
 						<input type="hidden" name="page" value="${page}">

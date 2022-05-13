@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.jupo.board.post.vo.PostVO;
 import org.jupo.board.user.vo.UserVO;
 import org.jupo.board.common.util.PostPager;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -257,7 +256,7 @@ public class PostController {
     		return JSP_DIR + "write";
     	}
     }
-    
+
     // 게시글 작성
     @RequestMapping(value="/write", method=RequestMethod.POST)
     public String writePOST(PostVO post, HttpSession session, HttpServletRequest request) throws Exception{
@@ -265,7 +264,7 @@ public class PostController {
 		if(user == null){
 			return "signin";
 		}
-		post.setWrt_no(String.valueOf(user.getUserNum()));
+		post.setWrtNo(String.valueOf(user.getUserNum()));
     	postService.insertPostInfo(post, request);
     	
     	return "redirect:/";

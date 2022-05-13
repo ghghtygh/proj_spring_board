@@ -17,7 +17,7 @@ public class PostVO extends DefaultVO {
     // 게시글 내용
     private String content;
     // 작성 유저 번호
-    private String wrt_no;
+    private String wrtNo;
     // 작성일
     private String wrtDt;
     // 수정일
@@ -49,11 +49,11 @@ public class PostVO extends DefaultVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getWrt_no() {
-		return wrt_no;
+	public String getWrtNo() {
+		return wrtNo;
 	}
-	public void setWrt_no(String writer) {
-		this.wrt_no = writer;
+	public void setWrtNo(String writer) {
+		this.wrtNo = writer;
 	}
 	public String getWrtDt() {
 		return wrtDt;

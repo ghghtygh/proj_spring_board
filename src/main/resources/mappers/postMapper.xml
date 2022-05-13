@@ -23,7 +23,7 @@
 		<result property="postNum"		column="POST_NO_PK" />
 		<result property="title" 		column="TITLE" />
 		<result property="content" 		column="CONTENT" />
-		<result property="wrt_no"		column="WRT_NO" />
+		<result property="wrtNo"		column="WRT_NO" />
 		<result property="wrtDt" 		column="WRT_DATE"/>
 		<result property="reDt" 		column="WRT_RE_DATE"/>
 		<result property="viewCnt" 		column="VIEW_CNT" />
@@ -207,6 +207,7 @@
 	    	,	WRT_DATE
 	    	,	WRT_RE_DATE
 	    	,	DEL_FL
+	    	,	VIEW_CNT
 	    )
 	     
 	    VALUES
@@ -218,6 +219,7 @@
 	    	,	NOW()
 	    	,	NOW()
 	    	,	'N'
+	    	,	0
 	    )
 	     
     </insert>
