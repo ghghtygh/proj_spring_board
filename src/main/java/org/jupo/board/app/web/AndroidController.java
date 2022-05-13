@@ -74,7 +74,7 @@ public class AndroidController {
 			logger.info("vo -> null");
 		}
 
-		postService.create(vo,null);
+		postService.insertPostInfo(vo,null);
 		
 		mav.addObject("testJson","성공");
 		

@@ -35,7 +35,7 @@ public class PostDAO{
    
    public void insertPostInfo(PostVO vo) throws Exception{
 	   
-	   sqlSession.insert(Namespace+".create",vo);
+	   sqlSession.insert(Namespace+".insertPostInfo",vo);
    }
    
    public void insertFile(Map<String, Object> map){

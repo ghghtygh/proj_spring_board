@@ -21,7 +21,7 @@ public interface PostService {
     
     public PostVO selectPostDetail(String postNo) throws Exception;
     
-    public void create(PostVO vo, HttpServletRequest request) throws Exception;
+    public void insertPostInfo(PostVO vo, HttpServletRequest request) throws Exception;
 
     public int selectPostListCnt(PostVO searchVO) throws Exception;
 

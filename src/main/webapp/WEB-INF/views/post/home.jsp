@@ -31,14 +31,14 @@
 			
 			if($("#chk_all").prop('checked')){
 				 //console.log("체크됨");
-				 $("input[name='deletePostNo']").prop('checked',true);
+				 $("input[name='postNoList']").prop('checked',true);
 			}else{
 				//console.log("체크안댐");
-				$("input[name='deletePostNo']").prop('checked',false);
+				$("input[name='postNoList']").prop('checked',false);
 			}
 		});
 		
-		$("input[name='deletePostNo']").on("click",function(){
+		$("input[name='postNoList']").on("click",function(){
 			
 			$("input[name='chk_all']").prop('checked',false);
 		});
@@ -47,28 +47,37 @@
 		$("#del_sbmt").click(function(){
 			
 			var result = false;
-			var count = $("input[name='deletePostNo']:checked").length;
+			var count = $("input[name='postNoList']:checked").length;
 			if (count<=0){
 				
 				alert("선택된 게시글이 없습니다");
 				
 				return;
 				
-			}else if (count==1){
-				
-				result=confirm("1개의 게시글이 선택되었습니다.\n삭제하시겠습니까 ?");
-				
-			}else{
-				
-				result=confirm("총 "+$("input[name='deletePostNo']:checked").length+"개의 게시글이 선택되었습니다.\n모두 삭제하시겠습니까 ?");
-				
-			}
-			
-			if(result){
-				var formObj = $("#frm");
-				formObj.attr("action","/doDelete");
-				formObj.attr("method","post");
-				formObj.submit();
+			}else if (confirm("총 "+count+"개의 게시글이 선택되었습니다.\n삭제하시겠습니까 ?")){
+				//var formObj = $("#frm");
+				//formObj.attr("action","/deletePostList");
+				//formObj.attr("method","post");
+				//formObj.submit();
+
+				$.ajax({
+					url			: "/deletePostList",
+					data		: $("#frm").serialize(),
+					type		: "POST",
+					dataType	: "json",
+					success		: function(response){
+						var result = response.result;
+						if(result == "success"){
+							alert("정상적으로 삭제되었습니다.");
+							location.href("/home");
+						}else{
+							alert("삭제에 실패하였습니다.");
+						}
+					},
+					error		: function(){
+						alert("에러가 발생하였습니다.");
+					}
+				});
 			}
 			
 		});
@@ -261,7 +270,7 @@ body.a{
 				                <tr class="table-light">
 				                	<td>
 					                	<c:if test="${(user.userId eq 'admin' )or(user.userId eq post.wrtId)}">
-					                			<input type="checkbox" name="deletePostNo" value="${post.postNum}">
+					                			<input type="checkbox" name="postNoList" value="${post.postNum}">
 					                	</c:if>
 				                	</td>
 				                	<td>

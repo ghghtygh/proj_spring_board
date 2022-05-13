@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
-	public void create(PostVO vo, HttpServletRequest request) throws Exception {
+	public void insertPostInfo(PostVO vo, HttpServletRequest request) throws Exception {
 
 		vo.setTitle(checkTitle(vo.getTitle()));
 

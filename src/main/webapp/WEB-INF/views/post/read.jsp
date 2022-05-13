@@ -45,18 +45,27 @@ $(document).ready(function() {
 	
 	$('#delete').click(function(){
 		
-		var result = confirm("글을 삭제하시겠습니까 ?");
-		
-		if(result){
-			
-			var formObj=$('#frm');
-			formObj.attr("action","/delete");
-			formObj.attr("method","post");
-			formObj.submit();
-			
+		if(confirm("글을 삭제하시겠습니까 ?")) {
+			$.ajax({
+				url: "/deletePost",
+				data: $("#frm").serialize(),
+				type: "POST",
+				dataType: "json",
+				success: function (response) {
+					var result = response.result;
+					if (result == "success") {
+						alert("정상적으로 삭제되었습니다.");
+						location.href("/home");
+					} else {
+						alert("삭제에 실패하였습니다.");
+					}
+				},
+				error: function () {
+					alert("에러가 발생하였습니다.");
+				}
+			});
 		}
-		
-	}); 
+	});
 	  
 });
 function fn_download(obj){
@@ -64,7 +73,7 @@ function fn_download(obj){
 	$("#fn").val(obj);
 	
 	console.log($("#fn").val());
-	
+
 	
 	var formObj = $("#frm");
 	formObj.attr("action","/downloadFile");
@@ -147,7 +156,7 @@ function fn_download(obj){
 			<hr>
 			<div style="margin-top:20px;">
 				<div align="right">
-					<c:if test="${not empty user and (user.userId=='admin' or user.userNum==postVO.writer)}">
+					<c:if test="${not empty user and (user.userId=='admin' or user.userNum==postVO.wrtId)}">
 						
 						<input type="hidden" name="num" value="${postVO.postNum}">
 						<input type="hidden" name="page" value="${page}">

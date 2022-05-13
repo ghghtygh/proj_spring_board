@@ -3,6 +3,7 @@ package org.jupo.board.post.web;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import org.jupo.board.post.vo.PostVO;
 import org.jupo.board.user.vo.UserVO;
 import org.jupo.board.common.util.PostPager;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -37,8 +36,15 @@ public class PostController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());    
 
     private final String JSP_DIR = "/post/";
-    
-    @RequestMapping(value = "/")
+
+	/***
+	 * 게시판 메인화면
+	 * @param searchVO
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/")
     public String home(@ModelAttribute("searchVO") PostVO searchVO, Model model) throws Exception{
  
     	// 전체 포스트 개수 (searchOption: 검색옵션, keyword: 검색어)
@@ -67,29 +73,47 @@ public class PostController {
         
         return JSP_DIR + "home";
     }
-    
-    // 잘못된 입력 방지
-    @RequestMapping(value="/doDelete",method=RequestMethod.GET)
-    public String doDeleteGET() throws Exception{
-    	return "redirect:/";
-    }
-    
-    @RequestMapping(value="/doDelete",method=RequestMethod.POST)
-    public String doDeletePOST(@RequestParam(defaultValue="")List<String> deletePostNo) throws Exception{
 
-    	logger.info("===========");
+	/***
+	 * 게시글 리스트 삭제
+	 * @param postNoList
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping(value="/deletePostList")
+	@ResponseBody
+    public Map<String, Object> deletePostList(@RequestParam(defaultValue="")List<String> postNoList) throws Exception{
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+    	//logger.info("===========");
     	//logger.info(deletePostNo);
-    	logger.info("===========");
-    	postService.deletePosts(deletePostNo);
-    	return "redirect:/";
+    	//logger.info("===========");
+
+		if(postNoList == null || postNoList.size()<0){
+			resultMap.put("result", "fail");
+		}else{
+			postService.deletePosts(postNoList);
+			resultMap.put("result", "success");
+		}
+
+		return resultMap;
     }
-    // 게시글 삭제
-    @RequestMapping(value="/delete", method=RequestMethod.POST) 
-    public String deleteGET(@RequestParam("num")String num) throws Exception{
-    	
-    	postService.deletePost(num);
-    	
-    	return "redirect:/";
+
+	/***
+	 * 게시글 단건 삭제
+	 * @param postNo
+	 * @return
+	 * @throws Exception
+	 */
+    @RequestMapping(value="/deletePost", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteGET(@RequestParam("num")String postNo) throws Exception{
+
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+		postService.deletePost(postNo);
+		resultMap.put("result", "success");
+
+		return resultMap;
     }
     
     // 리다이렉트 방지
@@ -236,9 +260,13 @@ public class PostController {
     
     // 게시글 작성
     @RequestMapping(value="/write", method=RequestMethod.POST)
-    public String writePOST(PostVO post, HttpServletRequest request) throws Exception{
-    	
-    	postService.create(post, request);
+    public String writePOST(PostVO post, HttpSession session, HttpServletRequest request) throws Exception{
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(user == null){
+			return "signin";
+		}
+		post.setWrt_no(String.valueOf(user.getUserNum()));
+    	postService.insertPostInfo(post, request);
     	
     	return "redirect:/";
     }
