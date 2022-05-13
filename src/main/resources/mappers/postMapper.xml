@@ -215,7 +215,7 @@
 	    (
 	    		#{title}
 	    	,	#{content}
-	    	,	#{wrt_no}
+	    	,	#{wrtNo}
 	    	,	NOW()
 	    	,	NOW()
 	    	,	'N'
