@@ -30,12 +30,15 @@
         <property name="password" value="1234"></property>
     </bean>
 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.jupo.board" />
+        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
+    </bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:/mapper-config.xml"></property>
         <property name="mapperLocations" value="classpath:mappers/**/*.xml"></property>
-        
     </bean>
 
     <!-- mybatis      -->
@@ -44,9 +47,11 @@
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
 
-    <context:component-scan base-package="org.jupo.board">
+    <context:component-scan base-package="com.jupo.board">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
+
 </beans>
