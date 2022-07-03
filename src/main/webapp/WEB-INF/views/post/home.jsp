@@ -1,19 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<html>
-<head>
-<title>Home</title>
-
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
-
-<link href="<c:url value='/resources/css/bootstrap.css' />" rel="stylesheet">
-<link href="<c:url value='/resources/css/_bootswatch.scss' />" rel="stylesheet">
-<link href="<c:url value='/resources/css/_variables.scss' />" rel="stylesheet">
+		 pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/layout/taglib.jsp"%>
 
 <script>
 	
@@ -110,27 +97,8 @@
 	}
 	
 </script>
-
-<style>
-
-#nohover:not(.chk){
-	//pointer-events:none;
-}
-
-body.a{
-	text
-}
-</style>
-</head>
-<body>
 <form id="frm">
 	
-		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-			<div style="margin-left:10px;">
-				<a class="navbar-brand" href="/">home</a>
-			</div>
-		</nav>
-		
 		<div class="container">
 		
 			<div>
@@ -411,5 +379,3 @@ body.a{
 			</div>
     	</div>
     </form>
-</body>
-</html>

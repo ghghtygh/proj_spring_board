@@ -34,7 +34,7 @@ public class PostController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());    
 
-    private final String JSP_DIR = "/post/";
+    private final String JSP_DIR = "post/";
 
 	/***
 	 * 게시판 메인화면
@@ -70,7 +70,8 @@ public class PostController {
         model.addAttribute("pager", pager);
         model.addAttribute("searchVO", searchVO);
         
-        return JSP_DIR + "home";
+        //return JSP_DIR + "home.post";
+        return "post/home.tiles";
     }
 
 	/***

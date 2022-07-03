@@ -23,12 +23,6 @@ public class UserServiceImpl implements UserService {
 	PasswordEncoder pwEncoder;
 	
 	@Override
-	public List<UserVO> selectUser() throws Exception {
-		// TODO Auto-generated method stub
-		return userDAO.selectUser();
-	}
-
-	@Override
 	public void insertUserInfo(UserVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		

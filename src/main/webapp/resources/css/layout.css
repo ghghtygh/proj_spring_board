@@ -1,0 +1,32 @@
+
+.layout-body {
+    width: 1080px;
+    margin: 0 auto;
+}
+
+#top-area {
+    position: relative;
+    width: 1080px;
+    height: 35px;
+    margin: 0 auto;
+    z-index: 10;
+}
+
+#top-area .link_cafe {
+    float: left;
+}
+
+#top-area .top-menu {
+    float: right;
+    position: relative;
+}
+
+#content-area {
+    position: relative;
+    width: 1080px;
+    margin: 0 auto;
+}
+
+#content-area #group-area {
+    width: 200px;
+}
