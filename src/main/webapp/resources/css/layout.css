@@ -14,11 +14,26 @@
 
 #top-area .link_cafe {
     float: left;
+    margin: 8px 40px 0 0;
 }
 
 #top-area .top-menu {
     float: right;
     position: relative;
+}
+
+#top-area .top-h {
+    display: inline-block;
+    float: left;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+#front-img {
+    position: relative;
+    width: 1080px;
+    max-height: 340px;
+    margin: 0 auto 20px;
 }
 
 #content-area {
@@ -29,4 +44,7 @@
 
 #content-area #group-area {
     width: 200px;
+}
+#content-area #main-area {
+    width: 860px;
 }

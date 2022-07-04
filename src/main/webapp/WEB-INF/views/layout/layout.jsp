@@ -2,16 +2,16 @@
          pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ include file="/WEB-INF/views/layout/taglib.jsp"%>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>
-<c:set var="resourcesPath" value="${CONTEXT_PATH}/resources" scope="application"/>
+
 
 <html>
 <head>
     <meta charset="UTF-8">
+
+    <link rel="shortcut icon" type="image/x-icon" href="${resourcesPath}/image/favicon.ico" />
+
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script type="text/javascript">
@@ -19,23 +19,25 @@
         var resourcesPath = "${resourcesPath}";
     </script>
 
-    <link href="${resourcesPath}/css/bootstrap.css' />" rel="stylesheet">
-    <link href="${resourcesPath}/css/_bootswatch.scss' />" rel="stylesheet">
-    <link href="${resourcesPath}/css/_variables.scss' />" rel="stylesheet">
+    <link href="${resourcesPath}/css/bootstrap.css" rel="stylesheet">
+    <link href="${resourcesPath}/css/_bootswatch.scss" rel="stylesheet">
+    <link href="${resourcesPath}/css/_variables.scss" rel="stylesheet">
 
     <link rel="stylesheet" href="${resourcesPath}/css/common.css">
     <link rel="stylesheet" href="${resourcesPath}/css/layout.css">
 
     <title><tiles:insertAttribute name="title"/></title>
+
+    <tiles:insertAttribute name="scripts"/>
 </head>
 
 <body>
-    <div class="">
+    <div class="layout-body">
         <tiles:insertAttribute name="header"/>
 
-        <div class="layout-body">
+        <div id="content-area">
             <tiles:insertAttribute name="left"/>
-            <div class="">
+            <div id="main-area" class="fr">
                 <tiles:insertAttribute name="body"/>
             </div>
         </div>

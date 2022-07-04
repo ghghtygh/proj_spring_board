@@ -70,8 +70,7 @@ public class PostController {
         model.addAttribute("pager", pager);
         model.addAttribute("searchVO", searchVO);
         
-        //return JSP_DIR + "home.post";
-        return "post/home.tiles";
+        return JSP_DIR + "home.post";
     }
 
 	/***

@@ -99,7 +99,7 @@
 </script>
 <form id="frm">
 	
-		<div class="container">
+		<div class="">
 		
 			<div>
 				<div style="margin-top:50px;">
@@ -110,7 +110,7 @@
 					</div>
 					
 				</div>
-				<div align="right">
+				<%--<div align="right">
 				    <div class="btn-group btn-group-toggle" >
 					 	<c:catch>
 						    <c:choose>
@@ -144,7 +144,8 @@
 						    </c:choose>
 						</c:catch>
 				
-				 	</div>
+				 	</div>--%>
+
 			 	</div>
 		 	</div>
 		 	
