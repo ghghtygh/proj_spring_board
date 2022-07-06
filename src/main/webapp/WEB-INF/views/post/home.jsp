@@ -214,11 +214,11 @@
 										<input style="pointer-events: all;" type="checkbox" name="chk_all" id="chk_all">
 									</c:if>
 				            	</td>
-				            	<td style="pointer-events:none;">글번호</td>
+				            	<td style="pointer-events:none;"></td>
 				                <td style="pointer-events:none;">제목</td>
 				                <td style="pointer-events:none;">작성자</td>
 				                <td style="pointer-events:none;">작성일</td>
-				                <td style="pointer-events:none;">조회수</td>
+				                <td style="pointer-events:none;">조회</td>
 				            </tr>
 				            
 				        	<c:if test="${pager.listCnt<=0}">
@@ -380,3 +380,4 @@
 			</div>
     	</div>
     </form>
+

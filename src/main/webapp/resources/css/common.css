@@ -5,3 +5,9 @@
 .fr {
     float: right;
 }
+
+
+.article-board thead th {
+    border-top-color: #333;
+    border-bottom-color: #f2f2f2;
+}

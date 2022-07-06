@@ -1,9 +1,10 @@
-
+/* layout */
 .layout-body {
     width: 1080px;
     margin: 0 auto;
 }
 
+/* header */
 #top-area {
     position: relative;
     width: 1080px;
@@ -40,6 +41,7 @@
     position: relative;
     width: 1080px;
     margin: 0 auto;
+    clear: both;
 }
 
 #content-area #group-area {
@@ -47,4 +49,65 @@
 }
 #content-area #main-area {
     width: 860px;
+}
+
+/* left */
+#group-area{
+    text-align: left;
+}
+
+#cafe-info-action {
+    background-color: #fff;
+}
+
+.info-action-tab {
+    border-top-color: #333;
+    border-bottom-color: #e5e5e5;
+}
+
+.d-none, .blind {
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+}
+
+
+/* footer */
+.footer {
+    overflow: hidden;
+    position: relative;
+    width: 990px;
+    margin: 60px auto 0;
+    padding: 24px 90px 24px 0;
+    border-top: 2px solid #333;
+}
+
+.footer .cafe_name {
+    display: inline-block;
+    float: left;
+}
+
+.footer .cafe_link {
+    display: inline-block;
+}
+
+.footer .jupo_cafe {
+    position: absolute;
+    top: 25px;
+    right: 0;
+    background-position: -4px -4px;
+    width: 91px;
+    height: 16px;
+}
+
+.blind {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
 }
