@@ -1,38 +1,125 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema jupo_cafe
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema jupo_cafe
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `jupo_cafe` DEFAULT CHARACTER SET utf8 ;
+USE `jupo_cafe` ;
+
+-- -----------------------------------------------------
+-- Table `jupo_cafe`.`tb_board`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jupo_cafe`.`tb_board` ;
+
+CREATE TABLE IF NOT EXISTS `jupo_cafe`.`tb_board` (
+  `board_no` INT NOT NULL AUTO_INCREMENT COMMENT '게시판기본키',
+  `board_nm` VARCHAR(500) NULL COMMENT '게시판명',
+  `board_cd` VARCHAR(20) NULL COMMENT '게시판구분코드',
+  `frst_regt_no` INT NULL COMMENT '최초등록아이디',
+  `frst_regt_dt` DATETIME NULL COMMENT '최초등록일시',
+  `last_updt_no` INT NULL COMMENT '최종수정아이디',
+  `last_updt_dt` VARCHAR(45) NULL COMMENT '최종수정일시',
+  PRIMARY KEY (`board_no`))
+ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `jupo_cafe`.`tb_user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jupo_cafe`.`tb_user` ;
 
-CREATE TABLE USER_TB
-(
-		USER_NO_PK INT NOT NULL AUTO_INCREMENT,
-		USER_ID VARCHAR(200),
-		USER_PW VARCHAR(500),
-		USER_EMAIL VARCHAR(500),
-PRIMARY KEY(USER_NO_PK)
-) ENGINE=MYISAM CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `jupo_cafe`.`tb_user` (
+  `user_no` INT NOT NULL AUTO_INCREMENT COMMENT '사용자기본키',
+  `login_id` VARCHAR(100) NULL COMMENT '로그인아이디',
+  `password` VARCHAR(200) NULL COMMENT '비밀번호',
+  `email` VARCHAR(500) NULL COMMENT '이메일',
+  `user_nm` VARCHAR(200) NULL COMMENT '사용자이름',
+  `frst_regt_dt` DATETIME NULL COMMENT '최초등록일시',
+  `last_updt_no` INT NULL COMMENT '최종수정아이디',
+  `last_updt_dt` DATETIME NULL COMMENT '최종수정일시',
+  `user_level` VARCHAR(20) NULL COMMENT '사용자등급',
+  `phone_no` VARCHAR(100) NULL,
+  `user_addr` VARCHAR(2000) NULL COMMENT '주소',
+  `user_addr_dtl` VARCHAR(2000) NULL COMMENT '주소 상세',
+  `zip` VARCHAR(100) NULL COMMENT '우편번호',
+  `user_cd` VARCHAR(20) NULL COMMENT '사용자구분코드',
+  `resign_yn` CHAR(1) NULL COMMENT '탈퇴여부',
+  PRIMARY KEY (`user_no`))
+ENGINE = InnoDB;
 
 
-CREATE TABLE FILE_TB
-(
-	POST_NO INT NOT NULL,
-	FILE_SN INT,
-	ORIGINAL_NAME VARCHAR(500),
-	STORED_NAME VARCHAR(500),
-	FILE_SIZE INT
+-- -----------------------------------------------------
+-- Table `jupo_cafe`.`tb_post`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jupo_cafe`.`tb_post` ;
 
-) ENGINE=MYISAM CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `jupo_cafe`.`tb_post` (
+  `post_no` INT NOT NULL AUTO_INCREMENT COMMENT '게시글 기본키',
+  `title` VARCHAR(2000) NULL COMMENT '게시글 제목',
+  `content` VARCHAR(4000) NULL COMMENT '게시글 내용',
+  `frst_regt_no` INT NULL COMMENT '최초등록아이디',
+  `frst_regt_dt` DATETIME NULL COMMENT '최초등록일시',
+  `last_updt_no` INT NULL COMMENT '최종수정아이디',
+  `last_updt_dt` DATETIME NULL COMMENT '최종수정일시',
+  `view_cnt` INT NULL COMMENT '조회수',
+  `latitude` DECIMAL(16,14) NULL COMMENT '게시글좌표(위도)',
+  `longitude` DECIMAL(17,14) NULL COMMENT '게시글좌표(경도)',
+  `del_yn` CHAR(1) NULL COMMENT '삭제여부',
+  `board_no` INT NULL COMMENT '게시판아이디',
+  PRIMARY KEY (`post_no`))
+ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `jupo_cafe`.`tb_file`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jupo_cafe`.`tb_file` ;
+
+CREATE TABLE IF NOT EXISTS `jupo_cafe`.`tb_file` (
+  `file_no` INT NOT NULL AUTO_INCREMENT COMMENT '파일정보 기본키',
+  `post_no` INT NULL COMMENT '게시글 기본키',
+  `file_sn` INT NULL COMMENT '파일순번',
+  `original_name` VARCHAR(2000) NULL COMMENT '기존파일명',
+  `stored_name` VARCHAR(2000) NULL COMMENT '저장파일명',
+  `file_size` INT NULL COMMENT '파일크기',
+  `stored_path` VARCHAR(4000) NULL COMMENT '저장경로\n',
+  `file_cd` VARCHAR(20) NULL COMMENT '파일구분코드',
+  `file_ext` VARCHAR(20) NULL COMMENT '파일확장자',
+  `frst_regt_no` INT NULL COMMENT '최초등록아이디',
+  `frst_regt_dt` DATETIME NULL COMMENT '최초등록일시',
+  PRIMARY KEY (`file_no`))
+ENGINE = InnoDB;
 
 
-CREATE TABLE POST_TB
-(
-  		POST_NO_PK INT NOT NULL AUTO_INCREMENT,
-		TITLE		VARCHAR(500),
-		CONTENT		VARCHAR(4000),
-		WRT_NO		INT,
-		WRT_DATE	DATE,
-		WRT_RE_DATE DATE,
-		VIEW_CNT	INT,
-		DEL_FL		CHAR(1),
-PRIMARY KEY(POST_NO_PK)
-) ENGINE=MYISAM CHARSET=utf8;
+-- -----------------------------------------------------
+-- Table `jupo_cafe`.`tb_comment`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jupo_cafe`.`tb_comment` ;
+
+CREATE TABLE IF NOT EXISTS `jupo_cafe`.`tb_comment` (
+  `comment_no` INT NOT NULL AUTO_INCREMENT,
+  `post_no` INT NULL COMMENT '게시글아이디',
+  `content` VARCHAR(4000) NULL COMMENT '댓글내용',
+  `grp_no` INT NULL COMMENT '그룹아이디',
+  `grp_order` INT NULL DEFAULT 0 COMMENT '그룹내순번',
+  `upper_no` INT NULL COMMENT '상위댓글아이디',
+  `frst_regt_no` INT NULL COMMENT '최초등록아이디',
+  `frst_regt_dt` DATETIME NULL COMMENT '최초등록일시',
+  `last_updt_no` INT NULL COMMENT '최종수정아이디',
+  `last_updt_dt` DATETIME NULL COMMENT '최종수정일시',
+  `del_yn` CHAR(1) NULL COMMENT '삭제여부',
+  PRIMARY KEY (`comment_no`))
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
