@@ -1,6 +1,7 @@
 /* layout */
 .layout-body {
     width: 1080px;
+    min-height: 110vh;
     margin: 0 auto;
 }
 
