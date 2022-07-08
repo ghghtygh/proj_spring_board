@@ -95,16 +95,16 @@ public class UserController {
 	public String signinPOST(UserInfo userInfo,HttpSession session,HttpServletRequest request,Model model) throws Exception {
 		
 		
-		UserVO vo = userService.selectUserInfo(userInfo);
+		UserVO userVO = userService.selectUserInfo(userInfo);
 		
-		if(vo==null) {
+		if(userVO==null) {
 			
-			model.addAttribute("userId",userInfo.getUserId());
+			model.addAttribute("userNo",userInfo.getUserNo());
 			return "signin";
 			
 		}else{
 		
-			session.setAttribute("user",vo);
+			session.setAttribute("user", userVO);
 		
 			String referer = request.getHeader("Referer");
 		

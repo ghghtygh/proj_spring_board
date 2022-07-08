@@ -54,10 +54,6 @@ public class PostServiceImpl implements PostService {
 
 		List<PostVO> list = dao.selectPostList(searchVO);
 
-		for (int i = 0, size = list.size(); i < size; i++) {
-			PostVO vo = list.get(i);
-			vo.setCountFiles(Integer.toString(dao.countFile(vo.getPostNum())));
-		}
 		return list;
 	}
 
@@ -75,7 +71,7 @@ public class PostServiceImpl implements PostService {
 
 		dao.modifyPost(vo);
 
-		vo = selectPostDetail(vo.getPostNum());
+		vo = selectPostDetail(vo.getPostNo());
 
 		List<Map<String, Object>> list = fileUtils.parseInsertFileInfo(vo, request);
 

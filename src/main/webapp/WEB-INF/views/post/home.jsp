@@ -98,7 +98,7 @@
 	
 </script>
 <form id="frm">
-	
+
 		<div class="">
 		
 			<div>
@@ -238,12 +238,12 @@
 				            <c:forEach items="${postList}" var="post">
 				                <tr class="table-light">
 				                	<td>
-					                	<c:if test="${(user.userId eq 'admin' )or(user.userId eq post.wrtId)}">
-					                			<input type="checkbox" name="postNoList" value="${post.postNum}">
+					                	<c:if test="${(user.loginId eq 'admin' )or(user.loginId eq post.loginId)}">
+					                			<input type="checkbox" name="postNoList" value="${post.postNo}">
 					                	</c:if>
 				                	</td>
 				                	<td>
-				                		${post.postNum}
+				                		${post.postNo}
 				                	</td>
 				                    <td style="">
 				                    	<div style="width:100%;">
@@ -253,14 +253,14 @@
 						                    	<nobr>
 						                    	<c:choose>
 							                    	<c:when test="${keyword eq ''||empty keyword}">
-							                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}' title="${post.title}"
+							                    		<a class="" href='/read?num=${post.postNo}&page=${pager.nowPage}' title="${post.title}"
 								                    	 style="color:#2C3E50;font-weight:600;">
 								                    		${post.title}
 								                    	</a>					                    	
 							                    	</c:when>
 							                    	
 							                    	<c:otherwise>
-							                    		<a class="" href='/read?num=${post.postNum}&page=${pager.nowPage}&selectOption=${selectOption}&keyword=${keyword}' title="${post.title}"
+							                    		<a class="" href='/read?num=${post.postNo}&page=${pager.nowPage}&selectOption=${selectOption}&keyword=${keyword}' title="${post.title}"
 								                    	 style="color:#2C3E50;font-weight:600;">
 								                    		${post.title}
 								                    	</a>
@@ -271,16 +271,16 @@
 						                    	</nobr>
 					                    	</div>
 					                    	<div align="right" style="width:10%;float:right">
-					                    		<c:if test="${post.countFiles>0}">
+					                    		<c:if test="${post.fileYn eq 'Y'}">
 					                    			<img src='/resources/image/disk.ico' style="width:auto;height:15px;">
 					                    		</c:if>
 					                    	</div>
 				                    	</div>
 				                    </td>
-				                    <td>${post.wrtId}</td>
+				                    <td>${post.loginId}</td>
 				                    
 				                    <td>
-				                    	${fn:substring(post.wrtDt,0,16) }
+				                    	${fn:substring(post.frstRegtDt, 0, 16) }
 				                    </td>
 				                    <td style="text-align:right">${post.viewCnt}</td>
 				                    

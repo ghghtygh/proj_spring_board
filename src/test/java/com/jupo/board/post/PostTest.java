@@ -69,7 +69,7 @@ public class PostTest {
 
         PostVO postVO = postList.get(0);
 
-        ModelMap detailModelMap = mockMvc.perform(MockMvcRequestBuilders.get("/read?num="+postVO.getPostNum()))
+        ModelMap detailModelMap = mockMvc.perform(MockMvcRequestBuilders.get("/read?num="+postVO.getPostNo()))
                 .andReturn()
                 .getModelAndView()
                 .getModelMap();
@@ -77,7 +77,7 @@ public class PostTest {
         PostVO detailPostVO = (PostVO) detailModelMap.get("postVO");
 
         // 파라미터로 넘긴 게시글 번호와 조회한 게시글 번호가 같은지
-        assertEquals(postVO.getPostNum(), detailPostVO.getPostNum());
+        assertEquals(postVO.getPostNo(), detailPostVO.getPostNo());
     }
 
     /***

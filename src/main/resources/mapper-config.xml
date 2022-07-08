@@ -3,7 +3,11 @@
     PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
     <configuration>
-    
+
+        <settings>
+            <!-- 자동 카멜케이스 규칙 적용 -->
+            <setting name="mapUnderscoreToCamelCase" value="true"/>
+        </settings>
         <typeAliases>
             <typeAlias type="com.jupo.board.post.vo.PostVO" alias="postVO"/>
             <typeAlias type="com.jupo.board.user.vo.UserVO" alias="userVO"/>

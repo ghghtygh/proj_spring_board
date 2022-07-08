@@ -131,7 +131,7 @@ public class PostController {
     		@RequestParam(defaultValue="") String keyword, Model model) throws Exception{
     	
     	PostVO vo = postService.selectPostDetail(num);
-    	vo.setFileNames(postService.selectFileList(vo.getPostNum()));
+    	vo.setFileNames(postService.selectFileList(vo.getPostNo()));
     	
     	// 해당 게시글을 읽어들임
     	model.addAttribute("postVO",vo);
@@ -181,7 +181,7 @@ public class PostController {
     	postService.modifyPost(post, request);
     	//service.modifyPost(post);
     	
-    	return "redirect:/read?num="+post.getPostNum();
+    	return "redirect:/read?num="+post.getPostNo();
     }
     
 
@@ -264,7 +264,7 @@ public class PostController {
 		if(user == null){
 			return "signin";
 		}
-		post.setWrtNo(String.valueOf(user.getUserNum()));
+		post.setFrstRegtNo(String.valueOf(user.getUserNo()));
     	postService.insertPostInfo(post, request);
     	
     	return "redirect:/";

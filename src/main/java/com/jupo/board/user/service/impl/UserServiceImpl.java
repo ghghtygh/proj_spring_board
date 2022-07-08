@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 	public void insertUserInfo(UserVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		
-		String encPw = pwEncoder.encode(vo.getUserPw());
-		vo.setUserPw(encPw);
+		String encPw = pwEncoder.encode(vo.getPassword());
+		vo.setPassword(encPw);
 
 		userDAO.insertUserInfo(vo);
 	}
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO selectUserInfo(UserInfo userInfo) throws Exception{
 		
-		UserVO vo = userDAO.selectUserInfo(userInfo);
+		UserVO userVO = userDAO.selectUserInfo(userInfo);
 		
-		if(vo == null){
+		if(userVO == null){
 			return null;
 		}
 
-		if(pwEncoder.matches(userInfo.getUserPw(), vo.getUserPw())){
-			return vo;
+		if(pwEncoder.matches(userInfo.getPassword(), userVO.getPassword())){
+			return userVO;
 		}
 
 		return null;

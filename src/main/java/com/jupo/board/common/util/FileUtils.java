@@ -36,7 +36,7 @@ public class FileUtils {
 		// 파일 정보
 		Map<String,Object> listMap = null;
 		
-		String postNum = vo.getPostNum();
+		String postNo = vo.getPostNo();
 		
 		File file = new File(filePath);
 		
@@ -51,7 +51,7 @@ public class FileUtils {
 			
 			if(multipartFile.isEmpty()==false){
 				/*
-				 * postNum				게시글 번호
+				 * postNo				게시글 번호
 				 * originalFileName		원본 파일이름
 				 * storedFileName		저장된 파일이름
 				 * fileSize				파일 크기
@@ -65,7 +65,7 @@ public class FileUtils {
 				multipartFile.transferTo(file);
 				
 				listMap = new HashMap<String, Object>();
-				listMap.put("postNum", postNum);
+				listMap.put("postNo", postNo);
 				listMap.put("originalFileName", originalFileName);
 				listMap.put("storedFileName", storedFileName);
 				listMap.put("fileSize", multipartFile.getSize());

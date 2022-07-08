@@ -15,26 +15,38 @@ import com.jupo.board.common.vo.DefaultVO;
 @ToString
 public class PostVO extends DefaultVO {
 	 
-	
+	// 게시판 번호
+    private String boardNo;
 	// 게시글 번호
-	private String postNum;
+	private String postNo;
 	// 게시글 제목
     private String title;
     // 게시글 내용
     private String content;
-    // 작성 유저 번호
-    private String wrtNo;
-    // 작성일
-    private String wrtDt;
-    // 수정일
-    private String reDt;
+    // 최초등록유저번호
+    private String frstRegtNo;
+    // 최초등록아이디
+    private String loginId;
+    // 최초등록닉네임
+    private String nickname;
+    // 최초작성일시
+    private String frstRegtDt;
+    // 최종수정유저번호
+    private String lastUpdtNo;
+    // 최종수정일시
+    private String lastUpdtDt;
     // 첨부파일명
-    private List<Map<String,Object>> fileNames;
+    private List<Map<String, Object>> fileNames;
     // 조회 수
     private String viewCnt;
-    // 유저 아이디
-    private String wrtId;
     // 첨부파일 여부
-    private String countFiles;
-
+    private String fileYn;
+    // 썸네일
+    private String thumbnail;
+    // 삭제 여부
+    private String delYn;
+    // 위도
+    private double latitude;
+    // 경도
+    private double longitude;
 }
