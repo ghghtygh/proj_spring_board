@@ -93,65 +93,21 @@
 	
 	function goHome(){
 		
-		location.href="../../..";
+		location.href="/";
 	}
 	
 </script>
 <form id="frm">
-
 		<div class="">
-		
 			<div>
-				<div style="margin-top:50px;">
-				
+				<div class="mt-50">
 					<div class="col-lg-8 col-md-7 col-sm-6">
-					
 						<h3>게시판</h3>
 					</div>
-					
 				</div>
-				<%--<div align="right">
-				    <div class="btn-group btn-group-toggle" >
-					 	<c:catch>
-						    <c:choose>
-						        <c:when test="${empty user }">
-						        
-							        <input type="button" class="btn btn-primary" onClick="location.href='/signin'" value="로그인">
-							        <input type="button" class="btn btn-primary" onClick="location.href='/signup'" value="회원가입">
-							        
-						        </c:when>
-						        <c:when test="${user.userId eq 'admin' }">
-						        
-				                       <p class="btn btn-primary disabled">
-				                       		관리자 ${user.userId}
-				                       	</p>
-				                       	
-				                       <input type="button" class="btn btn-primary" onClick="location.href='/signout'" value="로그아웃">
-							        
-				                </c:when>
-				                
-				                <c:otherwise>
-				                       <p class="btn btn-primary disabled">
-				                       
-				                       		${user.userId}
-				                       
-				                       </p>
-				                       
-				                       <input type="button" class="btn btn-primary" onClick="location.href='/signout'" value="로그아웃">
-							        
-				                </c:otherwise>
-						                
-						    </c:choose>
-						</c:catch>
-				
-				 	</div>--%>
-
-			 	</div>
 		 	</div>
-		 	
-		 	<div style="margin-top:20px;">
-		 	
-				<div style="float:left;">
+		 	<div class="mt-20">
+				<div class="fl">
 					<c:choose>
 		 				<c:when test="${!(keyword==''||empty keyword)}">
 		 				
@@ -165,10 +121,10 @@
 		 				</c:otherwise>
 		 			</c:choose>
 	 			</div>
+
+				<div class="fl">
 	 			
-	 			<div style="float: right;">
-	 			
-		 			<div class ="form-inline form-group" align="right">
+		 			<div class="form-inline form-group" align="right">
 		 			
 						<select class="form-control" style="width:auto; margin-left:20px; margin-right: 5px;" name="searchOption">
 							
@@ -181,9 +137,9 @@
 						</select>
 				
 						
-						<input type="text" class="form-control" style="margin-right: 5px;"id="kw" name="keyword">
+						<input type="text" class="form-control mr-5" id="kw" name="keyword">
 						
-						<button type="submit" class="btn btn-secondary" style="margin-right: 5px;" formaction="/">검색</button>
+						<button type="submit" class="btn btn-secondary mr-5" formaction="/">검색</button>
 					
 					</div>
 				</div>

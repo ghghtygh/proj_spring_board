@@ -35,7 +35,16 @@ public class FileUtils {
 		
 		// 파일 정보
 		Map<String,Object> listMap = null;
-		
+
+		// 파일 순번
+		int fileSn = 1;
+
+		// 파일 구분코드
+		String fileCd = "";
+
+		// 등록자 아이디
+		String frstRegtNo = "";
+
 		String postNo = vo.getPostNo();
 		
 		File file = new File(filePath);
@@ -66,9 +75,15 @@ public class FileUtils {
 				
 				listMap = new HashMap<String, Object>();
 				listMap.put("postNo", postNo);
-				listMap.put("originalFileName", originalFileName);
-				listMap.put("storedFileName", storedFileName);
+				listMap.put("fileSn", fileSn++);
+				listMap.put("filePath", filePath);
+				listMap.put("originalFileNm", originalFileName);
+				listMap.put("storedFileNm", storedFileName);
 				listMap.put("fileSize", multipartFile.getSize());
+				listMap.put("fileCd", fileCd);
+				listMap.put("fileExt", originalFileExtension);
+				listMap.put("frstRegtNo", frstRegtNo);
+
 				list.add(listMap);
 			}
 		}

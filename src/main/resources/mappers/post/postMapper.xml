@@ -160,6 +160,8 @@
 			, a.content
 			, b.login_id
 			, a.frst_regt_dt
+			, a.latitude
+			, a.longitude
 			, a.last_updt_dt
 			, a.view_cnt
 			, b.nickname

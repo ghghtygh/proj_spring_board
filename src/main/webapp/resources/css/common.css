@@ -6,7 +6,17 @@
     float: right;
 }
 
+.mt-50 {
+    margin-top: 50px;
+}
 
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
 .article-board thead th {
     border-top-color: #333;
     border-bottom-color: #f2f2f2;

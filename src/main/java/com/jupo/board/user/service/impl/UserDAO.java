@@ -19,7 +19,9 @@ public interface UserDAO{
 
 	public void insertUserInfo(UserVO vo) throws Exception;
 
-	public int idCheck(String userId) throws Exception;
+	public int getLoginIdCnt(String userId) throws Exception;
+
+	public int getNicknameCnt(String userId) throws Exception;
 
 	public UserVO selectUserInfo(UserInfo userInfo) throws Exception;
 

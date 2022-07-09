@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int idCheck(String userId) throws Exception{
 		
-		return userDAO.idCheck(userId);
+		return userDAO.getLoginIdCnt(userId);
 	}
 	
 	@Override

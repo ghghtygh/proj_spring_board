@@ -47,6 +47,7 @@
 
 #content-area #group-area {
     width: 200px;
+    min-height: 430px;
 }
 #content-area #main-area {
     width: 860px;

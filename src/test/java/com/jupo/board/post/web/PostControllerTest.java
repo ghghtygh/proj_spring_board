@@ -1,4 +1,4 @@
-package com.jupo.board.post;
+package com.jupo.board.post.web;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
         "file:src/main/resources/spring/root-context.xml",
         "file:src/main/resources/spring/appServlet/servlet-context.xml"})
 @Log4j2
-public class PostTest {
+public class PostControllerTest {
 
 
     //@Inject
