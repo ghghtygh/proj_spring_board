@@ -27,22 +27,25 @@ public class UserController {
     private UserService userService;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	
+
+	private final String JSP_DIR = "user/";
+
 	// 리디렉트 방지
 	@RequestMapping(value="/doSignup",method=RequestMethod.GET)
 	public void doSignupGET() {
 
 	}
+
 	// 회원가입 페이지로 이동
 	@RequestMapping(value="/doSignup",method=RequestMethod.POST)
 	public String doSignupPOST(UserInfo userInfo) {
-		return "signup";
+		return JSP_DIR + "signup";
 	}
+
 	// 리디렉트 방지
 	@RequestMapping(value="/signup",method=RequestMethod.GET)
-	public void signupGET() {
-		
+	public String signupGet() throws Exception {
+		return JSP_DIR + "signup";
 	}
 	
 	// 회원가입 기능 수행
@@ -85,7 +88,7 @@ public class UserController {
 		}else{
 			
 			model.addAttribute("userId",userId);
-			return null;
+			return JSP_DIR + "signin";
 			
 		}
 	}
@@ -100,7 +103,7 @@ public class UserController {
 		if(userVO==null) {
 			
 			model.addAttribute("userNo",userInfo.getUserNo());
-			return "signin";
+			return JSP_DIR + "signin";
 			
 		}else{
 		

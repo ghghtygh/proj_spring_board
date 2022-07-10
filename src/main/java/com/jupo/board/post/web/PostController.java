@@ -251,7 +251,7 @@ public class PostController {
     	UserVO user = (UserVO) session.getAttribute("user");
     	
     	if (user==null) {
-    		return "signin";
+    		return "user/signin";
     	}else {
     		return JSP_DIR + "write";
     	}
@@ -262,7 +262,7 @@ public class PostController {
     public String writePOST(PostVO post, HttpSession session, HttpServletRequest request) throws Exception{
 		UserVO user = (UserVO) session.getAttribute("user");
 		if(user == null){
-			return "signin";
+			return "user/signin";
 		}
 		post.setFrstRegtNo(String.valueOf(user.getUserNo()));
     	postService.insertPostInfo(post, request);

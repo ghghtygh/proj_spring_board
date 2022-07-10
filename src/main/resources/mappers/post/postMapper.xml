@@ -227,6 +227,8 @@
     		, file_ext
     		, frst_regt_no
     		, frst_regt_dt
+    		, last_updt_no
+    		, last_updt_dt
     		, del_yn
     	)
     	VALUES
@@ -239,6 +241,8 @@
     		, #{storedPath}
     		, #{fileCd}
     		, #{fileExt}
+    		, #{frstRegtNo}
+    		, NOW()
     		, #{frstRegtNo}
     		, NOW()
     		, 'N'
@@ -279,6 +283,8 @@
     	UPDATE tb_file
     	SET
     		  del_yn = 'Y'
+    		, last_updt_no = #{lastUpdtNo}
+    		, last_updt_dt = NOW()
     	WHERE 1=1
     	AND post_no = #{postNo}
     </update>
@@ -288,6 +294,8 @@
     	UPDATE tb_file
     	SET
 			del_yn = 'Y'
+    	  , last_updt_no = #{lastUpdtNo}
+		  , last_updt_dt = NOW()
     	WHERE 1=1
     	AND file_no = #{fileNo}
     </update>

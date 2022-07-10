@@ -132,8 +132,7 @@
 							<option value='content'>내용</option>
 							<option value='title'>제목</option>
 							<option value='userId'>작성자</option>
-						
-						
+
 						</select>
 				
 						
@@ -193,18 +192,14 @@
 				        	</c:if>
 				            <c:forEach items="${postList}" var="post">
 				                <tr class="table-light">
-				                	<td>
-					                	<c:if test="${(user.loginId eq 'admin' )or(user.loginId eq post.loginId)}">
-					                			<input type="checkbox" name="postNoList" value="${post.postNo}">
-					                	</c:if>
-				                	</td>
+				                	<%--<td>
+										<input type="checkbox" name="postNoList" value="${post.postNo}">
+				                	</td>--%>
 				                	<td>
 				                		${post.postNo}
 				                	</td>
 				                    <td style="">
 				                    	<div style="width:100%;">
-					                    	
-					                    	
 					                    	<div style="width:90%;float:left;text-align:left;text-overflow:ellipsis; overflow:hidden;">
 						                    	<nobr>
 						                    	<c:choose>
@@ -247,92 +242,18 @@
 				     </table>
 				     
 				</div>
-				
-				<div style="position:relative;">
-					<div style="left:0;top:0;position:absolute;text-align:center;width:100%;">
-					  
-					  	<div class="btn-group mr-2" style="z-index:10;">
-					  		<c:choose>
-					  		
-							  	<c:when test="${pager.nowPage ne 1 }">
-							  	
-							  		<a href='#' class="btn btn-primary" onClick="fn_paging(1)">처음</a>
-									
-									
-								</c:when>
-								<c:otherwise>
-							  		<a class="btn btn-primary disabled">처음</a>
-								</c:otherwise>
-						  	</c:choose>
-					  
-						  	<c:choose>
-							  	<c:when test="${pager.nowPage ne 1 }">
-								    <a href="#" class="btn btn-primary" onClick="fn_paging('${pager.prevPage}')">&laquo;</a>
-								</c:when>
-								<c:otherwise>
-								    <a class="btn btn-primary disabled">&laquo;</a>
-								</c:otherwise>
-						  	</c:choose>
-					  	
-						  	<c:forEach begin="${pager.startPage}" end="${pager.endPage}" var="pageNum">
-								        	
-				        		<c:choose>
-				        		
-				        			<c:when test="${pageNum eq pager.nowPage}">
-				        				<a href="#" class="btn btn-primary active" onClick="fn_paging('${pageNum}')">${pageNum }</a>
-				        				
-				        			</c:when>
-				        			
-				        			<c:otherwise>
-				        				<a href="#" class="btn btn-primary" onClick="fn_paging('${pageNum}')">${pageNum}</a>
-										
-									</c:otherwise>
-						 			
-								</c:choose>     
-								   	
-							</c:forEach>
-				        	
-				        	
-							<c:choose>
-								<c:when test="${pager.nowPage ne pager.pageCnt && pager.pageCnt > 0 }">
-									
-									<a class="btn btn-primary" href="#" onClick="fn_paging('${pager.nextPage}')">&raquo;</a>
-									
-									
-								</c:when>
-								<c:otherwise>
-									
-									<a class="btn btn-primary disabled">&raquo;</a>
-									
-								</c:otherwise>
-						  	</c:choose>
-							<c:choose>
-							  	<c:when test="${pager.nowRange ne pager.rangeCnt && pager.rangeCnt>0 }">
-							  		
-							  		<a class="btn btn-primary" href="#" onClick="fn_paging('${pager.pageCnt}')">끝</a>
-									
-									
-								</c:when>
-								<c:otherwise>
-									
-									<a class="btn btn-primary disabled">끝</a>
-									
-								</c:otherwise>
-						  	</c:choose>
-					  	
-					  	</div>
-					</div>
-					
-					<div style="left:0;top:0;position:absolute;text-align:right;width:100%;">
-						
-						<c:if test="${!(empty user)}">
-							<input type="button" class="btn btn-secondary" style="margin-right: 5px;" id="del_sbmt" value="게시글 삭제">
-						</c:if>
-						<input type="button" class="btn btn-primary" style="margin-right: 5px;" onClick="location.href='/write'" value="게시글 작성">
-					</div>
-					
+
+				<%-- 페이징 --%>
+				<%@include file="/WEB-INF/views/common/pagination.jsp"%>
+
+				<div style="left:0;top:0;position:absolute;text-align:right;width:100%;">
+
+					<c:if test="${!(empty user)}">
+						<input type="button" class="btn btn-secondary" style="margin-right: 5px;" id="del_sbmt" value="게시글 삭제">
+					</c:if>
+					<input type="button" class="btn btn-primary" style="margin-right: 5px;" onClick="location.href='/write'" value="게시글 작성">
 				</div>
-				
+
 			</div>
     	</div>
     </form>
