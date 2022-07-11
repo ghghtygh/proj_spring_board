@@ -5,8 +5,8 @@
 
 <tiles-definitions>
 
-    <!-- main layout -->
-    <definition name="layout-default" template="/WEB-INF/views/layout/layout.jsp">
+    <!-- post layout -->
+    <definition name="layout-post" template="/WEB-INF/views/layout/layout.jsp">
         <put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
         <put-attribute name="left" value="/WEB-INF/views/layout/left.jsp" />
         <put-attribute name="body" value="" />
@@ -15,19 +15,37 @@
         <put-attribute name="title" value="Jupo Cafe" />
     </definition>
 
-    <!--
-    <definition name="/" extends="layout-default">
-        <put-attribute name="body" value="/WEB-INF/views/post/home.jsp"/>
-    </definition>-->
-    <definition name="*.post" extends="layout-default">
+    <definition name="*.post" extends="layout-post">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
     </definition>
 
-    <definition name="*/*.post" extends="layout-default">
+    <definition name="*/*.post" extends="layout-post">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
 
-    <definition name="*/*/*.post" extends="layout-default">
+    <definition name="*/*/*.post" extends="layout-post">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
     </definition>
+
+
+    <!-- user layout -->
+    <definition name="layout-user" template="/WEB-INF/views/layout/layout2.jsp">
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+        <put-attribute name="scripts" value="/WEB-INF/views/layout/scripts.jsp" />
+        <put-attribute name="title" value="Jupo Cafe" />
+    </definition>
+
+    <definition name="*.user" extends="layout-user">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+
+    <definition name="*/*.user" extends="layout-user">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="*/*/*.user" extends="layout-user">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+
 </tiles-definitions>

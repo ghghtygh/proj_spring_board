@@ -5,8 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,62 +18,53 @@ import com.jupo.board.user.vo.UserInfo;
 import com.jupo.board.user.vo.UserVO;
 import com.jupo.board.user.service.UserService;
 
-
+@Log4j2
 @Controller
 public class UserController {
 
 	@Autowired
     private UserService userService;
 	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
-
 	private final String JSP_DIR = "user/";
 
-	// 리디렉트 방지
-	@RequestMapping(value="/doSignup",method=RequestMethod.GET)
-	public void doSignupGET() {
-
-	}
-
-	// 회원가입 페이지로 이동
-	@RequestMapping(value="/doSignup",method=RequestMethod.POST)
-	public String doSignupPOST(UserInfo userInfo) {
-		return JSP_DIR + "signup";
-	}
-
-	// 리디렉트 방지
+	/***
+	 * 회원가입 페이지 이동
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/signup",method=RequestMethod.GET)
 	public String signupGet() throws Exception {
-		return JSP_DIR + "signup";
+		return JSP_DIR + "signup.user";
 	}
-	
-	// 회원가입 기능 수행
+
+	/***
+	 * 회원 등록
+	 * @param userVO
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/signup",method=RequestMethod.POST)
-	public String signupPOST(UserVO vo) throws Exception {
+	public String signupPOST(UserVO userVO) throws Exception {
 		
-		userService.insertUserInfo(vo);
+		userService.insertUserInfo(userVO);
 		
 		return "redirect:/";
 	}
-	
-	// 아이디 중복 확인
+
+	/***
+	 * 아이디 중복확인
+	 * @param loginId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
 	@RequestMapping(value="/idCheck", method=RequestMethod.POST)
-	
-		@ResponseBody
-		public Map<Object, Object> idcheck( @RequestParam("userId") String userId) throws Exception {
-		         
-	        int count = 0;
-	        
-	        Map<Object, Object> map = new HashMap<Object, Object>();
-	        
-	        //logger.info("\n\n>>>>>>>>> 유저 아이디 : "+userId);
-	        
-	        count = userService.idCheck(userId);
-	        
-	        map.put("cnt", count);
-	        
-	        return map;
-	    }
+	public Map<Object, Object> idcheck( @RequestParam("loginId") String loginId) throws Exception {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		int count = userService.idCheck(loginId);
+		map.put("cnt", count);
+		return map;
+	}
 	
 	// 로그인 페이지 이동 
 	@RequestMapping(value="/signin",method=RequestMethod.GET)
@@ -88,7 +78,7 @@ public class UserController {
 		}else{
 			
 			model.addAttribute("userId",userId);
-			return JSP_DIR + "signin";
+			return JSP_DIR + "signin.user";
 			
 		}
 	}
@@ -98,21 +88,16 @@ public class UserController {
 	public String signinPOST(UserInfo userInfo,HttpSession session,HttpServletRequest request,Model model) throws Exception {
 		
 		
-		UserVO userVO = userService.selectUserInfo(userInfo);
+		UserVO loginVO = userService.selectUserInfo(userInfo);
 		
-		if(userVO==null) {
+		if(loginVO==null) {
 			
 			model.addAttribute("userNo",userInfo.getUserNo());
-			return JSP_DIR + "signin";
+			return JSP_DIR + "signin.user";
 			
 		}else{
-		
-			session.setAttribute("user", userVO);
-		
-			String referer = request.getHeader("Referer");
-		
-			return "redirect:"+referer;
-		
+			session.setAttribute("loginVO", loginVO);
+			return "redirect:/";
 		}
 	
 	}

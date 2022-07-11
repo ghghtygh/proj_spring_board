@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.jupo.board.post.service.PostService;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,15 +23,12 @@ import com.jupo.board.post.vo.PostVO;
 import com.jupo.board.user.vo.UserVO;
 import com.jupo.board.common.util.PostPager;
 
-
+@Log4j2
 @Controller
 public class PostController {
-    
-    
+
     @Autowired
     private PostService postService;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());    
 
     private final String JSP_DIR = "post/";
 
@@ -84,9 +80,9 @@ public class PostController {
     public Map<String, Object> deletePostList(@RequestParam(defaultValue="")List<String> postNoList) throws Exception{
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-    	//logger.info("===========");
-    	//logger.info(deletePostNo);
-    	//logger.info("===========");
+    	//log.info("===========");
+    	//log.info(deletePostNo);
+    	//log.info("===========");
 
 		if(postNoList == null || postNoList.size()<0){
 			resultMap.put("result", "fail");
@@ -159,24 +155,24 @@ public class PostController {
     
     public String modifyPOST(@RequestParam(defaultValue="")List<String> deleteFileNo ,PostVO post, HttpServletRequest request) throws Exception{
     	
-    	logger.info("===============");
+    	log.info("===============");
     	
     	
     	if(!deleteFileNo.isEmpty()){
-    		logger.info("deleteFileNo: "+deleteFileNo);
+    		log.info("deleteFileNo: "+deleteFileNo);
     		for (String dfn:deleteFileNo){
         		
         		
         		postService.deleteFile(dfn);
         		
-        		logger.info(dfn);
+        		log.info(dfn);
         		
         	}
     	}else{
-    		logger.info("빈 deleteFileNo: "+deleteFileNo);
+    		log.info("빈 deleteFileNo: "+deleteFileNo);
     	}
-    	//logger.info(request);
-    	logger.info("===============");
+    	//log.info(request);
+    	log.info("===============");
     	
     	postService.modifyPost(post, request);
     	//service.modifyPost(post);
@@ -222,9 +218,9 @@ public class PostController {
     public void downloadFile(@RequestParam("fileNo")String fileNo,HttpServletResponse response)throws Exception{
     	
     	
-    	//logger.info("=================");
-    	//logger.info(fileNo);
-    	//logger.info("=================");
+    	//log.info("=================");
+    	//log.info(fileNo);
+    	//log.info("=================");
     	
     	
     	Map<String,Object> map = postService.selectFile(fileNo);
@@ -250,11 +246,7 @@ public class PostController {
     	
     	UserVO user = (UserVO) session.getAttribute("user");
     	
-    	if (user==null) {
-    		return "user/signin";
-    	}else {
-    		return JSP_DIR + "write";
-    	}
+		return JSP_DIR + "write";
     }
 
     // 게시글 작성
@@ -262,7 +254,7 @@ public class PostController {
     public String writePOST(PostVO post, HttpSession session, HttpServletRequest request) throws Exception{
 		UserVO user = (UserVO) session.getAttribute("user");
 		if(user == null){
-			return "user/signin";
+			return "user/signin.user";
 		}
 		post.setFrstRegtNo(String.valueOf(user.getUserNo()));
     	postService.insertPostInfo(post, request);

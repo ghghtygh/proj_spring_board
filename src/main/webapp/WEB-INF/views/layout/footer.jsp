@@ -12,5 +12,4 @@
             <span class="blind">Jupo Cafe</span>
         </a>
     </h2>
-
 </footer>

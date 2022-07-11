@@ -77,8 +77,8 @@
 	function fn_paging(nowPage) {
 		
 		var url="/?page="+nowPage;
-		
-		
+
+
 		if (kw!=""){
 			
 			url+="&searchOption=";
@@ -195,11 +195,14 @@
 				                	<%--<td>
 										<input type="checkbox" name="postNoList" value="${post.postNo}">
 				                	</td>--%>
+
 				                	<td>
 				                		${post.postNo}
 				                	</td>
 				                    <td style="">
 				                    	<div style="width:100%;">
+
+
 					                    	<div style="width:90%;float:left;text-align:left;text-overflow:ellipsis; overflow:hidden;">
 						                    	<nobr>
 						                    	<c:choose>
