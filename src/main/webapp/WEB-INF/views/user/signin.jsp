@@ -21,28 +21,28 @@
 							<div class="input-group mb-3">
 								<c:choose>
 									<c:when test="${empty userId||userId==''}">
-
-										<input type="text" autofocus name="userId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="아이디" maxlength =30>
-
+										<input type="text" autofocus name="loginId" class="form-control-plaintext" aria-describedby="emailHelp" placeholder="아이디" maxlength =30>
 									</c:when>
 
 									<c:otherwise>
-										<input type="text" autofocus name="userId" value="${userId}" class="form-control-plaintext" maxlength =30>
+										<input type="text" autofocus name="loginId" value="${loginId}" class="form-control-plaintext" maxlength =30>
 									</c:otherwise>
 
 								</c:choose>
 							</div>
 							<div class="input-group mb-3">
-								<input type="password" class="form-control-plaintext" name="userPw" placeholder="비밀번호"  maxlength =32>
-
+								<input type="password" class="form-control-plaintext" name="password" placeholder="비밀번호"  maxlength =32>
 							</div>
 							<div align="center" class="text-danger">
 								&nbsp;
-								<c:if test="${!(empty userId||userId=='')}">
+								<c:if test="${!(empty loginId||loginId=='')}">
 									아이디 비밀번호 불일치
 								</c:if>
 							</div>
-							<div align="right">
+                            <div>
+								<input type="checkbox" id="loginSaveChk"/><label for="loginSaveChk">&nbsp;아이디 저장</label>
+							</div>
+							<div>
 								<button type="submit" class="btn btn-primary" formaction="signin" formmethod="post">로그인</button>
 							</div>
 						</div>

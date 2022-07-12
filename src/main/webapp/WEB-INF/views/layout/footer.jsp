@@ -7,9 +7,7 @@
     <a href="#" class="cafe_link">
         "localhost:8080"
     </a>
-    <h2>
-        <a class="jupo_cafe">
-            <span class="blind">Jupo Cafe</span>
-        </a>
-    </h2>
+    <a href="/" class="jupo_cafe footer_logo">
+        <span class="blind">Jupo Cafe</span>
+    </a>
 </footer>

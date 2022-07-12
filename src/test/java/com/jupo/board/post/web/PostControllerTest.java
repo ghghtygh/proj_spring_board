@@ -2,16 +2,11 @@ package com.jupo.board.post.web;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import com.jupo.board.post.service.PostService;
 import com.jupo.board.post.vo.PostVO;
-import com.jupo.board.post.web.PostController;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -20,14 +15,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations={
-        "file:src/main/resources/spring/context-*.xml",
-        "file:src/main/resources/spring/root-context.xml",
-        "file:src/main/resources/spring/appServlet/servlet-context.xml"})
 @Log4j2
 public class PostControllerTest {
 
@@ -43,7 +33,7 @@ public class PostControllerTest {
     @Autowired
     private PostService postService;
 
-    @Before
+    @BeforeEach
     public void setup(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         log.info("mMvc setup : '{}'", this.mockMvc);

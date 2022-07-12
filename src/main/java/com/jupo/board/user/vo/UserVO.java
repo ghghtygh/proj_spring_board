@@ -29,8 +29,6 @@ public class UserVO {
 	private String lastUpdtNo;
 	// 최종수정일시
 	private String lastUpdtDt;
-	// 회원등급
-	private String userLevel;
 	// 휴대폰번호
 	private String phoneNo;
 	// 주소

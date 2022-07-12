@@ -1,31 +1,51 @@
 package com.jupo.board.post.service;
 
+import com.jupo.board.ServiceTest;
+import com.jupo.board.common.util.FileUtils;
+import com.jupo.board.post.service.impl.PostDAO;
+import com.jupo.board.post.service.impl.PostServiceImpl;
+import com.jupo.board.post.vo.PostVO;
 import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(locations={
-        "file:src/main/resources/spring/context-*.xml",
-        "file:src/main/resources/spring/root-context.xml",
-        "file:src/main/resources/spring/appServlet/servlet-context.xml"
-})
 @Log4j2
-public class PostServiceTest {
+@DisplayName("Post Service Test")
+public class PostServiceTest extends ServiceTest {
+
+    @InjectMocks
+    PostServiceImpl postService;
+
+    @Mock
+    PostDAO postDAO;
+
+    @Mock
+    FileUtils fileUtils;
+
+    private PostVO postVO;
+
+    @BeforeEach
+    public void createPost(){
+        postVO = PostVO.builder()
+                .boardNo("1")
+                .postNo("1")
+                .title("제목테스트")
+                .content("내용테스트")
+                .loginId("1")
+                .nickname("닉네임테스트")
+                .viewCnt("0")
+                .delYn("N")
+                .build();
+    }
+
 
     @Test
+    @DisplayName("")
     public void unitTest() {
-        assertEquals("1", "1");
-        assertNotNull(new ArrayList<String>());
+        log.info(postVO.toString());
     }
 
 }

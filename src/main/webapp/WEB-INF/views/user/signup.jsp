@@ -1,19 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+		 pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Signup</title>
+<%@ include file="/WEB-INF/views/layout/taglib.jsp"%>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-<link href="<c:url value='/resources/css/bootstrap.css' />" rel="stylesheet">
-<link href="<c:url value='/resources/css/_bootswatch.scss' />" rel="stylesheet">
-<link href="<c:url value='/resources/css/_variables.scss' />" rel="stylesheet">
 
 <script type="text/javascript">
 	
@@ -158,17 +147,17 @@
 	}
 	
 </script>
-</head>
 
 <form name="frm" id="frm">
-<body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-		<div style="margin-left:10px;">
-			<a class="navbar-brand" href="/">home</a>
+    <header class="header" role="banner">
+		<div class="header_inner">
+			<a href="/" class="logo">
+				<h1 class="blind">Jupo Cafe</h1>
+			</a>
 		</div>
-	</nav>
-	<div class="container">
+	</header>
+	<div id="container" class="container">
 		<div style="margin-top:50px;">
 				
 			<div class="card mb-3">

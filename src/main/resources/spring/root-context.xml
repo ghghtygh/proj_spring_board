@@ -21,32 +21,6 @@
         <property name="maxInMemorySize" value="100000000"/>
     </bean>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-        <property name="url"
-            value="jdbc:log4jdbc:mysql://127.0.0.1:13306/jupo_cafe?useSSL=false&amp;serverTimezone=UTC">
-        </property>
-        <property name="username" value="jupo"></property>
-        <property name="password" value="1234"></property>
-    </bean>
-
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.jupo.board" />
-        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/>
-    </bean>
-
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:/mapper-config.xml"></property>
-        <property name="mapperLocations" value="classpath:mappers/**/*.xml"></property>
-    </bean>
-
-    <!-- mybatis      -->
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
-        destroy-method="clearCache">
-        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
-    </bean>
-
     <context:component-scan base-package="com.jupo.board">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>

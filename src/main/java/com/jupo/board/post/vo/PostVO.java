@@ -3,16 +3,15 @@ package com.jupo.board.post.vo;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.*;
 import com.jupo.board.common.vo.DefaultVO;
 
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostVO extends DefaultVO {
 	 
 	// 게시판 번호

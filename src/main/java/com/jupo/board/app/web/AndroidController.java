@@ -35,7 +35,7 @@ public class AndroidController {
 		
 		List<PostVO> list = new ArrayList<PostVO>();
 
-		PostVO searchVO = new PostVO();
+		PostVO searchVO = PostVO.builder().build();
 		searchVO.setPage(1);
 		searchVO.setPageSize(100);
 		list = postService.selectPostList(searchVO);

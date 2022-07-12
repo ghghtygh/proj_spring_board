@@ -22,16 +22,16 @@
     display: inline-block;
     margin-top: 108px;
     vertical-align: top;
-    background-position: 0 -51px;
+    background-position: 0 4px;
     background-repeat: no-repeat;
-    width: 155px;
-    height: 30px;
+    width: 215px;
+    height: 44px;
 
 }
 
-.footer .footer_copy .footer_logo, .header .logo, .reconfirm_top .logo {
-    background-image: url("../image/logo/cafe_logo2.png");
-    background-size: 244px 107px;
+.footer .footer_logo, .header .logo {
+    background-image: url("../image/logo/cafe_logo2_resize.png");
+    background-size: 215px 44px;
     background-repeat: no-repeat;
 }
 

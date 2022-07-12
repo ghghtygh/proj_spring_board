@@ -12,7 +12,7 @@
 			<when test="searchOption=='all'">
 				<!-- 검색옵션 : 전체(디폴트값) -->
 				AND (
-				b.nickname like CONCAT('%',#{keyword},'%')
+				e.nickname like CONCAT('%',#{keyword},'%')
 				OR b.login_id like CONCAT('%',#{keyword},'%')
 				OR a.content like CONCAT('%',#{keyword},'%')
 				OR a.title like CONCAT('%',#{keyword},'%')
@@ -24,7 +24,7 @@
 
 				AND(
 					b.login_id like CONCAT('%',#{keyword},'%')
-				OR 	b.nickname like CONCAT('%',#{keyword},'%')
+				OR 	e.nickname like CONCAT('%',#{keyword},'%')
 				)
 
 
@@ -51,17 +51,21 @@
 	<select id="selectPostListCnt" parameterType="postVO" resultType="java.lang.Integer">
 	/* 게시글 건수 조회 - /src/main/resources/mappers/postMapper.xml - selectPostListCnt */
 		SELECT
-			COUNT(*)
-		FROM
-    		tb_post	AS a
-    	 
-    	LEFT JOIN
-			tb_user	AS b
+			COUNT(DISTINCT a.post_no)
+		FROM tb_post AS a
+		LEFT JOIN tb_user AS b
 		ON a.frst_regt_no = b.user_no
+		LEFT JOIN tb_file AS c
+		ON a.post_no = c.post_no
+		AND c.del_yn = 'N'
+		INNER JOIN tb_board AS d
+		ON a.board_no = d.board_no
+		LEFT JOIN tb_member AS e
+		ON a.frst_regt_no = e.user_no
+		AND d.cafe_no = e.cafe_no
 		WHERE 1=1
 		AND a.del_yn = 'N'
 		<include refid="searchPost"></include>
-			 
 	</select>
 
 
@@ -76,25 +80,28 @@
 				, a.title
 				, a.frst_regt_no
 			    , b.login_id
-				, b.nickname
+				, MAX(e.nickname) AS nickname
 				, a.frst_regt_dt
 				, a.last_updt_dt
 			    , a.view_cnt
 				, a.thumbnail
 				, CASE WHEN count(c.file_no) > 0 THEN 'Y' ELSE 'N' END AS file_yn
-			FROM
-				tb_post	AS a
+			FROM tb_post AS a
 			LEFT JOIN tb_user AS b
 			ON a.frst_regt_no = b.user_no
 			LEFT JOIN tb_file AS c
 			ON a.post_no = c.post_no
 			AND c.del_yn = 'N'
-
+			INNER JOIN tb_board AS d
+			ON a.board_no = d.board_no
+			LEFT JOIN tb_member AS e
+			ON a.frst_regt_no = e.user_no
+			AND d.cafe_no = e.cafe_no
 			WHERE 1=1
 			AND a.del_yn = 'N'
 			<include refid="searchPost"></include>
-			GROUP BY post_no
-			ORDER BY post_no DESC
+			GROUP BY a.post_no
+			ORDER BY a.post_no DESC
 		) all_list
 		LIMIT #{start}, #{pageSize}
 
