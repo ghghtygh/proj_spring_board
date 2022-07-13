@@ -2,6 +2,8 @@ package com.jupo.board.post.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import com.jupo.board.post.vo.PostVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,30 +16,30 @@ public interface PostDAO{
      * @return
      * @throws Exception
      */
-   public List<PostVO> selectPostList(PostVO vo) throws Exception;
+    List<PostVO> selectPostList(PostVO vo) throws Exception;
 
-   public void insertPostInfo(PostVO vo) throws Exception;
+    void insertPostInfo(PostVO vo) throws Exception;
 
-   public void insertFile(Map<String, Object> map) throws Exception;
+    void insertFile(Map<String, Object> map) throws Exception;
 
-   public int selectPostListCnt(PostVO searchVO) throws Exception;
+    int selectPostListCnt(PostVO searchVO) throws Exception;
 
-   public int countFile(String postNo) throws Exception;
+    int countFile(String postNo) throws Exception;
 
-   public void viewCntPost(String postNo) throws Exception;
+    void viewCntPost(String postNo) throws Exception;
 
-   public void modifyPost(PostVO vo) throws Exception;
+    void modifyPost(PostVO vo) throws Exception;
 
-   public void deletePost(String postNo) throws Exception;
+    void deletePost(String postNo) throws Exception;
 
-   public PostVO selectPostDetail(String postNo) throws Exception;
+    Optional<PostVO> selectPostDetail(String postNo) throws Exception;
 
-   public List<Map<String,Object>> selectFileList(String postNo) throws Exception;
+    List<Map<String,Object>> selectFileList(String postNo) throws Exception;
 
-   public Map<String,Object> selectFile(String fileNo) throws Exception;
+    Map<String,Object> selectFile(String fileNo) throws Exception;
 
-   public void deleteFiles(String postNo) throws Exception;
+    void deleteFiles(String postNo) throws Exception;
 
-   public void deleteFile(String fileNo) throws Exception;
+    void deleteFile(String fileNo) throws Exception;
 
 }

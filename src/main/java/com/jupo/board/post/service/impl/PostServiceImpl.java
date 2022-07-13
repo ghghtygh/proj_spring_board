@@ -107,7 +107,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostVO selectPostDetail(String postNo) throws Exception {
-		return dao.selectPostDetail(postNo);
+		return dao.selectPostDetail(postNo)
+				.orElseThrow(() -> new Exception("post not exist"));
 	}
 
 	@Override
